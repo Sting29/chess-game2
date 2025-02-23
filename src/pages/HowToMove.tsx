@@ -1,5 +1,4 @@
 import { useNavigate } from "react-router-dom";
-import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 
 export function HowToMove() {
   const navigate = useNavigate();

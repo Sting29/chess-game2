@@ -3,12 +3,6 @@ export type Piece = string;
 export type Color = "w" | "b";
 export type PromotionPiece = "q" | "r" | "n" | "b";
 
-interface Move {
-  from: Square;
-  to: Square;
-  piece: Piece;
-}
-
 export class SimplifiedChessEngine {
   private position: Map<Square, Piece>;
   private turn: Color;
