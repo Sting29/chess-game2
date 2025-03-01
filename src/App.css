@@ -94,15 +94,6 @@
   z-index: 1000;
 }
 
-.game-complete {
-  margin-top: 20px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 4px;
-  text-align: center;
-  font-weight: bold;
-}
-
 @keyframes boom {
   0% {
     opacity: 1;

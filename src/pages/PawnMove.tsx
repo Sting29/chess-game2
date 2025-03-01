@@ -1,16 +1,16 @@
 import { useNavigate } from "react-router-dom";
-import React from "react";
 import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 import { useState } from "react";
 import type { Square } from "../utils/SimplifiedChessEngine";
-
-type GameStatus = "white_wins" | "draw" | null;
+import GameComplete from "src/components/GameComplete/GameComplete";
 
 export function PawnMove() {
   const navigate = useNavigate();
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
-  const [gameStatus, setGameStatus] = useState<GameStatus>(null);
+  const [currentGameStatus, setCurrentGameStatus] = useState<
+    "playing" | "white_wins" | "draw"
+  >("playing");
 
   const initialPosition = "8/1p6/p7/8/8/8/1P6/8 w - - 0 1";
 
@@ -19,9 +19,11 @@ export function PawnMove() {
     setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleComplete = (status: GameStatus) => {
-    setGameComplete(true);
-    setGameStatus(status);
+  const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
+    if (gameStatus === "white_wins" || gameStatus === "draw") {
+      setGameComplete(true);
+    }
+    setCurrentGameStatus(gameStatus);
   };
 
   return (
@@ -38,13 +40,7 @@ export function PawnMove() {
       />
 
       {showBoom && <div className="boom-animation">BOOM!</div>}
-      {gameComplete && (
-        <div className="game-complete">
-          {gameStatus === "white_wins"
-            ? "Победа! Все черные фигуры побиты."
-            : "Ничья! Нет больше возможных ходов."}
-        </div>
-      )}
+      {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
       <button className="reset-button" onClick={() => window.location.reload()}>
         Сбросить

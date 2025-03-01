@@ -1,24 +1,29 @@
 import { useNavigate } from "react-router-dom";
 import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 import { useState } from "react";
-import { SimplifiedChessEngine } from "../utils/SimplifiedChessEngine";
 import type { Square } from "../utils/SimplifiedChessEngine";
+import GameComplete from "src/components/GameComplete/GameComplete";
 
 export function QueenMove() {
   const navigate = useNavigate();
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
+  const [currentGameStatus, setCurrentGameStatus] = useState<
+    "playing" | "white_wins" | "draw"
+  >("playing");
 
   const initialPosition = "8/8/1p6/3p4/8/5p2/8/3Q4 w - - 0 1";
-  const [game] = useState(new SimplifiedChessEngine(initialPosition));
 
   const handleCapture = (square: Square) => {
     setShowBoom(true);
-    setTimeout(() => setShowBoom(false), 2000);
+    setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleComplete = () => {
-    setGameComplete(true);
+  const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
+    if (gameStatus === "white_wins" || gameStatus === "draw") {
+      setGameComplete(true);
+    }
+    setCurrentGameStatus(gameStatus);
   };
 
   return (
@@ -35,13 +40,7 @@ export function QueenMove() {
       />
 
       {showBoom && <div className="boom-animation">BOOM!</div>}
-      {gameComplete && (
-        <div className="game-complete">
-          {game.getGameStatus() === "white_wins"
-            ? "Победа! Все черные фигуры побиты."
-            : "Ничья! Нет больше возможных ходов."}
-        </div>
-      )}
+      {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
       <button className="reset-button" onClick={() => window.location.reload()}>
         Сбросить

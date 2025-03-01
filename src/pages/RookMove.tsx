@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 import { useState } from "react";
 import type { Square } from "../utils/SimplifiedChessEngine";
+import GameComplete from "src/components/GameComplete/GameComplete";
 
 export function RookMove() {
   const navigate = useNavigate();
@@ -39,13 +40,7 @@ export function RookMove() {
       />
 
       {showBoom && <div className="boom-animation">BOOM!</div>}
-      {gameComplete && (
-        <div className="game-complete">
-          {currentGameStatus === "white_wins"
-            ? "Победа! Все черные фигуры побиты."
-            : "Пат! Нет больше возможных ходов."}
-        </div>
-      )}
+      {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
       <button className="reset-button" onClick={() => window.location.reload()}>
         Сбросить
