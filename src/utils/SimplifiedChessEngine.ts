@@ -370,6 +370,7 @@ export class SimplifiedChessEngine {
         return true;
       }
     }
+
     return false;
   }
 
@@ -378,12 +379,10 @@ export class SimplifiedChessEngine {
     if (!this.hasBlackPieces()) {
       return "white_wins";
     }
-
     // 2. Проверяем пат - есть ли возможные ходы
     if (!this.hasLegalMoves()) {
       return "draw";
     }
-
     // 3. Если ни одно из условий не выполнено - игра продолжается
     return "playing";
   }
