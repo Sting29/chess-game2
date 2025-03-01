@@ -4,17 +4,18 @@ export type Color = "w" | "b";
 export type PromotionPiece = "q" | "r" | "n" | "b";
 
 export class SimplifiedChessEngine {
-  private position: Map<Square, Piece>;
-  private turn: Color;
+  private position: Map<Square, string>;
+  private turn: "w" | "b" = "w"; // Всегда ход белых
 
   constructor(fen: string) {
     this.position = new Map();
-    this.turn = "w";
-    this.loadPosition(fen);
+    this.parseFen(fen);
   }
 
-  private loadPosition(fen: string) {
-    const [position] = fen.split(" ");
+  private parseFen(fen: string) {
+    const [position, turn] = fen.split(" ");
+    this.turn = turn as "w" | "b";
+
     let rank = 7;
     let file = 0;
 
@@ -33,7 +34,10 @@ export class SimplifiedChessEngine {
   }
 
   private algebraic(file: number, rank: number): Square {
-    return `${"abcdefgh"[file]}${rank + 1}`;
+    if (file >= 0 && file < 8 && rank >= 0 && rank < 8) {
+      return `${"abcdefgh"[file]}${rank + 1}` as Square;
+    }
+    return "" as Square;
   }
 
   private parseSquare(square: Square): [number, number] {
@@ -52,41 +56,36 @@ export class SimplifiedChessEngine {
 
     switch (piece.toLowerCase()) {
       case "p": // Пешка
-        const direction = isWhite ? 1 : -1;
-        const startRank = isWhite ? 1 : 6;
+        if (isWhite) {
+          // Только для белых пешек
+          // Ход вперед на одну клетку
+          const oneStep = this.algebraic(fromFile, fromRank + 1);
+          if (oneStep && !this.position.has(oneStep)) {
+            moves.push(oneStep);
 
-        // Ход вперед на одну клетку
-        const oneStep = this.algebraic(fromFile, fromRank + direction);
-        if (!this.position.has(oneStep)) {
-          moves.push(oneStep);
-
-          // Ход на две клетки с начальной позиции
-          if (fromRank === startRank) {
-            const twoStep = this.algebraic(fromFile, fromRank + 2 * direction);
-            if (!this.position.has(twoStep)) {
-              moves.push(twoStep);
+            // Ход на две клетки с начальной позиции
+            if (fromRank === 1) {
+              const twoStep = this.algebraic(fromFile, fromRank + 2);
+              if (twoStep && !this.position.has(twoStep)) {
+                moves.push(twoStep);
+              }
             }
           }
+
+          // Взятие по диагонали
+          [-1, 1].forEach((offset) => {
+            const captureSquare = this.algebraic(
+              fromFile + offset,
+              fromRank + 1
+            );
+            if (captureSquare && this.position.has(captureSquare)) {
+              const targetPiece = this.position.get(captureSquare);
+              if (targetPiece && targetPiece === targetPiece.toLowerCase()) {
+                moves.push(captureSquare);
+              }
+            }
+          });
         }
-
-        // Взятие по диагонали
-        [-1, 1].forEach((offset) => {
-          const captureSquare = this.algebraic(
-            fromFile + offset,
-            fromRank + direction
-          );
-          if (this.position.has(captureSquare)) {
-            const targetPiece = this.position.get(captureSquare);
-            if (
-              targetPiece &&
-              (isWhite
-                ? targetPiece === targetPiece.toLowerCase()
-                : targetPiece === targetPiece.toUpperCase())
-            ) {
-              moves.push(captureSquare);
-            }
-          }
-        });
         break;
 
       case "r": // Ладья
@@ -248,50 +247,61 @@ export class SimplifiedChessEngine {
         break;
     }
 
-    return moves;
+    return moves.filter((move) => move !== "");
   }
 
-  private isPawnPromotion(from: Square, to: Square): boolean {
-    const piece = this.position.get(from);
-    if (!piece || piece.toLowerCase() !== "p") return false;
-
-    const [, toRank] = this.parseSquare(to);
-    return toRank === 0 || toRank === 7;
+  private isPawnPromotion(
+    sourceSquare: Square,
+    targetSquare: Square,
+    piece: string
+  ): boolean {
+    if (!piece.endsWith("P")) return false;
+    const [, toRank] = targetSquare.split("");
+    return (
+      (piece.startsWith("P") && toRank === "8") ||
+      (piece.startsWith("p") && toRank === "1")
+    );
   }
 
   move(
     from: Square,
     to: Square,
     promotion?: PromotionPiece
-  ): { captured?: boolean; promotion?: boolean } {
+  ): { captured?: boolean; promotion?: boolean } | null {
     const piece = this.position.get(from);
-    if (!piece) return { captured: false };
+    if (!piece) return null;
 
+    // Проверяем, что ходят только белые фигуры
     const isWhite = piece === piece.toUpperCase();
-    if ((isWhite && this.turn !== "w") || (!isWhite && this.turn !== "b")) {
-      return { captured: false };
+    if (!isWhite) {
+      return null;
     }
 
     const validMoves = this.getPieceMoves(from);
     if (!validMoves.includes(to)) {
-      return { captured: false };
-    }
-
-    const isPromotion = this.isPawnPromotion(from, to);
-    if (isPromotion && !promotion) {
-      return { captured: false, promotion: true };
+      return null;
     }
 
     const captured = this.position.has(to);
-    this.position.delete(from);
+    const isPromotion = this.isPawnPromotion(from, to, piece);
+
+    // Создаем новую позицию
+    const newPosition = new Map(this.position);
+
+    // Удаляем пешку с исходной позиции
+    newPosition.delete(from);
 
     if (isPromotion && promotion) {
-      this.position.set(to, isWhite ? promotion.toUpperCase() : promotion);
+      // Устанавливаем новую фигуру на целевую позицию
+      newPosition.set(to, promotion.toUpperCase());
     } else {
-      this.position.set(to, piece);
+      // Перемещаем исходную фигуру
+      newPosition.set(to, piece);
     }
 
-    this.turn = this.turn === "w" ? "b" : "w";
+    // Обновляем позицию
+    this.position = newPosition;
+    this.turn = "w";
 
     return { captured, promotion: isPromotion };
   }
@@ -333,6 +343,15 @@ export class SimplifiedChessEngine {
   }
 
   getLegalMoves(square: Square): Square[] {
+    const piece = this.position.get(square);
+    if (!piece) return [];
+
+    // Разрешаем ходы только белым фигурам
+    const isWhite = piece === piece.toUpperCase();
+    if (!isWhite) {
+      return [];
+    }
+
     return this.getPieceMoves(square);
   }
 
@@ -355,35 +374,34 @@ export class SimplifiedChessEngine {
   }
 
   getGameStatus(): "playing" | "white_wins" | "draw" {
-    // Сначала проверяем, остались ли черные фигуры
+    // 1. Проверяем победу - остались ли черные фигуры
     if (!this.hasBlackPieces()) {
       return "white_wins";
     }
 
-    // Проверяем ничью только если есть фигуры обоих цветов
-    if (
-      this.hasBlackPieces() &&
-      this.hasWhitePieces() &&
-      !this.hasLegalMoves()
-    ) {
+    // 2. Проверяем пат - есть ли возможные ходы
+    if (!this.hasLegalMoves()) {
       return "draw";
     }
 
+    // 3. Если ни одно из условий не выполнено - игра продолжается
     return "playing";
   }
 
   hasLegalMoves(): boolean {
+    // Проверяем все белые фигуры на наличие возможных ходов
     for (const [square, piece] of this.position.entries()) {
-      const isWhitePiece = piece === piece.toUpperCase();
-      if (
-        (this.turn === "w" && isWhitePiece) ||
-        (this.turn === "b" && !isWhitePiece)
-      ) {
+      if (piece === piece.toUpperCase()) {
+        // Только белые фигуры
         if (this.getLegalMoves(square).length > 0) {
           return true;
         }
       }
     }
     return false;
+  }
+
+  hasPiece(square: Square): boolean {
+    return this.position.has(square);
   }
 }

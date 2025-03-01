@@ -23,25 +23,61 @@ export function ChessTutorialBoard({
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
-  const [pendingPromotion, setPendingPromotion] = useState<{
-    from: Square;
-    to: Square;
-  } | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
   const turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
 
-  function isPawnPromotion(
+  function onPromotionCheck(
     sourceSquare: Square,
     targetSquare: Square,
     piece: string
   ): boolean {
     if (!piece.endsWith("P")) return false;
+    console.log("onPromotionCheck", sourceSquare, targetSquare, piece);
     const [, toRank] = targetSquare.split("");
-    return (
-      (piece.startsWith("w") && toRank === "8") ||
-      (piece.startsWith("b") && toRank === "1")
+    return toRank === "8";
+  }
+
+  function onPromotionPieceSelect(
+    promotionPiece?: string,
+    sourceSquare?: Square,
+    targetSquare?: Square
+  ): boolean {
+    if (!promotionPiece || !sourceSquare || !targetSquare) return false;
+
+    const piece = promotionPiece.charAt(1).toLowerCase() as PromotionPiece;
+
+    console.log(
+      "Promoting to:",
+      piece,
+      "from:",
+      sourceSquare,
+      "to:",
+      targetSquare
     );
+
+    const result = game.move(sourceSquare, targetSquare, piece);
+    if (result) {
+      const newFen = game.fen();
+      console.log("New FEN after promotion:", newFen);
+
+      const newGame = new SimplifiedChessEngine(newFen);
+      setGame(newGame);
+
+      setHighlightSquares([]);
+      setSelectedSquare(null);
+
+      if (result.captured) {
+        onCapture?.(targetSquare);
+      }
+
+      const gameStatus = newGame.getGameStatus();
+      if (gameStatus !== "playing") {
+        onComplete?.(gameStatus);
+      }
+      return true;
+    }
+    return false;
   }
 
   function onDrop(
@@ -49,16 +85,15 @@ export function ChessTutorialBoard({
     targetSquare: Square,
     piece: string
   ): boolean {
+    if (onPromotionCheck(sourceSquare, targetSquare, piece)) {
+      return false;
+    }
+
     const legalMoves = game.getLegalMoves(sourceSquare);
 
     if (!legalMoves.includes(targetSquare)) {
       setErrorMessage("Невалидный ход");
       setTimeout(() => setErrorMessage(null), 2000);
-      return false;
-    }
-
-    if (isPawnPromotion(sourceSquare, targetSquare, piece)) {
-      setPendingPromotion({ from: sourceSquare, to: targetSquare });
       return false;
     }
 
@@ -86,25 +121,6 @@ export function ChessTutorialBoard({
     return false;
   }
 
-  function handlePromotion(piece: PromotionPiece) {
-    if (pendingPromotion) {
-      const { from, to } = pendingPromotion;
-      const result = game.move(from, to, piece);
-      if (result) {
-        const newGame = new SimplifiedChessEngine(game.fen());
-        setGame(newGame);
-        setPendingPromotion(null);
-        setHighlightSquares([]);
-        setSelectedSquare(null);
-
-        const gameStatus = newGame.getGameStatus();
-        if (gameStatus !== "playing") {
-          onComplete?.(gameStatus);
-        }
-      }
-    }
-  }
-
   function onSquareClick(square: Square) {
     const legalMoves = game.getLegalMoves(square);
     if (legalMoves.length > 0) {
@@ -117,7 +133,7 @@ export function ChessTutorialBoard({
   }
 
   return (
-    <div style={{ width: "400px", margin: "0 auto", position: "relative" }}>
+    <div style={{ width: "400px", margin: "0 auto" }}>
       <div
         className="move-message"
         style={{
@@ -130,46 +146,12 @@ export function ChessTutorialBoard({
         {errorMessage ? `${turnMessage} - ${errorMessage}` : turnMessage}
       </div>
 
-      {pendingPromotion && (
-        <div
-          className="promotion-modal"
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            padding: "20px",
-            borderRadius: "8px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.5)",
-            zIndex: 1000,
-          }}
-        >
-          <h3>Выберите фигуру для превращения:</h3>
-          <div style={{ display: "flex", gap: "10px" }}>
-            {["q", "r", "n", "b"].map((piece) => (
-              <button
-                key={piece}
-                onClick={() => handlePromotion(piece as PromotionPiece)}
-                style={{ padding: "10px", cursor: "pointer" }}
-              >
-                {piece === "q"
-                  ? "Ферзь"
-                  : piece === "r"
-                  ? "Ладья"
-                  : piece === "n"
-                  ? "Конь"
-                  : "Слон"}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-
       <Chessboard
         position={game.fen()}
         onPieceDrop={onDrop}
         onSquareClick={onSquareClick}
+        onPromotionCheck={onPromotionCheck} // TODO: remove not needed
+        onPromotionPieceSelect={onPromotionPieceSelect}
         customBoardStyle={{
           borderRadius: "4px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
@@ -182,17 +164,10 @@ export function ChessTutorialBoard({
             highlightSquares.map((square) => [
               square,
               {
-                background: "rgba(0, 255, 0, 0.4)",
-                "::before": {
-                  content: '""',
-                  display: "block",
-                  width: "25%",
-                  height: "25%",
-                  margin: "auto",
-                  marginTop: "37.5%",
-                  borderRadius: "50%",
-                  backgroundColor: "rgba(0, 255, 0, 0.4)",
-                },
+                background: game.hasPiece(square)
+                  ? "radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)"
+                  : "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
+                borderRadius: "50%",
               },
             ])
           ),

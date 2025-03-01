@@ -16,7 +16,7 @@ export function PawnMove() {
 
   const handleCapture = (square: Square) => {
     setShowBoom(true);
-    setTimeout(() => setShowBoom(false), 2000);
+    setTimeout(() => setShowBoom(false), 500);
   };
 
   const handleComplete = (status: GameStatus) => {
