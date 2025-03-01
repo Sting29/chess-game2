@@ -1,5 +1,7 @@
 import { Route } from "react-router-dom";
 import { HowToMove } from "../pages/HowToMove";
+import { ChessTutorial } from "../pages/ChessTutorial";
+import { HowToPlay } from "../pages/HowToPlay";
 import { PawnMove } from "../pages/PawnMove";
 import { RookMove } from "../pages/RookMove";
 import { KnightMove } from "../pages/KnightMove";
@@ -10,36 +12,46 @@ import { KingMove } from "../pages/KingMove";
 export const routes = [
   {
     path: "/",
+    element: <ChessTutorial />,
+    title: "Chess Tutorial",
+  },
+  {
+    path: "/how-to-move",
     element: <HowToMove />,
     title: "How to Move",
   },
   {
-    path: "/pawn-move",
+    path: "/how-to-play",
+    element: <HowToPlay />,
+    title: "How to Play",
+  },
+  {
+    path: "/how-to-move/pawn-move",
     element: <PawnMove />,
     title: "Как ходит пешка",
   },
   {
-    path: "/rook-move",
+    path: "/how-to-move/rook-move",
     element: <RookMove />,
     title: "Как ходит ладья",
   },
   {
-    path: "/knight-move",
+    path: "/how-to-move/knight-move",
     element: <KnightMove />,
     title: "Как ходит конь",
   },
   {
-    path: "/bishop-move",
+    path: "/how-to-move/bishop-move",
     element: <BishopMove />,
     title: "Как ходит слон",
   },
   {
-    path: "/queen-move",
+    path: "/how-to-move/queen-move",
     element: <QueenMove />,
     title: "Как ходит ферзь",
   },
   {
-    path: "/king-move",
+    path: "/how-to-move/king-move",
     element: <KingMove />,
     title: "Как ходит король",
   },

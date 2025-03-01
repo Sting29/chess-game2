@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 import GameComplete from "../components/GameComplete/GameComplete";
 import { Square } from "../utils/SimplifiedChessEngine";
+import BackButton from "src/components/BackButton/BackButton";
 
 export function BishopMove() {
-  const navigate = useNavigate();
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
   const [currentGameStatus, setCurrentGameStatus] = useState<
@@ -13,6 +13,7 @@ export function BishopMove() {
   >("playing");
 
   const initialPosition = "8/3p4/8/2p1p3/4B3/2p1p3/3p4/8 w - - 0 1";
+  const previousPage = useLocation().pathname.split("/").slice(0, -1).join("/");
 
   const handleCapture = (square: Square) => {
     setShowBoom(true);
@@ -29,19 +30,14 @@ export function BishopMove() {
   return (
     <div className="tutorial-page">
       <h1>Как ходит слон</h1>
-      <button className="back-button" onClick={() => navigate("/")}>
-        Вернуться назад
-      </button>
-
+      <BackButton linkToPage={previousPage} />
       <ChessTutorialBoard
         initialPosition={initialPosition}
         onCapture={handleCapture}
         onComplete={handleComplete}
       />
-
       {showBoom && <div className="boom-animation">BOOM!</div>}
       {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
-
       <button className="reset-button" onClick={() => window.location.reload()}>
         Сбросить
       </button>
