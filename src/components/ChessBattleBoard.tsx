@@ -21,9 +21,20 @@ export function ChessBattleBoard({
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [gameStatus, setGameStatus] = useState<
+    "playing" | "white_wins" | "black_wins" | "draw"
+  >("playing");
 
   const currentTurn = game.fen().split(" ")[1];
-  const turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+  let turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+
+  if (gameStatus === "white_wins") {
+    turnMessage = "Победа белых!";
+  } else if (gameStatus === "black_wins") {
+    turnMessage = "Победа черных!";
+  } else if (gameStatus === "draw") {
+    turnMessage = "Ничья!";
+  }
 
   function onPromotionCheck(
     sourceSquare: Square,
@@ -60,32 +71,17 @@ export function ChessBattleBoard({
         onCapture?.(targetSquare);
       }
 
-      const gameStatus = newGame.getGameStatus();
-      if (gameStatus !== "playing") {
-        onComplete?.(gameStatus);
+      const newGameStatus = newGame.getGameStatus();
+      setGameStatus(newGameStatus);
+      if (newGameStatus !== "playing") {
+        onComplete?.(newGameStatus);
       }
       return true;
     }
     return false;
   }
 
-  function onDrop(
-    sourceSquare: Square,
-    targetSquare: Square,
-    piece: string
-  ): boolean {
-    if (onPromotionCheck(sourceSquare, targetSquare, piece)) {
-      return false;
-    }
-
-    const legalMoves = game.getLegalMoves(sourceSquare);
-
-    if (!legalMoves.includes(targetSquare)) {
-      setErrorMessage("Невалидный ход");
-      setTimeout(() => setErrorMessage(null), 2000);
-      return false;
-    }
-
+  function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
     const result = game.move(sourceSquare, targetSquare);
 
     if (result) {
@@ -98,9 +94,10 @@ export function ChessBattleBoard({
         onCapture?.(targetSquare);
       }
 
-      const gameStatus = newGame.getGameStatus();
-      if (gameStatus !== "playing") {
-        onComplete?.(gameStatus);
+      const newGameStatus = newGame.getGameStatus();
+      setGameStatus(newGameStatus);
+      if (newGameStatus !== "playing") {
+        onComplete?.(newGameStatus);
       }
       return true;
     }

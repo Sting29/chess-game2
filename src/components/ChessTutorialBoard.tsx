@@ -17,11 +17,21 @@ export function ChessTutorialBoard({
     new SimplifiedChessEngine(initialPosition)
   );
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [gameStatus, setGameStatus] = useState<
+    "playing" | "white_wins" | "draw"
+  >("playing");
 
   const currentTurn = game.fen().split(" ")[1];
-  const turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+  let turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+
+  // Изменяем сообщение в зависимости от статуса игры
+  if (gameStatus === "white_wins") {
+    turnMessage = "Победа белых! Все черные фигуры побиты";
+  } else if (gameStatus === "draw") {
+    turnMessage = "Ничья! Нет больше возможных ходов";
+  }
 
   function onPromotionCheck(
     sourceSquare: Square,
@@ -58,32 +68,17 @@ export function ChessTutorialBoard({
         onCapture?.(targetSquare);
       }
 
-      const gameStatus = newGame.getGameStatus();
-      if (gameStatus !== "playing") {
-        onComplete?.(gameStatus);
+      const newGameStatus = newGame.getGameStatus();
+      setGameStatus(newGameStatus);
+      if (newGameStatus !== "playing") {
+        onComplete?.(newGameStatus);
       }
       return true;
     }
     return false;
   }
 
-  function onDrop(
-    sourceSquare: Square,
-    targetSquare: Square,
-    piece: string
-  ): boolean {
-    if (onPromotionCheck(sourceSquare, targetSquare, piece)) {
-      return false;
-    }
-
-    const legalMoves = game.getLegalMoves(sourceSquare);
-
-    if (!legalMoves.includes(targetSquare)) {
-      setErrorMessage("Невалидный ход");
-      setTimeout(() => setErrorMessage(null), 500);
-      return false;
-    }
-
+  function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
     const result = game.move(sourceSquare, targetSquare);
 
     if (result) {
@@ -96,9 +91,10 @@ export function ChessTutorialBoard({
         onCapture?.(targetSquare);
       }
 
-      const gameStatus = newGame.getGameStatus();
-      if (gameStatus !== "playing") {
-        onComplete?.(gameStatus);
+      const newGameStatus = newGame.getGameStatus();
+      setGameStatus(newGameStatus);
+      if (newGameStatus !== "playing") {
+        onComplete?.(newGameStatus);
       }
       return true;
     }
