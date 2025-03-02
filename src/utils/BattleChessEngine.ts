@@ -238,6 +238,74 @@ export class BattleChessEngine {
           }
         }
         break;
+
+      case "q": // Ферзь (комбинация ходов ладьи и слона)
+        // Ходы по прямым (как ладья)
+        for (const [fileOffset, rankOffset] of [
+          [0, 1],
+          [0, -1],
+          [1, 0],
+          [-1, 0],
+        ]) {
+          let currentFile = fromFile + fileOffset;
+          let currentRank = fromRank + rankOffset;
+
+          while (true) {
+            const square = this.algebraic(currentFile, currentRank);
+            if (!square) break;
+
+            const targetPiece = this.position.get(square);
+            if (!targetPiece) {
+              moves.push(square);
+            } else {
+              if (
+                isWhite
+                  ? targetPiece === targetPiece.toLowerCase()
+                  : targetPiece === targetPiece.toUpperCase()
+              ) {
+                moves.push(square);
+              }
+              break;
+            }
+
+            currentFile += fileOffset;
+            currentRank += rankOffset;
+          }
+        }
+
+        // Ходы по диагоналям (как слон)
+        for (const [fileOffset, rankOffset] of [
+          [1, 1],
+          [1, -1],
+          [-1, 1],
+          [-1, -1],
+        ]) {
+          let currentFile = fromFile + fileOffset;
+          let currentRank = fromRank + rankOffset;
+
+          while (true) {
+            const square = this.algebraic(currentFile, currentRank);
+            if (!square) break;
+
+            const targetPiece = this.position.get(square);
+            if (!targetPiece) {
+              moves.push(square);
+            } else {
+              if (
+                isWhite
+                  ? targetPiece === targetPiece.toLowerCase()
+                  : targetPiece === targetPiece.toUpperCase()
+              ) {
+                moves.push(square);
+              }
+              break;
+            }
+
+            currentFile += fileOffset;
+            currentRank += rankOffset;
+          }
+        }
+        break;
     }
 
     return moves;
