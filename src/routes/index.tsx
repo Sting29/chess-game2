@@ -12,6 +12,7 @@ import PawnBattle from "../pages/PawnBattle";
 import KnightBattle from "../pages/KnightBattle";
 import PuzzleList from "../pages/PuzzleList";
 import { PuzzleSolver } from "../pages/PuzzleSolver";
+import PlayWithComputer from "../pages/PlayWithComputer";
 
 export const routes = [
   {
@@ -83,6 +84,11 @@ export const routes = [
     path: "/how-to-play/knight-battle",
     element: <KnightBattle />,
     title: "Битва коней",
+  },
+  {
+    path: "/play-with-computer",
+    element: <PlayWithComputer />,
+    title: "Игра с компьютером",
   },
 ];
 

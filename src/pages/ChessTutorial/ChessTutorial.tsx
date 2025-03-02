@@ -25,6 +25,10 @@ function ChessTutorial() {
         <ChessTutorialButton onClick={() => navigate("/puzzles")}>
           Шахматные задачи
         </ChessTutorialButton>
+
+        <ChessTutorialButton onClick={() => navigate("/play-with-computer")}>
+          Игра с компьютером
+        </ChessTutorialButton>
       </ChessTutorialLinks>
     </ChessTutorialWrap>
   );
