@@ -1,7 +1,4 @@
-export type Square = string;
-export type Piece = string;
-export type Color = "w" | "b";
-export type PromotionPiece = "q" | "r" | "n" | "b";
+import { Square, PromotionPiece } from "../types/types";
 
 export class SimplifiedChessEngine {
   private position: Map<Square, string>;

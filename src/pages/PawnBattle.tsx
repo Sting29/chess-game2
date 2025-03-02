@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
+import { ChessBattleBoard } from "../components/ChessBattleBoard";
 import { useState } from "react";
-import type { Square } from "../utils/SimplifiedChessEngine";
+import { Square } from "../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
 import BackButton from "src/components/BackButton/BackButton";
 
@@ -9,7 +9,7 @@ function PawnBattle() {
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
   const [currentGameStatus, setCurrentGameStatus] = useState<
-    "playing" | "white_wins" | "draw"
+    "playing" | "white_wins" | "black_wins" | "draw"
   >("playing");
 
   const initialPosition = "8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1";
@@ -20,8 +20,14 @@ function PawnBattle() {
     setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
-    if (gameStatus === "white_wins" || gameStatus === "draw") {
+  const handleComplete = (
+    gameStatus: "playing" | "white_wins" | "black_wins" | "draw"
+  ) => {
+    if (
+      gameStatus === "white_wins" ||
+      gameStatus === "black_wins" ||
+      gameStatus === "draw"
+    ) {
       setGameComplete(true);
     }
     setCurrentGameStatus(gameStatus);
@@ -29,10 +35,10 @@ function PawnBattle() {
 
   return (
     <div className="tutorial-page">
-      <h1>Как ходит пешка</h1>
+      <h1>Битва пешек</h1>
       <BackButton linkToPage={previousPage} />
 
-      <ChessTutorialBoard
+      <ChessBattleBoard
         initialPosition={initialPosition}
         onCapture={handleCapture}
         onComplete={handleComplete}

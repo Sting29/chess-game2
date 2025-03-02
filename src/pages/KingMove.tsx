@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 import { useState } from "react";
-import type { Square } from "../utils/SimplifiedChessEngine";
+import { Square } from "../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
 import BackButton from "src/components/BackButton/BackButton";
 export function KingMove() {

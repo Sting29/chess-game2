@@ -1,24 +1,26 @@
-import { useState } from "react";
 import { Chessboard } from "react-chessboard";
+import { useState } from "react";
 import { Square, PromotionPiece } from "../types/types";
-import { SimplifiedChessEngine } from "../utils/SimplifiedChessEngine";
-interface ChessTutorialBoardProps {
+import { BattleChessEngine } from "../utils/BattleChessEngine";
+interface ChessBattleBoardProps {
   initialPosition: string;
   onCapture?: (square: Square) => void;
-  onComplete?: (gameStatus: "white_wins" | "draw") => void;
+  onComplete?: (
+    result: "playing" | "white_wins" | "black_wins" | "draw"
+  ) => void;
 }
 
-export function ChessTutorialBoard({
+export function ChessBattleBoard({
   initialPosition,
   onCapture,
   onComplete,
-}: ChessTutorialBoardProps) {
-  const [game, setGame] = useState<SimplifiedChessEngine>(
-    new SimplifiedChessEngine(initialPosition)
+}: ChessBattleBoardProps) {
+  const [game, setGame] = useState<BattleChessEngine>(
+    new BattleChessEngine(initialPosition)
   );
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
   const turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
@@ -48,7 +50,7 @@ export function ChessTutorialBoard({
       const newFen = game.fen();
       console.log("New FEN after promotion:", newFen);
 
-      const newGame = new SimplifiedChessEngine(newFen);
+      const newGame = new BattleChessEngine(newFen);
       setGame(newGame);
 
       setHighlightSquares([]);
@@ -80,14 +82,14 @@ export function ChessTutorialBoard({
 
     if (!legalMoves.includes(targetSquare)) {
       setErrorMessage("Невалидный ход");
-      setTimeout(() => setErrorMessage(null), 500);
+      setTimeout(() => setErrorMessage(null), 2000);
       return false;
     }
 
     const result = game.move(sourceSquare, targetSquare);
 
     if (result) {
-      const newGame = new SimplifiedChessEngine(game.fen());
+      const newGame = new BattleChessEngine(game.fen());
       setGame(newGame);
       setHighlightSquares([]);
       setSelectedSquare(null);
@@ -104,7 +106,7 @@ export function ChessTutorialBoard({
     }
 
     setErrorMessage("Невалидный ход");
-    setTimeout(() => setErrorMessage(null), 2000);
+    setTimeout(() => setErrorMessage(null), 500);
     return false;
   }
 

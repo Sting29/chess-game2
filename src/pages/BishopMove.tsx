@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useLocation } from "react-router-dom";
 import { ChessTutorialBoard } from "../components/ChessTutorialBoard";
 import GameComplete from "../components/GameComplete/GameComplete";
-import { Square } from "../utils/SimplifiedChessEngine";
+import { Square } from "../types/types";
 import BackButton from "src/components/BackButton/BackButton";
 
 export function BishopMove() {
