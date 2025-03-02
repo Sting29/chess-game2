@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { Square } from "../types/playTypes";
@@ -13,18 +13,20 @@ interface ComputerChessBoardProps {
 
 export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
   const [game, setGame] = useState(new Chess());
-  const [engine] = useState(() => new StockfishEngine());
+  const engineRef = useRef<StockfishEngine>(new StockfishEngine());
   const [isThinking, setIsThinking] = useState(false);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [moveMessage, setMoveMessage] = useState("Ваш ход (белые)");
 
   useEffect(() => {
+    const engine = engineRef.current;
     engine.init();
+
     return () => engine.quit();
   }, []);
 
   useEffect(() => {
-    engine.setOptions({
+    engineRef.current.setOptions({
       Skill: settings.skill,
       Depth: settings.depth,
     });
@@ -36,7 +38,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
 
     try {
       console.log("Current position:", game.fen());
-      const move = await engine.getBestMove(game.fen());
+      const move = await engineRef.current.getBestMove(game.fen());
       console.log("Received move:", move);
 
       if (!move) {
