@@ -33,34 +33,6 @@ export function PuzzleSolver() {
     return <div>Задача не найдена</div>;
   }
 
-  // Преобразуем initialPosition в FEN
-  const positionToFen = (position: { [key: string]: string }) => {
-    let fen = "";
-    for (let rank = 8; rank >= 1; rank--) {
-      let emptySquares = 0;
-      for (let file = "a".charCodeAt(0); file <= "h".charCodeAt(0); file++) {
-        const square = String.fromCharCode(file) + rank;
-        const piece = position[square];
-        if (piece) {
-          if (emptySquares > 0) {
-            fen += emptySquares;
-            emptySquares = 0;
-          }
-          fen += piece;
-        } else {
-          emptySquares++;
-        }
-      }
-      if (emptySquares > 0) {
-        fen += emptySquares;
-      }
-      if (rank > 1) {
-        fen += "/";
-      }
-    }
-    return `${fen} ${puzzle.playerColor} - - 0 1`;
-  };
-
   const handleComplete = (result: "success" | "failure") => {
     if (result === "success") {
       setGameComplete(true);
