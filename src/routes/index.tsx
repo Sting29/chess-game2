@@ -10,6 +10,8 @@ import { QueenMove } from "../pages/QueenMove";
 import { KingMove } from "../pages/KingMove";
 import PawnBattle from "../pages/PawnBattle";
 import KnightBattle from "../pages/KnightBattle";
+import PuzzleList from "../pages/PuzzleList";
+import { PuzzleSolver } from "../pages/PuzzleSolver";
 
 export const routes = [
   {
@@ -26,6 +28,21 @@ export const routes = [
     path: "/how-to-play",
     element: <HowToPlay />,
     title: "How to Play",
+  },
+  {
+    path: "/puzzles",
+    element: <PuzzleList />,
+    title: "Шахматные задачи",
+  },
+  {
+    path: "/puzzles/:categoryId",
+    element: <PuzzleList />,
+    title: "Категория задач",
+  },
+  {
+    path: "/puzzles/:categoryId/:puzzleId",
+    element: <PuzzleSolver />,
+    title: "Решение задачи",
   },
   {
     path: "/how-to-move/pawn-move",
