@@ -8,21 +8,17 @@ export class StockfishEngine {
 
     this.worker.onmessage = (e) => {
       const message = e.data;
-      console.log("Engine message:", message); // Подробное логирование
 
       if (typeof message === "string") {
         if (message.startsWith("bestmove")) {
           const move = message.split(" ")[1];
-          console.log("Best move found:", move);
           if (this.currentResolve) {
             this.currentResolve(move);
             this.currentResolve = null;
           }
         } else if (message.includes("readyok")) {
           this.isReady = true;
-          console.log("Engine is ready");
         } else if (message.includes("info")) {
-          console.log("Engine info:", message);
         }
       }
     };

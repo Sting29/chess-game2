@@ -39,7 +39,6 @@ export function ChessTutorialBoard({
     piece: string
   ): boolean {
     if (!piece.endsWith("P")) return false;
-    console.log("onPromotionCheck", sourceSquare, targetSquare, piece);
     const [, toRank] = targetSquare.split("");
     return toRank === "8";
   }
@@ -56,7 +55,6 @@ export function ChessTutorialBoard({
     const result = game.move(sourceSquare, targetSquare, piece);
     if (result) {
       const newFen = game.fen();
-      console.log("New FEN after promotion:", newFen);
 
       const newGame = new SimplifiedChessEngine(newFen);
       setGame(newGame);

@@ -37,9 +37,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
     setMoveMessage("Компьютер думает...");
 
     try {
-      console.log("Current position:", game.fen());
       const move = await engineRef.current.getBestMove(game.fen());
-      console.log("Received move:", move);
 
       if (!move) {
         console.error("No move received");
@@ -50,7 +48,6 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
 
       // Получаем все возможные ходы
       const legalMoves = game.moves({ verbose: true });
-      console.log("Legal moves:", legalMoves);
 
       // Пытаемся найти соответствующий легальный ход
       const from = move.substring(0, 2) as Square;
@@ -63,7 +60,6 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
       if (matchingMove) {
         // Делаем ход, используя полную информацию о ходе
         const moveResult = game.move(matchingMove);
-        console.log("Computer move made:", moveResult);
         setGame(new Chess(game.fen()));
       } else {
         // Если ход не найден, делаем случайный легальный ход
@@ -71,7 +67,6 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
           const randomMove =
             legalMoves[Math.floor(Math.random() * legalMoves.length)];
           const moveResult = game.move(randomMove);
-          console.log("Made random move:", moveResult);
           setGame(new Chess(game.fen()));
         } else {
           console.error("No legal moves available");
@@ -86,7 +81,6 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
         const randomMove =
           legalMoves[Math.floor(Math.random() * legalMoves.length)];
         game.move(randomMove);
-        console.log("Made random move after error:", randomMove);
         setGame(new Chess(game.fen()));
       }
     }
