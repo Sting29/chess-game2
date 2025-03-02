@@ -5,14 +5,14 @@ import type { Square } from "../utils/SimplifiedChessEngine";
 import GameComplete from "src/components/GameComplete/GameComplete";
 import BackButton from "src/components/BackButton/BackButton";
 
-function KnightMove() {
+function KnightBattle() {
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
   const [currentGameStatus, setCurrentGameStatus] = useState<
     "playing" | "white_wins" | "draw"
   >("playing");
 
-  const initialPosition = "8/1p6/8/2p5/4p3/p7/8/1N6 w - - 0 1";
+  const initialPosition = "1n4n1/8/8/8/8/8/8/1N4N1 w - - 0 1";
   const previousPage = useLocation().pathname.split("/").slice(0, -1).join("/");
 
   const handleCapture = (square: Square) => {
@@ -48,4 +48,4 @@ function KnightMove() {
   );
 }
 
-export default KnightMove;
+export default KnightBattle;

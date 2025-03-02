@@ -1,28 +1,29 @@
 import { useLocation, useNavigate } from "react-router-dom";
+import BackButton from "src/components/BackButton/BackButton";
 
 export function HowToMove() {
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
+  const previousPage = "/";
+
+  const pages = [
+    { path: `${currentPath}/pawn-move`, title: "Как ходит пешка" },
+    { path: `${currentPath}/rook-move`, title: "Как ходит ладья" },
+    { path: `${currentPath}/knight-move`, title: "Как ходит конь" },
+    { path: `${currentPath}/bishop-move`, title: "Как ходит слон" },
+    { path: `${currentPath}/queen-move`, title: "Как ходит ферзь" },
+  ];
 
   return (
     <div className="tutorial-page">
       <h1>How to Move</h1>
 
-      <button className="back-button" onClick={() => navigate("/")}>
-        Вернуться назад
-      </button>
+      <BackButton linkToPage={previousPage} />
 
       <p>Изучите как ходят шахматные фигуры:</p>
 
       <div className="navigation-links">
-        {[
-          { path: `${currentPath}/pawn-move`, title: "Как ходит пешка" },
-          { path: `${currentPath}/rook-move`, title: "Как ходит ладья" },
-          { path: `${currentPath}/knight-move`, title: "Как ходит конь" },
-          { path: `${currentPath}/bishop-move`, title: "Как ходит слон" },
-          { path: `${currentPath}/queen-move`, title: "Как ходит ферзь" },
-          { path: `${currentPath}/king-move`, title: "Как ходит король" },
-        ].map((link) => (
+        {pages.map((link) => (
           <button
             key={link.path}
             onClick={() => navigate(link.path)}

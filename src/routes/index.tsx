@@ -1,13 +1,15 @@
 import { Route } from "react-router-dom";
 import { HowToMove } from "../pages/HowToMove";
-import { ChessTutorial } from "../pages/ChessTutorial";
+import ChessTutorial from "../pages/ChessTutorial/ChessTutorial";
 import { HowToPlay } from "../pages/HowToPlay";
 import { PawnMove } from "../pages/PawnMove";
 import { RookMove } from "../pages/RookMove";
-import { KnightMove } from "../pages/KnightMove";
+import KnightMove from "../pages/KnightMove";
 import { BishopMove } from "../pages/BishopMove";
 import { QueenMove } from "../pages/QueenMove";
 import { KingMove } from "../pages/KingMove";
+import PawnBattle from "../pages/PawnBattle";
+import KnightBattle from "../pages/KnightBattle";
 
 export const routes = [
   {
@@ -54,6 +56,16 @@ export const routes = [
     path: "/how-to-move/king-move",
     element: <KingMove />,
     title: "Как ходит король",
+  },
+  {
+    path: "/how-to-play/pawn-battle",
+    element: <PawnBattle />,
+    title: "Битва пешек",
+  },
+  {
+    path: "/how-to-play/knight-battle",
+    element: <KnightBattle />,
+    title: "Битва коней",
   },
 ];
 
