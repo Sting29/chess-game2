@@ -56,9 +56,13 @@
 }
 
 .tutorial-page {
-  padding: 20px;
   max-width: 800px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem;
+  min-height: 100vh;
 }
 
 .back-button {
@@ -114,15 +118,6 @@
     transform: scale(0);
     opacity: 0;
   }
-}
-
-.tutorial-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-  min-height: 100vh;
-  background-color: #f5f5f5;
 }
 
 .tutorial-page h1 {

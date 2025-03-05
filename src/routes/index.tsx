@@ -1,8 +1,8 @@
 import { Route, Navigate } from "react-router-dom";
 import { LoginPage } from "../pages/LoginPage/LoginPage";
-import { HowToMove } from "../pages/HowToMove";
+import HowToMove from "../pages/HowToMove/HowToMove";
 import ChessTutorial from "../pages/ChessTutorial/ChessTutorial";
-import { HowToPlay } from "../pages/HowToPlay";
+import HowToPlay from "../pages/HowToPlay/HowToPlay";
 import { PawnMove } from "../pages/PawnMove";
 import { RookMove } from "../pages/RookMove";
 import KnightMove from "../pages/KnightMove";
