@@ -37,10 +37,6 @@
   }
 }
 
-.app {
-  padding: 20px;
-}
-
 .navigation {
   display: flex;
   gap: 10px;

@@ -9,8 +9,6 @@ import {
   SrOnly,
   Input,
   LoginButton,
-  LoginFooter,
-  Link,
 } from "./styles";
 
 export function LoginPage() {
@@ -27,7 +25,6 @@ export function LoginPage() {
     <LoginContainer>
       <LoginBox>
         <LoginHeader>
-          <h2>Шахматный тренажер</h2>
           <p>Войдите в свой аккаунт</p>
         </LoginHeader>
 
@@ -60,11 +57,6 @@ export function LoginPage() {
 
           <LoginButton type="submit">Войти</LoginButton>
         </LoginForm>
-
-        <LoginFooter>
-          <Link href="#">Забыли пароль?</Link>
-          <Link href="#">Зарегистрироваться</Link>
-        </LoginFooter>
       </LoginBox>
     </LoginContainer>
   );

@@ -1,47 +1,68 @@
 import styled from "styled-components";
+import chessboardBackground from "../../assets/background/login_background.jpg";
+import loginFormBackground from "../../assets/background/login_form2.jpg";
 
 export const LoginContainer = styled.div`
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f5f5f5;
+  background: linear-gradient(
+      rgba(245, 245, 245, 0.3),
+      rgba(245, 245, 245, 0.3)
+    ),
+    url(${chessboardBackground});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 `;
 
 export const LoginBox = styled.div`
-  width: 100%;
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 502px;
+  max-width: 502px;
+  height: 502px;
   padding: 2rem;
-  background: white;
+  background-image: url(${loginFormBackground});
+  background-size: cover;
+  background-position: center;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
 `;
 
 export const LoginHeader = styled.div`
   text-align: center;
-  margin-bottom: 2rem;
-
-  h2 {
-    font-size: 1.875rem;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 0.5rem;
-  }
+  margin-bottom: 0.5rem;
 
   p {
-    font-size: 0.875rem;
+    margin-top: 140px;
+    font-size: 1.2rem;
     color: #666;
   }
 `;
 
 export const LoginForm = styled.form`
+  min-width: 220px;
   display: flex;
+  align-items: center;
+  justify-content: center;
   flex-direction: column;
   gap: 1rem;
 `;
 
 export const FormGroup = styled.div`
   position: relative;
+  display: flex;
+  min-width: 100%;
 `;
 
 export const SrOnly = styled.label`
@@ -94,23 +115,5 @@ export const LoginButton = styled.button`
   &:focus {
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.4);
-  }
-`;
-
-export const LoginFooter = styled.div`
-  margin-top: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.875rem;
-`;
-
-export const Link = styled.a`
-  color: #4a90e2;
-  text-decoration: none;
-  transition: color 0.2s;
-
-  &:hover {
-    color: #357abd;
-    text-decoration: underline;
   }
 `;
