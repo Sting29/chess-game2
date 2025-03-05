@@ -15,7 +15,6 @@ export const ChessTutorialWrap = styled.div({
   alignItems: "center",
   padding: "2rem",
   minHeight: "100vh",
-  backgroundColor: "#f5f5f5",
 });
 
 export const ChessTutorialTitle = styled.h1({
@@ -32,12 +31,19 @@ export const ChessTutorialLinks = styled.div({
 });
 
 export const ChessTutorialButton = styled.button({
-  padding: "1rem 2rem",
-  fontSize: "1.2rem",
   border: "none",
   borderRadius: "8px",
-  backgroundColor: "#4caf50",
+  backgroundColor: "green",
   color: "white",
   cursor: "pointer",
-  transition: "background-color 0.3s",
+  transition: "transform 0.3s, box-shadow 0.3s",
+  "&:hover": {
+    transform: "scale(1.05)",
+    boxShadow: "0 4px 8px rgba(0, 0, 0, 0.2)",
+  },
+});
+
+export const LinkHeader = styled.h2({
+  fontSize: "1.2rem",
+  fontWeight: "bold",
 });
