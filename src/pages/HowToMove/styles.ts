@@ -5,7 +5,6 @@ export const TutorialPageContainer = styled.div`
   flex-direction: column;
   align-items: center;
   padding: 2rem;
-  min-height: 100vh;
 `;
 
 export const TutorialTitle = styled.h1`
