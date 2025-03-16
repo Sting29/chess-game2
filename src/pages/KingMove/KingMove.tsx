@@ -42,7 +42,7 @@ function KingMove() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>Как ходит король</Title>
+          <Title>How to Move: King</Title>
           <BackButton linkToPage={previousPage} />
 
           <BoardContainer>
@@ -57,22 +57,22 @@ function KingMove() {
           {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
-            Сбросить
+            Reset
           </ResetButton>
         </MainContent>
 
         <SideContent>
           <Description
-            title="Правила ходов королём"
+            title="King Movement Rules"
             hints={[
-              "Король - самая важная фигура в шахматах (бесконечная ценность)",
-              "Ходит на одну клетку в любом направлении (по горизонтали, вертикали и диагонали)",
-              "Не может ходить под шах или оставаться под шахом",
-              "Бьет фигуры противника, становясь на их место",
-              "В начале игры белый король стоит на черном поле, черный - на белом",
-              "Может делать специальный ход - рокировку (с ладьей)",
-              "В эндшпиле становится активной фигурой",
-              "Защита короля - главный приоритет в начале и середине игры",
+              "King is the most important piece (infinite value)",
+              "Moves one square in any direction (horizontally, vertically, and diagonally)",
+              "Cannot move into check or remain in check",
+              "Captures enemy pieces by moving to their square",
+              "White king starts on black square, black king on white square",
+              "Can make a special move called castling (with rook)",
+              "Becomes active in the endgame",
+              "King safety is the top priority in opening and middlegame",
             ]}
           />
         </SideContent>

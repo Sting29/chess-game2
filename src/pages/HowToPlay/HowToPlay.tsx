@@ -19,20 +19,20 @@ function HowToPlay() {
   const pages = [
     {
       path: `${currentPath}/pawn-battle`,
-      title: "Битва пешек",
+      title: "Pawn Battle",
       image: ChessPawn,
     },
     {
       path: `${currentPath}/knight-battle`,
-      title: "Битва коней",
+      title: "Knight Battle",
       image: ChessKnight,
     },
   ];
 
   return (
     <TutorialPageContainer>
-      <TutorialTitle>Как играть в шахматы</TutorialTitle>
-      <TutorialDescription>Изучите как играть фигурами:</TutorialDescription>
+      <TutorialTitle>How to Play Chess</TutorialTitle>
+      <TutorialDescription>Learn how to play with pieces:</TutorialDescription>
 
       <BackButton linkToPage={previousPage} />
 

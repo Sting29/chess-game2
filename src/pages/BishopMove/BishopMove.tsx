@@ -42,7 +42,7 @@ function BishopMove() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>Как ходит слон</Title>
+          <Title>Rules of bishop moves</Title>
           <BackButton linkToPage={previousPage} />
 
           <BoardContainer>
@@ -57,18 +57,18 @@ function BishopMove() {
           {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
-            Сбросить
+            Reset
           </ResetButton>
         </MainContent>
 
         <SideContent>
           <Description
-            title="Правила ходов слоном"
+            title="Rules of bishop moves"
             hints={[
-              "Слон ходит по диагонали на любое количество клеток",
-              "Не может перепрыгивать через другие фигуры",
-              "Всегда остается на полях одного цвета",
-              "Бьет фигуры противника, становясь на их место",
+              "Bishop moves diagonally on any number of squares",
+              "Cannot jump over other pieces",
+              "Always stays on squares of the same color",
+              "Captures enemy pieces, moving to their place",
             ]}
           />
         </SideContent>

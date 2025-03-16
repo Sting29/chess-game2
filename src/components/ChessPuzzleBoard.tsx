@@ -27,12 +27,12 @@ export function ChessPuzzleBoard({
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
-  let turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+  let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
 
   if (game.isPuzzleComplete()) {
-    turnMessage = "Задача решена!";
+    turnMessage = "Puzzle solved!";
   } else if (game.isPuzzleFailed()) {
-    turnMessage = "Неверное решение. Попробуйте снова!";
+    turnMessage = "Wrong solution. Try again!";
   }
 
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
@@ -51,7 +51,7 @@ export function ChessPuzzleBoard({
       if (result.puzzleComplete) {
         onComplete?.("success");
       } else if (result.computerMove) {
-        // Делаем ход компьютера после небольшой задержки
+        // Make computer move after a short delay
         setTimeout(() => {
           const computerResult = newGame.makeComputerMove();
           if (computerResult.success) {
@@ -68,7 +68,7 @@ export function ChessPuzzleBoard({
       return true;
     }
 
-    setErrorMessage("Неверный ход");
+    setErrorMessage("Invalid move");
     setTimeout(() => setErrorMessage(null), 2000);
     return false;
   }

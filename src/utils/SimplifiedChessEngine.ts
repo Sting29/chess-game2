@@ -2,7 +2,7 @@ import { Square, PromotionPiece } from "../types/types";
 
 export class SimplifiedChessEngine {
   private position: Map<Square, string>;
-  private turn: "w" | "b" = "w"; // Всегда ход белых
+  private turn: "w" | "b" = "w"; // Always white's turn
 
   constructor(fen: string) {
     this.position = new Map();
@@ -52,15 +52,15 @@ export class SimplifiedChessEngine {
     const isWhite = piece === piece.toUpperCase();
 
     switch (piece.toLowerCase()) {
-      case "p": // Пешка
+      case "p": // Pawn
         if (isWhite) {
-          // Только для белых пешек
-          // Ход вперед на одну клетку
+          // Only for white pawns
+          // Move one square forward
           const oneStep = this.algebraic(fromFile, fromRank + 1);
           if (oneStep && !this.position.has(oneStep)) {
             moves.push(oneStep);
 
-            // Ход на две клетки с начальной позиции
+            // Move two squares from starting position
             if (fromRank === 1) {
               const twoStep = this.algebraic(fromFile, fromRank + 2);
               if (twoStep && !this.position.has(twoStep)) {
@@ -69,7 +69,7 @@ export class SimplifiedChessEngine {
             }
           }
 
-          // Взятие по диагонали
+          // Diagonal captures
           [-1, 1].forEach((offset) => {
             const captureSquare = this.algebraic(
               fromFile + offset,
@@ -85,7 +85,7 @@ export class SimplifiedChessEngine {
         }
         break;
 
-      case "r": // Ладья
+      case "r": // Rook
         for (const [dx, dy] of [
           [0, 1],
           [0, -1],
@@ -116,7 +116,7 @@ export class SimplifiedChessEngine {
         }
         break;
 
-      case "n": // Конь
+      case "n": // Knight
         const knightMoves = [
           [-2, -1],
           [-2, 1],
@@ -147,7 +147,7 @@ export class SimplifiedChessEngine {
         }
         break;
 
-      case "b": // Слон
+      case "b": // Bishop
         for (const [dx, dy] of [
           [1, 1],
           [1, -1],
@@ -178,7 +178,7 @@ export class SimplifiedChessEngine {
         }
         break;
 
-      case "q": // Ферзь (комбинация ходов ладьи и слона)
+      case "q": // Queen (combination of rook and bishop moves)
         for (const [dx, dy] of [
           [0, 1],
           [0, -1],
@@ -213,7 +213,7 @@ export class SimplifiedChessEngine {
         }
         break;
 
-      case "k": // Король
+      case "k": // King
         for (const [dx, dy] of [
           [0, 1],
           [0, -1],
@@ -268,7 +268,7 @@ export class SimplifiedChessEngine {
     const piece = this.position.get(from);
     if (!piece) return null;
 
-    // Проверяем, что ходят только белые фигуры
+    // Check that only white pieces can move
     const isWhite = piece === piece.toUpperCase();
     if (!isWhite) {
       return null;
@@ -282,21 +282,21 @@ export class SimplifiedChessEngine {
     const captured = this.position.has(to);
     const isPromotion = this.isPawnPromotion(from, to, piece);
 
-    // Создаем новую позицию
+    // Create new position
     const newPosition = new Map(this.position);
 
-    // Удаляем пешку с исходной позиции
+    // Remove piece from source square
     newPosition.delete(from);
 
     if (isPromotion && promotion) {
-      // Устанавливаем новую фигуру на целевую позицию
+      // Set promoted piece on target square
       newPosition.set(to, promotion.toUpperCase());
     } else {
-      // Перемещаем исходную фигуру
+      // Move piece to target square
       newPosition.set(to, piece);
     }
 
-    // Обновляем позицию
+    // Update position
     this.position = newPosition;
     this.turn = "w";
 
@@ -332,7 +332,7 @@ export class SimplifiedChessEngine {
   }
 
   isGameOver(): boolean {
-    // Упрощенная проверка: игра заканчивается, когда не осталось черных фигур
+    // Simplified check: game ends when no black pieces remain
     for (const piece of this.position.values()) {
       if (piece.toLowerCase() === piece) return false;
     }
@@ -343,7 +343,7 @@ export class SimplifiedChessEngine {
     const piece = this.position.get(square);
     if (!piece) return [];
 
-    // Разрешаем ходы только белым фигурам
+    // Allow moves only for white pieces
     const isWhite = piece === piece.toUpperCase();
     if (!isWhite) {
       return [];
@@ -367,28 +367,27 @@ export class SimplifiedChessEngine {
         return true;
       }
     }
-
     return false;
   }
 
   getGameStatus(): "playing" | "white_wins" | "draw" {
-    // 1. Проверяем победу - остались ли черные фигуры
+    // 1. Check for victory - are there any black pieces left
     if (!this.hasBlackPieces()) {
       return "white_wins";
     }
-    // 2. Проверяем пат - есть ли возможные ходы
+    // 2. Check for stalemate - are there any legal moves
     if (!this.hasLegalMoves()) {
       return "draw";
     }
-    // 3. Если ни одно из условий не выполнено - игра продолжается
+    // 3. If neither condition is met - game continues
     return "playing";
   }
 
   hasLegalMoves(): boolean {
-    // Проверяем все белые фигуры на наличие возможных ходов
+    // Check all white pieces for possible moves
     for (const [square, piece] of this.position.entries()) {
       if (piece === piece.toUpperCase()) {
-        // Только белые фигуры
+        // Only white pieces
         if (this.getLegalMoves(square).length > 0) {
           return true;
         }

@@ -30,7 +30,7 @@ export function PuzzleSolver() {
     : null;
 
   if (!puzzle) {
-    return <div>Задача не найдена</div>;
+    return <div>Task not found</div>;
   }
 
   const handleComplete = (result: "success" | "failure") => {
@@ -71,10 +71,10 @@ export function PuzzleSolver() {
 
       <div className="puzzle-controls">
         <button className="hint-button" onClick={() => setShowHint(!showHint)}>
-          {showHint ? "Скрыть подсказку" : "Показать подсказку"}
+          {showHint ? "Hide hint" : "Show hint"}
         </button>
         <button className="reset-button" onClick={handleReset}>
-          Начать заново
+          Start over
         </button>
       </div>
 
@@ -86,18 +86,18 @@ export function PuzzleSolver() {
 
       {gameComplete && (
         <div className="game-complete">
-          <h2>Задача решена!</h2>
+          <h2>Task solved!</h2>
           <div className="puzzle-complete-buttons">
             {hasNextPuzzle ? (
               <button className="next-puzzle-button" onClick={handleNextPuzzle}>
-                Следующая задача
+                Next task
               </button>
             ) : (
               <button
                 className="next-puzzle-button"
                 onClick={() => navigate(`/puzzles/${categoryId}`)}
               >
-                К списку задач
+                Back to task list
               </button>
             )}
           </div>

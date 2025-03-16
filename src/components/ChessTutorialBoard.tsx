@@ -24,13 +24,13 @@ export function ChessTutorialBoard({
   >("playing");
 
   const currentTurn = game.fen().split(" ")[1];
-  let turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+  let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
 
-  // Изменяем сообщение в зависимости от статуса игры
+  // Change message based on game status
   if (gameStatus === "white_wins") {
-    turnMessage = "Победа белых! Все черные фигуры побиты";
+    turnMessage = "White wins! All black pieces captured";
   } else if (gameStatus === "draw") {
-    turnMessage = "Ничья! Нет больше возможных ходов";
+    turnMessage = "Draw! No more possible moves";
   }
 
   function onPromotionCheck(
@@ -97,7 +97,7 @@ export function ChessTutorialBoard({
       return true;
     }
 
-    setErrorMessage("Невалидный ход");
+    setErrorMessage("Invalid move");
     setTimeout(() => setErrorMessage(null), 2000);
     return false;
   }

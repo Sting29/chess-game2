@@ -16,7 +16,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
   const engineRef = useRef<StockfishEngine>(new StockfishEngine());
   const [isThinking, setIsThinking] = useState(false);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
-  const [moveMessage, setMoveMessage] = useState("Ваш ход (белые)");
+  const [moveMessage, setMoveMessage] = useState("Your turn (white)");
 
   useEffect(() => {
     const engine = engineRef.current;
@@ -34,7 +34,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
 
   const makeComputerMove = async () => {
     setIsThinking(true);
-    setMoveMessage("Компьютер думает...");
+    setMoveMessage("Computer is thinking...");
 
     try {
       const move = await engineRef.current.getBestMove(game.fen());
@@ -42,7 +42,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
       if (!move) {
         console.error("No move received");
         setIsThinking(false);
-        setMoveMessage("Ваш ход (белые)");
+        setMoveMessage("Your turn (white)");
         return;
       }
 
@@ -87,7 +87,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
 
     setIsThinking(false);
     setMoveMessage(
-      game.isGameOver() ? getGameOverMessage() : "Ваш ход (белые)"
+      game.isGameOver() ? getGameOverMessage() : "Your turn (white)"
     );
   };
 
@@ -135,14 +135,14 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
   function getGameOverMessage(): string {
     if (game.isCheckmate()) {
       return game.turn() === "w"
-        ? "Мат! Чёрные победили!"
-        : "Мат! Белые победили!";
+        ? "Checkmate! Black wins!"
+        : "Checkmate! White wins!";
     } else if (game.isDraw()) {
-      return "Ничья!";
+      return "Draw!";
     } else if (game.isStalemate()) {
-      return "Пат!";
+      return "Stalemate!";
     }
-    return "Игра окончена!";
+    return "Game over!";
   }
 
   return (

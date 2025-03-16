@@ -42,7 +42,7 @@ function RookMove() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>Как ходит ладья</Title>
+          <Title>How to Move: Rook</Title>
           <BackButton linkToPage={previousPage} />
 
           <BoardContainer>
@@ -57,18 +57,18 @@ function RookMove() {
           {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
-            Сбросить
+            Reset
           </ResetButton>
         </MainContent>
 
         <SideContent>
           <Description
-            title="Правила ходов ладьей"
+            title="Rook Movement Rules"
             hints={[
-              "Ладья ходит по горизонтали и вертикали",
-              "Может ходить на любое количество клеток",
-              "Не может перепрыгивать через другие фигуры",
-              "Бьет фигуры противника, становясь на их место",
+              "Rook moves horizontally and vertically",
+              "Can move any number of squares",
+              "Cannot jump over other pieces",
+              "Captures enemy pieces by moving to their square",
             ]}
           />
         </SideContent>

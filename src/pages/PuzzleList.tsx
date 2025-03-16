@@ -10,7 +10,7 @@ function PuzzleList() {
   if (!categoryId) {
     return (
       <div className="tutorial-page">
-        <h1>Шахматные задачи</h1>
+        <h1>Chess puzzles</h1>
         <BackButton linkToPage="/" />
 
         <div className="puzzle-categories">
@@ -23,7 +23,7 @@ function PuzzleList() {
               <h2>{category.title}</h2>
               <p>{category.description}</p>
               <span className="puzzle-count">
-                Задач: {category.puzzles.length}
+                Tasks: {category.puzzles.length}
               </span>
             </div>
           ))}
@@ -35,7 +35,7 @@ function PuzzleList() {
   // Показываем список задач в выбранной категории
   const category = CHESS_PUZZLES.find((c) => c.id === categoryId);
   if (!category) {
-    return <div>Категория не найдена</div>;
+    return <div>Category not found</div>;
   }
 
   return (

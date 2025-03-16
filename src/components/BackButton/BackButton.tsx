@@ -9,7 +9,7 @@ function BackButton({ linkToPage }: { linkToPage: string }) {
       className="back-button"
       onClick={() => navigate(linkToPage)}
     >
-      Вернуться назад
+      Back to previous page
     </BackButtonWrap>
   );
 }

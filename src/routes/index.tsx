@@ -16,7 +16,7 @@ import { PuzzleSolver } from "../pages/PuzzleSolver";
 import PlayWithComputer from "../pages/PlayWithComputer";
 import { Layout } from "../components/Layout/Layout";
 
-// Проверка аутентификации
+// Authentication check
 const isAuthenticated = () => {
   return localStorage.getItem("isAuthenticated") === "true";
 };
@@ -38,7 +38,7 @@ export const routes = [
   {
     path: "/login",
     element: isAuthenticated() ? <Navigate to="/" replace /> : <LoginPage />,
-    title: "Вход",
+    title: "Login",
   },
   {
     path: "/",
@@ -58,62 +58,62 @@ export const routes = [
   {
     path: "/puzzles",
     element: protectedElement(<PuzzleList />),
-    title: "Шахматные задачи",
+    title: "Chess Puzzles",
   },
   {
     path: "/puzzles/:categoryId",
     element: protectedElement(<PuzzleList />),
-    title: "Категория задач",
+    title: "Puzzle Category",
   },
   {
     path: "/puzzles/:categoryId/:puzzleId",
     element: protectedElement(<PuzzleSolver />),
-    title: "Решение задачи",
+    title: "Solve Puzzle",
   },
   {
     path: "/how-to-move/pawn-move",
     element: protectedElement(<PawnMove />),
-    title: "Как ходит пешка",
+    title: "How to Move: Pawn",
   },
   {
     path: "/how-to-move/rook-move",
     element: protectedElement(<RookMove />),
-    title: "Как ходит ладья",
+    title: "How to Move: Rook",
   },
   {
     path: "/how-to-move/knight-move",
     element: protectedElement(<KnightMove />),
-    title: "Как ходит конь",
+    title: "How to Move: Knight",
   },
   {
     path: "/how-to-move/bishop-move",
     element: protectedElement(<BishopMove />),
-    title: "Как ходит слон",
+    title: "How to Move: Bishop",
   },
   {
     path: "/how-to-move/queen-move",
     element: protectedElement(<QueenMove />),
-    title: "Как ходит ферзь",
+    title: "How to Move: Queen",
   },
   {
     path: "/how-to-move/king-move",
     element: protectedElement(<KingMove />),
-    title: "Как ходит король",
+    title: "How to Move: King",
   },
   {
     path: "/how-to-play/pawn-battle",
     element: protectedElement(<PawnBattle />),
-    title: "Битва пешек",
+    title: "Pawn Battle",
   },
   {
     path: "/how-to-play/knight-battle",
     element: protectedElement(<KnightBattle />),
-    title: "Битва коней",
+    title: "Knight Battle",
   },
   {
     path: "/play-with-computer",
     element: protectedElement(<PlayWithComputer />),
-    title: "Игра с компьютером",
+    title: "Play with Computer",
   },
   {
     path: "*",

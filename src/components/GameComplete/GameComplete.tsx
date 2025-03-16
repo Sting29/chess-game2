@@ -6,14 +6,14 @@ interface GameCompleteProps {
 }
 
 const GameComplete: FC<GameCompleteProps> = ({ gameStatus }) => {
-  let message = "Игра завершена!";
+  let message = "Game over!";
   if (gameStatus === "playing") return null;
   if (gameStatus === "white_wins") {
-    message = "Победа белых!";
+    message = "White wins!";
   } else if (gameStatus === "black_wins") {
-    message = "Победа черных!";
+    message = "Black wins!";
   } else if (gameStatus === "draw") {
-    message = "Ничья!";
+    message = "Draw!";
   }
 
   return <GameCompleteWrap>{message}</GameCompleteWrap>;

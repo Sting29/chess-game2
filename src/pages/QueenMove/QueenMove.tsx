@@ -42,7 +42,7 @@ function QueenMove() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>Как ходит ферзь</Title>
+          <Title>How to Move: Queen</Title>
           <BackButton linkToPage={previousPage} />
 
           <BoardContainer>
@@ -57,22 +57,22 @@ function QueenMove() {
           {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
-            Сбросить
+            Reset
           </ResetButton>
         </MainContent>
 
         <SideContent>
           <Description
-            title="Правила ходов ферзём"
+            title="Queen Movement Rules"
             hints={[
-              "Ферзь - самая сильная фигура в шахматах (ценность: 9 пешек)",
-              "Ходит на любое количество клеток по горизонтали, вертикали и диагонали",
-              "Сочетает в себе силу ладьи и слона",
-              "Не может перепрыгивать через другие фигуры",
-              "Бьет фигуры противника, становясь на их место",
-              "В начале игры стоит на поле своего цвета (белый ферзь на белом, черный на черном)",
-              "Является ключевой фигурой в атаке",
-              "Старайтесь не выводить ферзя слишком рано в дебюте",
+              "Queen is the most powerful piece (value: 9 pawns)",
+              "Moves any number of squares horizontally, vertically, and diagonally",
+              "Combines the power of rook and bishop",
+              "Cannot jump over other pieces",
+              "Captures enemy pieces by moving to their square",
+              "Starts on its own color square (white queen on white, black on black)",
+              "Key attacking piece",
+              "Avoid bringing out the queen too early in the opening",
             ]}
           />
         </SideContent>

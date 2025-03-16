@@ -35,7 +35,7 @@ function KnightBattle() {
 
   return (
     <div className="tutorial-page">
-      <h1>Битва коней</h1>
+      <h1>Knight Battle</h1>
       <BackButton linkToPage={previousPage} />
 
       <ChessBattleBoard
@@ -48,7 +48,7 @@ function KnightBattle() {
       {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
       <button className="reset-button" onClick={() => window.location.reload()}>
-        Сбросить
+        Reset
       </button>
     </div>
   );

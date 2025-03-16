@@ -25,7 +25,7 @@ export function LoginPage() {
     <LoginContainer>
       <LoginBox>
         <LoginHeader>
-          <p>Войдите в свой аккаунт</p>
+          <p>Enter your account</p>
         </LoginHeader>
 
         <LoginForm onSubmit={handleLogin}>
@@ -43,19 +43,19 @@ export function LoginPage() {
           </FormGroup>
 
           <FormGroup>
-            <SrOnly htmlFor="password">Пароль</SrOnly>
+            <SrOnly htmlFor="password">Password</SrOnly>
             <Input
               id="password"
               name="password"
               type="password"
               autoComplete="current-password"
               required
-              placeholder="Пароль"
+              placeholder="Password"
               disabled
             />
           </FormGroup>
 
-          <LoginButton type="submit">Войти</LoginButton>
+          <LoginButton type="submit">Login</LoginButton>
         </LoginForm>
       </LoginBox>
     </LoginContainer>

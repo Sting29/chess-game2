@@ -26,14 +26,14 @@ export function ChessBattleBoard({
   >("playing");
 
   const currentTurn = game.fen().split(" ")[1];
-  let turnMessage = currentTurn === "w" ? "Ход белых" : "Ход черных";
+  let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
 
   if (gameStatus === "white_wins") {
-    turnMessage = "Победа белых!";
+    turnMessage = "White wins!";
   } else if (gameStatus === "black_wins") {
-    turnMessage = "Победа черных!";
+    turnMessage = "Black wins!";
   } else if (gameStatus === "draw") {
-    turnMessage = "Ничья!";
+    turnMessage = "Draw!";
   }
 
   function onPromotionCheck(
@@ -100,7 +100,7 @@ export function ChessBattleBoard({
       return true;
     }
 
-    setErrorMessage("Невалидный ход");
+    setErrorMessage("Invalid move");
     setTimeout(() => setErrorMessage(null), 500);
     return false;
   }

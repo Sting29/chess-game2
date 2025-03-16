@@ -24,32 +24,32 @@ function HowToMove() {
   const pages = [
     {
       path: `${currentPath}/pawn-move`,
-      title: "Как ходит пешка",
+      title: "How to Move: Pawn",
       image: ChessPawn,
     },
     {
       path: `${currentPath}/rook-move`,
-      title: "Как ходит ладья",
+      title: "How to Move: Rook",
       image: ChessRook,
     },
     {
       path: `${currentPath}/knight-move`,
-      title: "Как ходит конь",
+      title: "How to Move: Knight",
       image: ChessKnight,
     },
     {
       path: `${currentPath}/bishop-move`,
-      title: "Как ходит слон",
+      title: "How to Move: Bishop",
       image: ChessBishop,
     },
     {
       path: `${currentPath}/queen-move`,
-      title: "Как ходит ферзь",
+      title: "How to Move: Queen",
       image: ChessQueen,
     },
     {
       path: `${currentPath}/king-move`,
-      title: "Как ходит король",
+      title: "How to Move: King",
       image: ChessKing,
     },
   ];
@@ -57,9 +57,7 @@ function HowToMove() {
   return (
     <TutorialPageContainer>
       <TutorialTitle>How to Move</TutorialTitle>
-      <TutorialDescription>
-        Изучите как ходят шахматные фигуры:
-      </TutorialDescription>
+      <TutorialDescription>Learn how chess pieces move:</TutorialDescription>
 
       <BackButton linkToPage={previousPage} />
 

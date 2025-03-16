@@ -42,7 +42,7 @@ function KnightMove() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>Как ходит конь</Title>
+          <Title>Rules of knight moves</Title>
           <BackButton linkToPage={previousPage} />
 
           <BoardContainer>
@@ -57,18 +57,18 @@ function KnightMove() {
           {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
-            Сбросить
+            Reset
           </ResetButton>
         </MainContent>
 
         <SideContent>
           <Description
-            title="Правила ходов конём"
+            title="Rules of knight moves"
             hints={[
-              "Конь ходит буквой 'Г' - на две клетки вперёд и одну в сторону",
-              "Может перепрыгивать через другие фигуры",
-              "Ходит только на поля другого цвета",
-              "Бьет фигуры противника, становясь на их место",
+              "Knight moves in an 'L' shape - two squares forward and one in a side",
+              "Can jump over other pieces",
+              "Can only move to squares of the opposite color",
+              "Captures enemy pieces, moving to their place",
             ]}
           />
         </SideContent>

@@ -23,7 +23,7 @@ function PlayWithComputer() {
 
   return (
     <div className="tutorial-page">
-      <h1>Игра с компьютером</h1>
+      <h1>Play with Computer</h1>
       <BackButton linkToPage="/" />
 
       <div className="game-controls">
@@ -31,7 +31,7 @@ function PlayWithComputer() {
           className="settings-button"
           onClick={() => setIsSettingsOpen(true)}
         >
-          Настройки
+          Settings
         </button>
       </div>
 
@@ -40,10 +40,10 @@ function PlayWithComputer() {
       {isSettingsOpen && (
         <div className="settings-modal">
           <div className="settings-content">
-            <h2>Настройки игры</h2>
+            <h2>Game Settings</h2>
 
             <div className="setting-item">
-              <label>Глубина расчета: {settings.depth}</label>
+              <label>Calculation depth: {settings.depth}</label>
               <input
                 type="range"
                 min="1"
@@ -56,7 +56,7 @@ function PlayWithComputer() {
             </div>
 
             <div className="setting-item">
-              <label>Уровень сложности: {settings.skill}</label>
+              <label>Difficulty level: {settings.skill}</label>
               <input
                 type="range"
                 min="0"
@@ -72,7 +72,7 @@ function PlayWithComputer() {
               className="close-button"
               onClick={() => setIsSettingsOpen(false)}
             >
-              Закрыть
+              Close
             </button>
           </div>
         </div>

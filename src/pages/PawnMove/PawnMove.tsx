@@ -42,7 +42,7 @@ function PawnMove() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>Как ходит пешка</Title>
+          <Title>How to Move: Pawn</Title>
           <BackButton linkToPage={previousPage} />
 
           <BoardContainer>
@@ -57,18 +57,18 @@ function PawnMove() {
           {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
-            Сбросить
+            Reset
           </ResetButton>
         </MainContent>
 
         <SideContent>
           <Description
-            title="Правила ходов пешкой"
+            title="Pawn Movement Rules"
             hints={[
-              "Пешка ходит только вперед на одну клетку",
-              "С начальной позиции может ходить на две клетки вперед",
-              "Бьет только по диагонали на одну клетку вперед",
-              "При достижении последней горизонтали превращается в ферзя",
+              "Pawn moves forward one square at a time",
+              "From starting position, can move two squares forward",
+              "Captures diagonally one square forward",
+              "When reaching the last rank, promotes to any piece (except king)",
             ]}
           />
         </SideContent>

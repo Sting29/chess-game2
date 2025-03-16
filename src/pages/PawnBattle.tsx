@@ -35,7 +35,7 @@ function PawnBattle() {
 
   return (
     <div className="tutorial-page">
-      <h1>Битва пешек</h1>
+      <h1>Pawn Battle</h1>
       <BackButton linkToPage={previousPage} />
 
       <ChessBattleBoard
@@ -48,7 +48,7 @@ function PawnBattle() {
       {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
       <button className="reset-button" onClick={() => window.location.reload()}>
-        Сбросить
+        Reset
       </button>
     </div>
   );

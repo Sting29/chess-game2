@@ -29,9 +29,9 @@ export function Layout({ children }: LayoutProps) {
       <Header>
         <LogoContainer>
           <Image src={LogoImg} height={32} />
-          <Title>Школа шахмат</Title>
+          <Title>Chess School</Title>
         </LogoContainer>
-        <LogoutButton onClick={handleLogout}>Выйти</LogoutButton>
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
       </Header>
       <MainContent>{children}</MainContent>
     </LayoutContainer>
