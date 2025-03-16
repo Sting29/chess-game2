@@ -21,7 +21,8 @@ export function Layout({ children }: LayoutProps) {
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
-    navigate("/login");
+    // Принудительно обновляем страницу и перенаправляем на логин
+    window.location.href = "/login";
   };
 
   return (

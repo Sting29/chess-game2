@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   LoginContainer,
@@ -14,11 +14,23 @@ import {
 export function LoginPage() {
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
+  useEffect(() => {
+    // Если пользователь уже авторизован, перенаправляем на главную
+    if (localStorage.getItem("isAuthenticated") === "true") {
+      navigate("/");
+    }
+  }, [navigate]);
+
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Простая имитация входа
-    localStorage.setItem("isAuthenticated", "true");
-    navigate("/");
+    try {
+      // Устанавливаем флаг аутентификации
+      localStorage.setItem("isAuthenticated", "true");
+      // Принудительно обновляем страницу для применения изменений
+      window.location.href = "/";
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   return (
