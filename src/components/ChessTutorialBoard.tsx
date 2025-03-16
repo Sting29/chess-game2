@@ -84,7 +84,6 @@ export function ChessTutorialBoard({
       setGame(newGame);
       setHighlightSquares([]);
       setSelectedSquare(null);
-
       if (result.captured) {
         onCapture?.(targetSquare);
       }

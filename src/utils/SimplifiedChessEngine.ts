@@ -260,6 +260,149 @@ export class SimplifiedChessEngine {
     );
   }
 
+  private isSquareAttackedByBlack(square: Square): boolean {
+    const [targetFile, targetRank] = this.parseSquare(square);
+
+    // Check pawn attacks
+    for (const dx of [-1, 1]) {
+      const x = targetFile + dx;
+      const y = targetRank + 1;
+      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        const attackSquare = this.algebraic(x, y);
+        const piece = this.position.get(attackSquare);
+        if (piece === "p") {
+          return true;
+        }
+      }
+    }
+
+    // Check knight attacks
+    const knightMoves = [
+      [-2, -1],
+      [-2, 1],
+      [-1, -2],
+      [-1, 2],
+      [1, -2],
+      [1, 2],
+      [2, -1],
+      [2, 1],
+    ];
+    for (const [dx, dy] of knightMoves) {
+      const x = targetFile + dx;
+      const y = targetRank + dy;
+      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        const attackSquare = this.algebraic(x, y);
+        const piece = this.position.get(attackSquare);
+        if (piece === "n") {
+          return true;
+        }
+      }
+    }
+
+    // Check diagonal attacks (bishop/queen)
+    const diagonalDirections = [
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, -1],
+    ];
+    for (const [dx, dy] of diagonalDirections) {
+      let x = targetFile + dx;
+      let y = targetRank + dy;
+      while (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        const attackSquare = this.algebraic(x, y);
+        const piece = this.position.get(attackSquare);
+        if (piece) {
+          if (piece === "b" || piece === "q") {
+            return true;
+          }
+          break;
+        }
+        x += dx;
+        y += dy;
+      }
+    }
+
+    // Check straight attacks (rook/queen)
+    const straightDirections = [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+    ];
+    for (const [dx, dy] of straightDirections) {
+      let x = targetFile + dx;
+      let y = targetRank + dy;
+      while (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        const attackSquare = this.algebraic(x, y);
+        const piece = this.position.get(attackSquare);
+        if (piece) {
+          if (piece === "r" || piece === "q") {
+            return true;
+          }
+          break;
+        }
+        x += dx;
+        y += dy;
+      }
+    }
+
+    // Check king attacks
+    const kingMoves = [
+      [0, 1],
+      [0, -1],
+      [1, 0],
+      [-1, 0],
+      [1, 1],
+      [1, -1],
+      [-1, 1],
+      [-1, -1],
+    ];
+    for (const [dx, dy] of kingMoves) {
+      const x = targetFile + dx;
+      const y = targetRank + dy;
+      if (x >= 0 && x < 8 && y >= 0 && y < 8) {
+        const attackSquare = this.algebraic(x, y);
+        const piece = this.position.get(attackSquare);
+        if (piece === "k") {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+
+  private findWhiteKing(): Square | null {
+    for (const [square, piece] of this.position.entries()) {
+      if (piece === "K") {
+        return square;
+      }
+    }
+    return null;
+  }
+
+  private isKingInCheck(): boolean {
+    const kingSquare = this.findWhiteKing();
+    if (!kingSquare) return false;
+    return this.isSquareAttackedByBlack(kingSquare);
+  }
+
+  private wouldMoveLeaveKingInCheck(from: Square, to: Square): boolean {
+    // Create a new position with the move applied
+    const newPosition = new Map(this.position);
+    const piece = newPosition.get(from);
+    newPosition.delete(from);
+    newPosition.set(to, piece!);
+
+    // Create a temporary engine with the new position
+    const tempEngine = new SimplifiedChessEngine(this.fen());
+    tempEngine.position = newPosition;
+
+    // Check if the king is in check in the new position
+    return tempEngine.isKingInCheck();
+  }
+
   move(
     from: Square,
     to: Square,
@@ -274,7 +417,7 @@ export class SimplifiedChessEngine {
       return null;
     }
 
-    const validMoves = this.getPieceMoves(from);
+    const validMoves = this.getLegalMoves(from);
     if (!validMoves.includes(to)) {
       return null;
     }
@@ -349,7 +492,13 @@ export class SimplifiedChessEngine {
       return [];
     }
 
-    return this.getPieceMoves(square);
+    // Get all possible moves without considering check
+    const possibleMoves = this.getPieceMoves(square);
+
+    // Filter out moves that would leave the king in check
+    return possibleMoves.filter(
+      (move) => !this.wouldMoveLeaveKingInCheck(square, move)
+    );
   }
 
   hasWhitePieces(): boolean {
