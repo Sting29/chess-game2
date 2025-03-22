@@ -18,6 +18,7 @@ import KnightBattle from "src/pages/KnightBattle";
 import PuzzleList from "src/pages/PuzzleList";
 import { PuzzleSolver } from "src/pages/PuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer";
+import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/components/Layout/Layout";
 
 // Получаем базовый путь из окружения или используем корневой путь
@@ -116,6 +117,10 @@ const router = createBrowserRouter(
       path: "/play-with-computer",
       element: protectedElement(<PlayWithComputer />),
       // title: "Play with Computer",
+    },
+    {
+      path: "/play-with-person",
+      element: protectedElement(<PlayWithPerson />),
     },
     {
       path: "*",

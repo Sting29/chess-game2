@@ -19,6 +19,11 @@ const pages = [
     title: "Play with Computer",
     image: PlayWithComputerImg,
   },
+  {
+    path: "/play-with-person",
+    title: "Play with Person",
+    image: PlayWithComputerImg,
+  },
 ];
 
 function ChessTutorial() {
