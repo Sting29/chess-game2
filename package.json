@@ -9,14 +9,12 @@
     "react-dom": "19.0.0",
     "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
-    "stockfish.js": "^10.0.2",
     "styled-components": "^6.1.15"
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "7.21.11",
-    "@babel/runtime": "7.26.0",
+    "@types/jest": "^29.5.14",
+    "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
-    "@types/styled-components": "^5.1.34",
     "babel-plugin-styled-components": "^2.1.4"
   },
   "scripts": {
@@ -42,11 +40,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "babel-plugin-styled-components": "^2.1.4"
   }
 }

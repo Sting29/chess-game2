@@ -16,24 +16,32 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
 
   function onSquareClick(square: Square) {
-    const moves = game.getLegalMoves(square);
+    if (!selectedSquare) {
+      const pieceColor = game.getPieceColor(square);
+      if (pieceColor === game.turn()) {
+        const moves = game.getLegalMoves(square);
+        if (moves.length > 0) {
+          setSelectedSquare(square);
+          setHighlightSquares(moves);
+        }
+      }
+      return;
+    }
 
-    if (moves.length > 0) {
-      setSelectedSquare(square);
-      setHighlightSquares(moves);
-    } else if (selectedSquare) {
+    if (highlightSquares.includes(square)) {
       const result = game.move(selectedSquare, square);
-
       if (result.valid) {
+        game.move(selectedSquare, square);
         setGame(new PersonsChessEngine(game.fen()));
+
         if (result.gameOver) {
           onGameEnd?.(game.getGameStatus());
         }
       }
-
-      setSelectedSquare(null);
-      setHighlightSquares([]);
     }
+
+    setSelectedSquare(null);
+    setHighlightSquares([]);
   }
 
   function onPieceDrop(sourceSquare: Square, targetSquare: Square) {
@@ -44,6 +52,8 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
       if (result.gameOver) {
         onGameEnd?.(game.getGameStatus());
       }
+      setSelectedSquare(null);
+      setHighlightSquares([]);
       return true;
     }
     return false;

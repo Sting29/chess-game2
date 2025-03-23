@@ -91,4 +91,9 @@ export class PersonsChessEngine {
     }
     return this.turn() === "w" ? "White's move" : "Black's move";
   }
+
+  getPieceColor(square: Square): "w" | "b" | null {
+    const piece = this.game.get(square);
+    return piece ? piece.color : null;
+  }
 }
