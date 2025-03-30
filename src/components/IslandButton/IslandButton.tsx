@@ -23,25 +23,34 @@ interface IslandButtonProps {
   onClick?: () => void;
 }
 
-const StyledIslandButton = styled.button.attrs<{
-  $top?: string;
-  $bottom?: string;
-  $left?: string;
-  $right?: string;
-  $translateX: number;
-  $translateY: number;
-  $scale: number;
-  $width?: string;
-}>((props) => ({
-  style: {
-    top: props.$top || "auto",
-    bottom: props.$bottom || "auto",
-    left: props.$left || "auto",
-    right: props.$right || "auto",
-    transform: `translate(${props.$translateX}px, ${props.$translateY}px) scale(${props.$scale})`,
-    width: props.$width || "auto",
-  },
-}))`
+const StyledIslandButton = styled.button
+  .withConfig({
+    shouldForwardProp: (prop) => !prop.startsWith("$"),
+  })
+  .attrs<{
+    $top?: string;
+    $bottom?: string;
+    $left?: string;
+    $right?: string;
+    $translateX: number;
+    $translateY: number;
+    $scale: number;
+    $width?: string;
+    $isMobile: boolean;
+  }>((props) => ({
+    style: {
+      top: props.$top || "auto",
+      bottom: props.$bottom || "auto",
+      left: props.$left || "auto",
+      right: props.$right || "auto",
+      transform: props.$isMobile
+        ? `translate(${props.$translateX / 2}px, ${
+            props.$translateY / 2
+          }px) scale(${props.$scale})`
+        : `translate(${props.$translateX}px, ${props.$translateY}px) scale(${props.$scale})`,
+      width: props.$width || "auto",
+    },
+  }))`
   position: absolute;
   cursor: pointer;
   background: none;
@@ -55,14 +64,6 @@ const StyledIslandButton = styled.button.attrs<{
     width: 100%;
     height: auto;
     object-fit: contain;
-  }
-
-  @media (max-width: 768px) {
-    transform: translate(
-        ${(props) => props.$translateX / 2}px,
-        ${(props) => props.$translateY / 2}px
-      )
-      scale(${(props) => props.$scale});
   }
 `;
 
@@ -99,6 +100,7 @@ const IslandButton: React.FC<IslandButtonProps> = ({
       $translateY={adjustedParallax.y}
       $scale={isHovered ? 1.05 : 1}
       $width={activeWidth}
+      $isMobile={isMobile}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
