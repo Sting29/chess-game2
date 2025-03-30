@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import { memo, useMemo } from "react";
 import { ChessTutorialWrap, PalmLeaves, Clouds } from "./styles";
 
 import Island0Img from "../../assets/images/island0.png";
@@ -13,62 +14,75 @@ import SeagullImg from "../../assets/images/seagull.png";
 
 import { useIsMobile } from "src/hooks/useIsMobile";
 
-function ChessTutorial() {
+const ChessTutorial = memo(function ChessTutorial() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
-  const islands = [
-    {
-      name: "How to Move",
-      image: Island0Img,
-      position: { bottom: "25%", left: "30%" },
-      mobilePosition: { bottom: "30%", left: "15%" },
-      parallaxFactor: 3,
-      width: "15%",
-      mobileWidth: "22%",
-      onClick: () => navigate("/how-to-move"),
-    },
-    {
-      name: "How to Play",
-      image: Island1Img,
-      position: { top: "28%", left: "20%" },
-      mobilePosition: { top: "25%", left: "10%" },
-      parallaxFactor: 2,
-      width: "15%",
-      mobileWidth: "22%",
-      onClick: () => navigate("/how-to-play"),
-    },
-    {
-      name: "Chess Puzzles",
-      image: Island2Img,
-      position: { top: "28%", right: "40%" },
-      mobilePosition: { top: "25%", right: "10%" },
-      parallaxFactor: 1,
-      width: "15%",
-      mobileWidth: "22%",
-      onClick: () => navigate("/puzzles"),
-    },
-    {
-      name: "Play with Computer",
-      image: Island3Img,
-      position: { bottom: "23%", right: "27%" },
-      mobilePosition: { bottom: "30%", right: "15%" },
-      parallaxFactor: 2,
-      width: "15%",
-      mobileWidth: "22%",
-      onClick: () => navigate("/play-with-computer"),
-    },
-    {
-      name: "Play with Person",
-      image: Island3Img,
-      position: { top: "23%", right: "20%" },
-      mobilePosition: { bottom: "30%", right: "15%" },
-      parallaxFactor: 3,
-      width: "15%",
-      mobileWidth: "22%",
-      onClick: () => navigate("/play-with-person"),
-    },
-  ];
+  // Memoize islands array
+  const islands = useMemo(
+    () => [
+      {
+        name: "How to Move",
+        image: Island0Img,
+        position: { bottom: "25%", left: "30%" },
+        mobilePosition: { bottom: "30%", left: "15%" },
+        parallaxFactor: 3,
+        width: "15%",
+        mobileWidth: "22%",
+        onClick: () => navigate("/how-to-move"),
+      },
+      {
+        name: "How to Play",
+        image: Island1Img,
+        position: { top: "28%", left: "20%" },
+        mobilePosition: { top: "25%", left: "10%" },
+        parallaxFactor: 2,
+        width: "15%",
+        mobileWidth: "22%",
+        onClick: () => navigate("/how-to-play"),
+      },
+      {
+        name: "Chess Puzzles",
+        image: Island2Img,
+        position: { top: "28%", right: "40%" },
+        mobilePosition: { top: "25%", right: "10%" },
+        parallaxFactor: 1,
+        width: "15%",
+        mobileWidth: "22%",
+        onClick: () => navigate("/puzzles"),
+      },
+      {
+        name: "Play with Computer",
+        image: Island3Img,
+        position: { bottom: "23%", right: "27%" },
+        mobilePosition: { bottom: "30%", right: "15%" },
+        parallaxFactor: 2,
+        width: "15%",
+        mobileWidth: "22%",
+        onClick: () => navigate("/play-with-computer"),
+      },
+      {
+        name: "Play with Person",
+        image: Island3Img,
+        position: { top: "23%", right: "20%" },
+        mobilePosition: { bottom: "30%", right: "15%" },
+        parallaxFactor: 3,
+        width: "15%",
+        mobileWidth: "22%",
+        onClick: () => navigate("/play-with-person"),
+      },
+    ],
+    [navigate]
+  );
+
+  // Memoize seagull position
+  const seagullPosition = useMemo(
+    () => ({
+      top: "15%",
+      left: "40%",
+    }),
+    []
+  );
 
   return (
     <ChessTutorialWrap>
@@ -82,7 +96,7 @@ function ChessTutorial() {
 
       <ParallaxElement
         imageSrc={SeagullImg}
-        position={{ top: "15%", left: "40%" }}
+        position={seagullPosition}
         parallaxFactor={25}
         width="8%"
         mobileWidth="12%"
@@ -103,6 +117,6 @@ function ChessTutorial() {
       ))}
     </ChessTutorialWrap>
   );
-}
+});
 
 export default ChessTutorial;
