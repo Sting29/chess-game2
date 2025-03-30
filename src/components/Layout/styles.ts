@@ -7,15 +7,6 @@ export const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: linear-gradient(
-      rgba(245, 245, 245, 0.2),
-      rgba(245, 245, 245, 0.2)
-    ),
-    url(${chessboardBackground});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
 `;
 
 export const Header = styled.div`
@@ -55,7 +46,7 @@ export const Title = styled.h1`
 export const MainContent = styled.main`
   margin-top: 60px;
   flex: 1;
-  padding: 20px;
+  // padding: 20px;
   position: relative;
   z-index: 1;
 `;
@@ -78,4 +69,16 @@ export const LogoutButton = styled.button`
     outline: none;
     box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
   }
+`;
+
+export const BackgroundImage = styled.div`
+  background: linear-gradient(
+      rgba(245, 245, 245, 0.2),
+      rgba(245, 245, 245, 0.2)
+    ),
+    url(${chessboardBackground});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 `;

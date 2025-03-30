@@ -1,48 +1,106 @@
 import { useNavigate } from "react-router-dom";
-import {
-  ChessTutorialLinks,
-  ChessTutorialTitle,
-  ChessTutorialWrap,
-} from "./styles";
-import HowToMoveImg from "src/assets/images/how_to_move.jpg";
-import HowToPlayImg from "src/assets/images/how_to_play.jpg";
-import PuzzlesImg from "src/assets/images/puzzles.jpg";
-import PlayWithComputerImg from "src/assets/images/chess_game.jpg";
-import ChessTutorialButton from "../../components/ChessTutorialButton/ChessTutorialButton";
+import { ChessTutorialWrap, PalmLeaves, Clouds } from "./styles";
 
-const pages = [
-  { path: "/how-to-move", title: "How to Move", image: HowToMoveImg },
-  { path: "/how-to-play", title: "How to Play", image: HowToPlayImg },
-  { path: "/puzzles", title: "Chess Puzzles", image: PuzzlesImg },
-  {
-    path: "/play-with-computer",
-    title: "Play with Computer",
-    image: PlayWithComputerImg,
-  },
-  {
-    path: "/play-with-person",
-    title: "Play with Person",
-    image: PlayWithComputerImg,
-  },
-];
+import Island0Img from "../../assets/images/island0.png";
+import Island1Img from "../../assets/images/island1.png";
+import Island2Img from "../../assets/images/island2.png";
+import Island3Img from "../../assets/images/island3.png";
+import IslandButton from "src/components/IslandButton/IslandButton";
+import ParallaxElement from "src/components/ParallaxElement/ParallaxElement";
+import PalmLeavesImg from "../../assets/images/palm.png";
+import CloudImg from "../../assets/images/clouds.png";
+import SeagullImg from "../../assets/images/seagull.png";
+
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 function ChessTutorial() {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
+
+  const islands = [
+    {
+      name: "How to Move",
+      image: Island0Img,
+      position: { bottom: "25%", left: "30%" },
+      mobilePosition: { bottom: "30%", left: "15%" },
+      parallaxFactor: 3,
+      width: "15%",
+      mobileWidth: "22%",
+      onClick: () => navigate("/how-to-move"),
+    },
+    {
+      name: "How to Play",
+      image: Island1Img,
+      position: { top: "28%", left: "20%" },
+      mobilePosition: { top: "25%", left: "10%" },
+      parallaxFactor: 2,
+      width: "15%",
+      mobileWidth: "22%",
+      onClick: () => navigate("/how-to-play"),
+    },
+    {
+      name: "Chess Puzzles",
+      image: Island2Img,
+      position: { top: "28%", right: "40%" },
+      mobilePosition: { top: "25%", right: "10%" },
+      parallaxFactor: 1,
+      width: "15%",
+      mobileWidth: "22%",
+      onClick: () => navigate("/puzzles"),
+    },
+    {
+      name: "Play with Computer",
+      image: Island3Img,
+      position: { bottom: "23%", right: "27%" },
+      mobilePosition: { bottom: "30%", right: "15%" },
+      parallaxFactor: 2,
+      width: "15%",
+      mobileWidth: "22%",
+      onClick: () => navigate("/play-with-computer"),
+    },
+    {
+      name: "Play with Person",
+      image: Island3Img,
+      position: { top: "23%", right: "20%" },
+      mobilePosition: { bottom: "30%", right: "15%" },
+      parallaxFactor: 3,
+      width: "15%",
+      mobileWidth: "22%",
+      onClick: () => navigate("/play-with-person"),
+    },
+  ];
 
   return (
     <ChessTutorialWrap>
-      <ChessTutorialTitle>Choose Your Story</ChessTutorialTitle>
+      <PalmLeaves isMobile={isMobile}>
+        <img src={PalmLeavesImg} alt="Palm Leaves" />
+      </PalmLeaves>
 
-      <ChessTutorialLinks>
-        {pages.map((page) => (
-          <ChessTutorialButton
-            key={page.path}
-            title={page.title}
-            image={page.image}
-            onClick={() => navigate(page.path)}
-          />
-        ))}
-      </ChessTutorialLinks>
+      <Clouds isMobile={isMobile}>
+        <img src={CloudImg} alt="Clouds" />
+      </Clouds>
+
+      <ParallaxElement
+        imageSrc={SeagullImg}
+        position={{ top: "15%", left: "40%" }}
+        parallaxFactor={25}
+        width="8%"
+        mobileWidth="12%"
+        zIndex={6}
+      />
+
+      {islands.map((island) => (
+        <IslandButton
+          key={island.name}
+          imageSrc={island.image}
+          position={island.position}
+          mobilePosition={island.mobilePosition}
+          parallaxFactor={island.parallaxFactor}
+          width={island.width}
+          mobileWidth={island.mobileWidth}
+          onClick={island.onClick}
+        />
+      ))}
     </ChessTutorialWrap>
   );
 }
