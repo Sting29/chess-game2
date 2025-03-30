@@ -72,11 +72,11 @@ function ChessTutorial() {
 
   return (
     <ChessTutorialWrap>
-      <PalmLeaves isMobile={isMobile}>
+      <PalmLeaves $isMobile={isMobile}>
         <img src={PalmLeavesImg} alt="Palm Leaves" />
       </PalmLeaves>
 
-      <Clouds isMobile={isMobile}>
+      <Clouds $isMobile={isMobile}>
         <img src={CloudImg} alt="Clouds" />
       </Clouds>
 

@@ -23,35 +23,33 @@ interface IslandButtonProps {
   onClick?: () => void;
 }
 
-const StyledIslandButton = styled.button<{
-  top?: string;
-  bottom?: string;
-  left?: string;
-  right?: string;
-  translateX: number;
-  translateY: number;
-  scale: number;
-  width?: string;
-  isMobile: boolean;
-}>`
+const StyledIslandButton = styled.button.attrs<{
+  $top?: string;
+  $bottom?: string;
+  $left?: string;
+  $right?: string;
+  $translateX: number;
+  $translateY: number;
+  $scale: number;
+  $width?: string;
+}>((props) => ({
+  style: {
+    top: props.$top || "auto",
+    bottom: props.$bottom || "auto",
+    left: props.$left || "auto",
+    right: props.$right || "auto",
+    transform: `translate(${props.$translateX}px, ${props.$translateY}px) scale(${props.$scale})`,
+    width: props.$width || "auto",
+  },
+}))`
   position: absolute;
   cursor: pointer;
   background: none;
   border: none;
   outline: none;
   padding: 0;
-  top: ${(props) => props.top || "auto"};
-  bottom: ${(props) => props.bottom || "auto"};
-  left: ${(props) => props.left || "auto"};
-  right: ${(props) => props.right || "auto"};
-  transform: translate(
-      ${(props) => props.translateX}px,
-      ${(props) => props.translateY}px
-    )
-    scale(${(props) => props.scale});
-  transition: transform 0.15s ease-out;
+  transition: transform 0.5s ease-out;
   z-index: 10;
-  width: ${(props) => props.width || "auto"};
 
   img {
     width: 100%;
@@ -61,10 +59,10 @@ const StyledIslandButton = styled.button<{
 
   @media (max-width: 768px) {
     transform: translate(
-        ${(props) => props.translateX / 2}px,
-        ${(props) => props.translateY / 2}px
+        ${(props) => props.$translateX / 2}px,
+        ${(props) => props.$translateY / 2}px
       )
-      scale(${(props) => props.scale});
+      scale(${(props) => props.$scale});
   }
 `;
 
@@ -93,12 +91,14 @@ const IslandButton: React.FC<IslandButtonProps> = ({
 
   return (
     <StyledIslandButton
-      {...activePosition}
-      translateX={adjustedParallax.x}
-      translateY={adjustedParallax.y}
-      scale={isHovered ? 1.05 : 1}
-      width={activeWidth}
-      isMobile={isMobile}
+      $top={activePosition.top}
+      $bottom={activePosition.bottom}
+      $left={activePosition.left}
+      $right={activePosition.right}
+      $translateX={adjustedParallax.x}
+      $translateY={adjustedParallax.y}
+      $scale={isHovered ? 1.05 : 1}
+      $width={activeWidth}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={onClick}
