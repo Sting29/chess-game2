@@ -30,7 +30,7 @@ export function Layout({ children }: LayoutProps) {
         <Image src={LogoImg} height={148} />
       </LogoContainer>
       <Header>
-        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+        <LogoutButton onClick={handleLogout} aria-label="Exit" />
       </Header>
       <MainContent>{children}</MainContent>
     </LayoutContainer>

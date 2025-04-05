@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import chessboardBackground from "../../assets/background/chessboard_background.jpg";
-// Временно закомментируем импорт логотипа, пока не будет добавлен файл
-// import logo from "../../assets/background/chess_club_logo.jpg";
+import buttonExit from "../../assets/elements/button_exit.png";
 
 export const LayoutContainer = styled.div`
   min-height: 100vh;
@@ -40,22 +39,16 @@ export const MainContent = styled.main`
 `;
 
 export const LogoutButton = styled.button`
-  background-color: #dc3545;
-  color: white;
+  width: 148px;
+  height: 56px;
+  margin-right: 40px;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 14px;
-  transition: background-color 0.2s;
+  background: url(${buttonExit}) no-repeat center center;
+  background-size: contain;
+  transition: transform 0.2s;
 
   &:hover {
-    background-color: #c82333;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(220, 53, 69, 0.25);
+    transform: scale(1.05);
   }
 `;
 
