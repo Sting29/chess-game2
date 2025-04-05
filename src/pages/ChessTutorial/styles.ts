@@ -48,7 +48,6 @@ export const PalmLeaves = styled.div<{ $isMobile: boolean }>`
   right: 0;
   width: ${(props) => (props.$isMobile ? "20%" : "15%")};
   height: ${(props) => (props.$isMobile ? "25%" : "30%")};
-  z-index: 3;
   overflow: hidden;
 
   img {
@@ -59,7 +58,7 @@ export const PalmLeaves = styled.div<{ $isMobile: boolean }>`
 
 const cloudAnimation = keyframes`
   0% {
-    transform: translateX(-3%);
+    transform: translateX(-5%);
   }
   100% {
     transform: translateX(0);
@@ -72,7 +71,6 @@ export const Clouds = styled.div<{ $isMobile: boolean }>`
   left: 0;
   width: ${(props) => (props.$isMobile ? "60%" : "75%")};
   height: ${(props) => (props.$isMobile ? "30%" : "40%")};
-  z-index: 3;
   overflow: hidden;
 
   img {

@@ -125,7 +125,6 @@ const StyledIslandButton = styled.button
   outline: none;
   padding: 0;
   transition: transform 0.3s ease-out;
-  z-index: 10;
 
   img {
     width: 100%;

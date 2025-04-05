@@ -10,24 +10,22 @@ export const LayoutContainer = styled.div`
 `;
 
 export const Header = styled.div`
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 1rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  height: 96px;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1000;
+  background-color: #4188c9;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
 `;
 
 export const LogoContainer = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 1rem;
+  position: absolute;
+  left: 40px;
+  top: 8px;
+  overflow: hidden;
+  z-index: 1;
+  border-radius: 28px;
 `;
 
 export const Logo = styled.img`
@@ -36,19 +34,9 @@ export const Logo = styled.img`
   border-radius: 4px;
 `;
 
-export const Title = styled.h1`
-  margin: 0;
-  font-size: 1.5rem;
-  color: #333;
-  font-weight: 600;
-`;
-
 export const MainContent = styled.main`
-  margin-top: 60px;
   flex: 1;
-  // padding: 20px;
   position: relative;
-  z-index: 1;
 `;
 
 export const LogoutButton = styled.button`
