@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import chessboardBackground from "../../assets/background/backgroundIslands.png";
 
 export const BackButtonWrap = styled.button({
@@ -57,17 +57,27 @@ export const PalmLeaves = styled.div<{ $isMobile: boolean }>`
   }
 `;
 
+const cloudAnimation = keyframes`
+  0% {
+    transform: translateX(-3%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+`;
+
 export const Clouds = styled.div<{ $isMobile: boolean }>`
   position: absolute;
   top: 0;
   left: 0;
   width: ${(props) => (props.$isMobile ? "60%" : "75%")};
-  height: ${(props) => (props.$isMobile ? "25%" : "30%")};
+  height: ${(props) => (props.$isMobile ? "30%" : "40%")};
   z-index: 3;
   overflow: hidden;
 
   img {
     width: 100%;
     height: auto;
+    animation: ${cloudAnimation} 20s ease-in-out infinite alternate;
   }
 `;

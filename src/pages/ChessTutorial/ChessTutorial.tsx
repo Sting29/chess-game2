@@ -91,7 +91,7 @@ const ChessTutorial = memo(function ChessTutorial() {
       </PalmLeaves>
 
       <Clouds $isMobile={isMobile}>
-        <img src={CloudImg} alt="Clouds" />
+        <img src={CloudImg} alt="" />
       </Clouds>
 
       <ParallaxElement
