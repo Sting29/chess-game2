@@ -1,6 +1,5 @@
 import { useState, memo, useMemo, useCallback } from "react";
-import styled from "styled-components";
-import { useParallax } from "src/hooks/useParallax";
+import styled, { keyframes, css } from "styled-components";
 import { useIsMobile } from "src/hooks/useIsMobile";
 
 interface IslandButtonProps {
@@ -17,11 +16,84 @@ interface IslandButtonProps {
     left?: string;
     right?: string;
   };
-  parallaxFactor?: number;
   width?: string;
   mobileWidth?: string;
   onClick?: () => void;
+  animationType?: "default" | "gentle" | "swing" | "bounce";
 }
+
+const islandFloatAnimation = keyframes`
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(2px, -3px) rotate(0.5deg);
+  }
+  50% {
+    transform: translate(0, -5px) rotate(0deg);
+  }
+  75% {
+    transform: translate(-2px, -3px) rotate(-0.5deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+`;
+
+const gentleFloatAnimation = keyframes`
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  50% {
+    transform: translate(1px, -2px) rotate(0.2deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+`;
+
+const swingAnimation = keyframes`
+  0% {
+    transform: translate(0, 0) rotate(-1deg);
+  }
+  50% {
+    transform: translate(3px, -2px) rotate(1deg);
+  }
+  100% {
+    transform: translate(0, 0) rotate(-1deg);
+  }
+`;
+
+const bounceAnimation = keyframes`
+  0% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(0, -3px);
+  }
+  50% {
+    transform: translate(0, 0);
+  }
+  75% {
+    transform: translate(0, -2px);
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+`;
+
+const getAnimation = (type: IslandButtonProps["animationType"]) => {
+  switch (type) {
+    case "gentle":
+      return gentleFloatAnimation;
+    case "swing":
+      return swingAnimation;
+    case "bounce":
+      return bounceAnimation;
+    default:
+      return islandFloatAnimation;
+  }
+};
 
 const StyledIslandButton = styled.button
   .withConfig({
@@ -32,22 +104,17 @@ const StyledIslandButton = styled.button
     $bottom?: string;
     $left?: string;
     $right?: string;
-    $translateX: number;
-    $translateY: number;
     $scale: number;
     $width?: string;
     $isMobile: boolean;
+    $animationType: IslandButtonProps["animationType"];
   }>((props) => ({
     style: {
       top: props.$top || "auto",
       bottom: props.$bottom || "auto",
       left: props.$left || "auto",
       right: props.$right || "auto",
-      transform: props.$isMobile
-        ? `translate(${props.$translateX / 2}px, ${
-            props.$translateY / 2
-          }px) scale(${props.$scale})`
-        : `translate(${props.$translateX}px, ${props.$translateY}px) scale(${props.$scale})`,
+      transform: `scale(${props.$scale})`,
       width: props.$width || "auto",
     },
   }))`
@@ -57,13 +124,23 @@ const StyledIslandButton = styled.button
   border: none;
   outline: none;
   padding: 0;
-  transition: transform 0.5s ease-out;
+  transition: transform 0.3s ease-out;
   z-index: 10;
 
   img {
     width: 100%;
     height: auto;
     object-fit: contain;
+    ${(props) => {
+      const duration =
+        props.$animationType === "swing" || props.$animationType === "gentle"
+          ? "8s"
+          : "4s";
+      return css`
+        animation: ${getAnimation(props.$animationType)} ${duration} ease-in-out
+          infinite;
+      `;
+    }}
   }
 `;
 
@@ -72,23 +149,13 @@ const IslandButton: React.FC<IslandButtonProps> = memo(
     imageSrc,
     position,
     mobilePosition,
-    parallaxFactor = 5,
     width = "15%",
     mobileWidth = "20%",
     onClick,
+    animationType = "default",
   }) => {
     const [isHovered, setIsHovered] = useState(false);
-    const parallax = useParallax(parallaxFactor);
     const isMobile = useIsMobile();
-
-    // Memoize adjusted parallax values
-    const adjustedParallax = useMemo(
-      () => ({
-        x: parallax.x / (isMobile ? 2 : 1),
-        y: parallax.y / (isMobile ? 2 : 1),
-      }),
-      [parallax.x, parallax.y, isMobile]
-    );
 
     // Memoize active position and width
     const { activePosition, activeWidth } = useMemo(
@@ -112,11 +179,10 @@ const IslandButton: React.FC<IslandButtonProps> = memo(
         $bottom={activePosition.bottom}
         $left={activePosition.left}
         $right={activePosition.right}
-        $translateX={adjustedParallax.x}
-        $translateY={adjustedParallax.y}
         $scale={scale}
         $width={activeWidth}
         $isMobile={isMobile}
+        $animationType={animationType}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
         onClick={onClick}

@@ -26,50 +26,50 @@ const ChessTutorial = memo(function ChessTutorial() {
         image: Island0Img,
         position: { bottom: "25%", left: "30%" },
         mobilePosition: { bottom: "30%", left: "15%" },
-        parallaxFactor: 3,
         width: "15%",
         mobileWidth: "22%",
         onClick: () => navigate("/how-to-move"),
+        animationType: "default" as const,
       },
       {
         name: "How to Play",
         image: Island1Img,
         position: { top: "28%", left: "20%" },
         mobilePosition: { top: "25%", left: "10%" },
-        parallaxFactor: 2,
         width: "15%",
         mobileWidth: "22%",
         onClick: () => navigate("/how-to-play"),
+        animationType: "gentle" as const,
       },
       {
         name: "Chess Puzzles",
         image: Island2Img,
         position: { top: "28%", right: "40%" },
         mobilePosition: { top: "25%", right: "10%" },
-        parallaxFactor: 1,
         width: "15%",
         mobileWidth: "22%",
         onClick: () => navigate("/puzzles"),
+        animationType: "swing" as const,
       },
       {
         name: "Play with Computer",
         image: Island3Img,
         position: { bottom: "23%", right: "27%" },
         mobilePosition: { bottom: "30%", right: "15%" },
-        parallaxFactor: 2,
         width: "15%",
         mobileWidth: "22%",
         onClick: () => navigate("/play-with-computer"),
+        animationType: "bounce" as const,
       },
       {
         name: "Play with Person",
         image: Island3Img,
         position: { top: "23%", right: "20%" },
         mobilePosition: { bottom: "30%", right: "15%" },
-        parallaxFactor: 3,
         width: "15%",
         mobileWidth: "22%",
         onClick: () => navigate("/play-with-person"),
+        animationType: "gentle" as const,
       },
     ],
     [navigate]
@@ -109,10 +109,10 @@ const ChessTutorial = memo(function ChessTutorial() {
           imageSrc={island.image}
           position={island.position}
           mobilePosition={island.mobilePosition}
-          parallaxFactor={island.parallaxFactor}
           width={island.width}
           mobileWidth={island.mobileWidth}
           onClick={island.onClick}
+          animationType={island.animationType}
         />
       ))}
     </ChessTutorialWrap>
