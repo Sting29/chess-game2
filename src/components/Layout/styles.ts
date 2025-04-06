@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import chessboardBackground from "../../assets/background/chessboard_background.jpg";
 import buttonExit from "../../assets/elements/button_exit.png";
 import buttonAccount from "../../assets/elements/button_account.png";
+import userIcon from "../../assets/elements/user_x.png";
 
 export const LayoutContainer = styled.div`
   min-height: 100vh;
@@ -68,6 +69,7 @@ export const BackgroundImage = styled.div`
 
 export const AccountButton = styled(Link)`
   display: block;
+  position: relative;
   height: 56px;
   width: 200px;
   margin-right: 28px;
@@ -76,6 +78,18 @@ export const AccountButton = styled(Link)`
   background-size: contain;
   transition: transform 0.2s;
   text-decoration: none;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -40px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px;
+    height: 80px;
+    background: url(${userIcon}) no-repeat center;
+    background-size: contain;
+  }
 
   &:hover {
     transform: scale(1.05);

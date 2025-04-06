@@ -1,5 +1,4 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import {
   LayoutContainer,
   Header,
@@ -8,7 +7,7 @@ import {
   AccountButton,
   LogoContainer,
 } from "./styles";
-// Временно закомментируем импорт логотипа, пока не будет добавлен файл
+
 import LogoImg from "src/assets/logo/logo.png";
 import Image from "../Image/Image";
 
@@ -17,16 +16,10 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     // Принудительно обновляем страницу и перенаправляем на логин
     window.location.href = "/login";
-  };
-
-  const handleAccountClick = () => {
-    navigate("/account");
   };
 
   return (
