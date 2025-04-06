@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import chessboardBackground from "../../assets/background/chessboard_background.jpg";
 import buttonExit from "../../assets/elements/button_exit.png";
+import buttonAccount from "../../assets/elements/button_account.png";
 
 export const LayoutContainer = styled.div`
   min-height: 100vh;
@@ -62,4 +63,18 @@ export const BackgroundImage = styled.div`
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+`;
+
+export const AccountButton = styled.button`
+  height: 56px;
+  width: 200px;
+  margin-right: 28px;
+  border: none;
+  background: url(${buttonAccount}) no-repeat center center;
+  background-size: contain;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;

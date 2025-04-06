@@ -1,10 +1,11 @@
 import React from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   LayoutContainer,
   Header,
   MainContent,
   LogoutButton,
+  AccountButton,
   LogoContainer,
 } from "./styles";
 // Временно закомментируем импорт логотипа, пока не будет добавлен файл
@@ -16,12 +17,16 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
     // Принудительно обновляем страницу и перенаправляем на логин
     window.location.href = "/login";
+  };
+
+  const handleAccountClick = () => {
+    navigate("/account");
   };
 
   return (
@@ -30,6 +35,10 @@ export function Layout({ children }: LayoutProps) {
         <Image src={LogoImg} height={148} />
       </LogoContainer>
       <Header>
+        <AccountButton
+          onClick={handleAccountClick}
+          aria-label="Account settings"
+        />
         <LogoutButton onClick={handleLogout} aria-label="Exit" />
       </Header>
       <MainContent>{children}</MainContent>

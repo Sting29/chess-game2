@@ -20,6 +20,7 @@ import { PuzzleSolver } from "src/pages/PuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/components/Layout/Layout";
+import Account from "src/pages/Account/Account";
 
 // Получаем базовый путь из окружения или используем корневой путь
 const basename = process.env.PUBLIC_URL || "/";
@@ -121,6 +122,10 @@ const router = createBrowserRouter(
     {
       path: "/play-with-person",
       element: protectedElement(<PlayWithPerson />),
+    },
+    {
+      path: "/account",
+      element: protectedElement(<Account />),
     },
     {
       path: "*",
