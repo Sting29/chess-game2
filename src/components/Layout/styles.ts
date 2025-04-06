@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import chessboardBackground from "../../assets/background/chessboard_background.jpg";
 import buttonExit from "../../assets/elements/button_exit.png";
 import buttonAccount from "../../assets/elements/button_account.png";
@@ -65,7 +66,8 @@ export const BackgroundImage = styled.div`
   background-attachment: fixed;
 `;
 
-export const AccountButton = styled.button`
+export const AccountButton = styled(Link)`
+  display: block;
   height: 56px;
   width: 200px;
   margin-right: 28px;
@@ -73,6 +75,7 @@ export const AccountButton = styled.button`
   background: url(${buttonAccount}) no-repeat center center;
   background-size: contain;
   transition: transform 0.2s;
+  text-decoration: none;
 
   &:hover {
     transform: scale(1.05);
