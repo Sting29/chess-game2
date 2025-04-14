@@ -3,7 +3,7 @@ import { Chessboard } from "react-chessboard";
 import { Square } from "chess.js";
 import { PersonsChessEngine } from "../../utils/PersonsChessEngine";
 import { BoardContainer, GameStatus } from "./styles";
-
+import { useCustomPieces } from "../CustomPieces/CustomPieces";
 interface PersonsChessBoardProps {
   onGameEnd?: (result: string) => void;
 }
@@ -59,6 +59,8 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
     return false;
   }
 
+  const customPieces = useCustomPieces();
+
   return (
     <BoardContainer>
       <GameStatus>{game.getGameStatus()}</GameStatus>
@@ -91,6 +93,7 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
             ])
           ),
         }}
+        customPieces={customPieces}
       />
     </BoardContainer>
   );
