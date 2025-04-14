@@ -1,4 +1,4 @@
-import { useState, memo, useMemo, useCallback } from "react";
+import { useState, memo, useMemo } from "react";
 import styled, { keyframes, css } from "styled-components";
 import { useIsMobile } from "src/hooks/useIsMobile";
 
@@ -20,6 +20,8 @@ interface IslandButtonProps {
   mobileWidth?: string;
   onClick?: () => void;
   animationType?: "default" | "gentle" | "swing" | "bounce";
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }
 
 const islandFloatAnimation = keyframes`
@@ -143,54 +145,60 @@ const StyledIslandButton = styled.button
   }
 `;
 
-const IslandButton: React.FC<IslandButtonProps> = memo(
-  ({
-    imageSrc,
-    position,
-    mobilePosition,
-    width = "15%",
-    mobileWidth = "20%",
-    onClick,
-    animationType = "default",
-  }) => {
-    const [isHovered, setIsHovered] = useState(false);
-    const isMobile = useIsMobile();
+const IslandButton = memo(function IslandButton({
+  imageSrc,
+  position,
+  mobilePosition,
+  width = "15%",
+  mobileWidth = "20%",
+  onClick,
+  animationType = "default",
+  onMouseEnter,
+  onMouseLeave,
+}: IslandButtonProps) {
+  const [isHovered, setIsHovered] = useState(false);
+  const isMobile = useIsMobile();
 
-    // Memoize active position and width
-    const { activePosition, activeWidth } = useMemo(
-      () => ({
-        activePosition: isMobile && mobilePosition ? mobilePosition : position,
-        activeWidth: isMobile ? mobileWidth : width,
-      }),
-      [isMobile, mobilePosition, position, mobileWidth, width]
-    );
+  // Memoize active position and width
+  const { activePosition, activeWidth } = useMemo(
+    () => ({
+      activePosition: isMobile && mobilePosition ? mobilePosition : position,
+      activeWidth: isMobile ? mobileWidth : width,
+    }),
+    [isMobile, mobilePosition, position, mobileWidth, width]
+  );
 
-    // Memoize event handlers
-    const handleMouseEnter = useCallback(() => setIsHovered(true), []);
-    const handleMouseLeave = useCallback(() => setIsHovered(false), []);
+  // Memoize scale value
+  const scale = useMemo(() => (isHovered ? 1.05 : 1), [isHovered]);
 
-    // Memoize scale value
-    const scale = useMemo(() => (isHovered ? 1.05 : 1), [isHovered]);
+  const handleEnter = () => {
+    setIsHovered(true);
+    onMouseEnter?.();
+  };
 
-    return (
-      <StyledIslandButton
-        $top={activePosition.top}
-        $bottom={activePosition.bottom}
-        $left={activePosition.left}
-        $right={activePosition.right}
-        $scale={scale}
-        $width={activeWidth}
-        $isMobile={isMobile}
-        $animationType={animationType}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
-        onClick={onClick}
-      >
-        <img src={imageSrc} alt="Island" />
-      </StyledIslandButton>
-    );
-  }
-);
+  const handleLeave = () => {
+    setIsHovered(false);
+    onMouseLeave?.();
+  };
+
+  return (
+    <StyledIslandButton
+      $top={activePosition.top}
+      $bottom={activePosition.bottom}
+      $left={activePosition.left}
+      $right={activePosition.right}
+      $scale={scale}
+      $width={activeWidth}
+      $isMobile={isMobile}
+      $animationType={animationType}
+      onClick={onClick}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <img src={imageSrc} alt="Island" />
+    </StyledIslandButton>
+  );
+});
 
 IslandButton.displayName = "IslandButton";
 

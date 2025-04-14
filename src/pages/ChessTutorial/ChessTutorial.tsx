@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { memo, useMemo } from "react";
+import { memo, useMemo, useState } from "react";
 import { ChessTutorialWrap, PalmLeaves, Clouds, TextBlock } from "./styles";
 
 import Island0Img from "../../assets/images/island0.png";
@@ -17,6 +17,7 @@ import { useIsMobile } from "src/hooks/useIsMobile";
 const ChessTutorial = memo(function ChessTutorial() {
   const navigate = useNavigate();
   const isMobile = useIsMobile();
+  const [currentText, setCurrentText] = useState("Chess Map");
 
   // Memoize islands array
   const islands = useMemo(
@@ -52,7 +53,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "swing" as const,
       },
       {
-        name: "Play with Computer",
+        name: "Play Game (C)",
         image: Island3Img,
         position: { bottom: "23%", right: "27%" },
         mobilePosition: { bottom: "30%", right: "15%" },
@@ -62,7 +63,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "bounce" as const,
       },
       {
-        name: "Play with Person",
+        name: "Play Game (P)",
         image: Island3Img,
         position: { top: "23%", right: "20%" },
         mobilePosition: { bottom: "30%", right: "15%" },
@@ -113,10 +114,12 @@ const ChessTutorial = memo(function ChessTutorial() {
           mobileWidth={island.mobileWidth}
           onClick={island.onClick}
           animationType={island.animationType}
+          onMouseEnter={() => setCurrentText(island.name)}
+          onMouseLeave={() => setCurrentText("Chess Map")}
         />
       ))}
 
-      <TextBlock $isMobile={isMobile}>Chess Map</TextBlock>
+      <TextBlock $isMobile={isMobile}>{currentText}</TextBlock>
     </ChessTutorialWrap>
   );
 });
