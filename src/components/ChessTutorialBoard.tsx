@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Square, PromotionPiece } from "../types/types";
 import { SimplifiedChessEngine } from "../utils/SimplifiedChessEngine";
+import { useCustomPieces } from "./CustomPieces/CustomPieces";
+
 interface ChessTutorialBoardProps {
   initialPosition: string;
   onCapture?: (square: Square) => void;
@@ -112,6 +114,8 @@ export function ChessTutorialBoard({
     }
   }
 
+  const customPieces = useCustomPieces();
+
   return (
     <div style={{ width: "400px", margin: "0 auto" }}>
       <div
@@ -130,7 +134,7 @@ export function ChessTutorialBoard({
         position={game.fen()}
         onPieceDrop={onDrop}
         onSquareClick={onSquareClick}
-        onPromotionCheck={onPromotionCheck} // TODO: remove not needed
+        onPromotionCheck={onPromotionCheck}
         onPromotionPieceSelect={onPromotionPieceSelect}
         customBoardStyle={{
           borderRadius: "4px",
@@ -158,6 +162,7 @@ export function ChessTutorialBoard({
             ])
           ),
         }}
+        customPieces={customPieces}
       />
     </div>
   );
