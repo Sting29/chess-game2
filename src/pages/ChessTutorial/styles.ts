@@ -102,5 +102,5 @@ export const TextBlock = styled.div<{ $isMobile: boolean }>`
     ${(props) => (props.$isMobile ? "24px" : "40px")}
   );
   color: #8b4513;
-  padding-top: 10px;
+  padding-top: 8px;
 `;

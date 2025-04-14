@@ -6,7 +6,7 @@ import wN from "../../assets/figures/knight_white.png";
 import wB from "../../assets/figures/bishop_white.png";
 import wR from "../../assets/figures/rook_white.png";
 import wQ from "../../assets/figures/queen_white.png";
-// import wK from "../../assets/figures/king_white.png";
+import wK from "../../assets/figures/king_white.png";
 
 // Black pieces
 import bP from "../../assets/figures/pawn_dark.png";
@@ -22,14 +22,14 @@ const pieceImages = {
   wB,
   wR,
   wQ,
-  // wK,
+  wK,
   bP,
   bN,
   bB,
   bR,
   bQ,
   bK,
-} as const;
+};
 
 export function useCustomPieces() {
   return useMemo(() => {
