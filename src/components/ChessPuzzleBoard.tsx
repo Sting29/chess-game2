@@ -2,6 +2,7 @@ import { Chessboard } from "react-chessboard";
 import { useState } from "react";
 import { Square } from "../types/types";
 import { PuzzleChessEngine } from "../utils/PuzzleChessEngine";
+import { useCustomPieces } from "./CustomPieces/CustomPieces";
 
 interface ChessPuzzleBoardProps {
   initialPosition: string;
@@ -84,6 +85,8 @@ export function ChessPuzzleBoard({
     }
   }
 
+  const customPieces = useCustomPieces();
+
   return (
     <div style={{ width: "400px", margin: "0 auto" }}>
       <div
@@ -122,6 +125,7 @@ export function ChessPuzzleBoard({
             ])
           ),
         }}
+        customPieces={customPieces}
       />
     </div>
   );

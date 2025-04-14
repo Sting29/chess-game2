@@ -2,6 +2,8 @@ import { Chessboard } from "react-chessboard";
 import { useState } from "react";
 import { Square, PromotionPiece } from "../types/types";
 import { BattleChessEngine } from "../utils/BattleChessEngine";
+import { useCustomPieces } from "./CustomPieces/CustomPieces";
+
 interface ChessBattleBoardProps {
   initialPosition: string;
   onCapture?: (square: Square) => void;
@@ -116,6 +118,8 @@ export function ChessBattleBoard({
     }
   }
 
+  const customPieces = useCustomPieces();
+
   return (
     <div style={{ width: "400px", margin: "0 auto" }}>
       <div
@@ -156,6 +160,7 @@ export function ChessBattleBoard({
             ])
           ),
         }}
+        customPieces={customPieces}
       />
     </div>
   );

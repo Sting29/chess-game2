@@ -3,7 +3,7 @@ import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { Square } from "../types/playTypes";
 import { StockfishEngine } from "../utils/StockfishEngine";
-
+import { useCustomPieces } from "./CustomPieces/CustomPieces";
 interface ComputerChessBoardProps {
   settings: {
     depth: number;
@@ -59,14 +59,16 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
 
       if (matchingMove) {
         // Делаем ход, используя полную информацию о ходе
-        const moveResult = game.move(matchingMove);
+        // const moveResult = game.move(matchingMove);
+        game.move(matchingMove);
         setGame(new Chess(game.fen()));
       } else {
         // Если ход не найден, делаем случайный легальный ход
         if (legalMoves.length > 0) {
           const randomMove =
             legalMoves[Math.floor(Math.random() * legalMoves.length)];
-          const moveResult = game.move(randomMove);
+          // const moveResult = game.move(randomMove);
+          game.move(randomMove);
           setGame(new Chess(game.fen()));
         } else {
           console.error("No legal moves available");
@@ -145,6 +147,8 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
     return "Game over!";
   }
 
+  const customPieces = useCustomPieces();
+
   return (
     <div style={{ width: "400px", margin: "0 auto" }}>
       <div
@@ -171,6 +175,7 @@ export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
             [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
           }),
         }}
+        customPieces={customPieces}
       />
     </div>
   );
