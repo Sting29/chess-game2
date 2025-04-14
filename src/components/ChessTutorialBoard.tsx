@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Chessboard } from "react-chessboard";
-import { Square, PromotionPiece } from "../types/types";
+import { Square, PromotionPiece, Piece } from "../types/types";
 import { SimplifiedChessEngine } from "../utils/SimplifiedChessEngine";
 import { useCustomPieces } from "./CustomPieces/CustomPieces";
 
@@ -113,6 +113,10 @@ export function ChessTutorialBoard({
       setHighlightSquares([]);
     }
   }
+  function isDraggablePiece(args: { piece: Piece }): boolean {
+    const isBlackPawn = args.piece === "bP";
+    return isBlackPawn ? false : true;
+  }
 
   const customPieces = useCustomPieces();
 
@@ -136,6 +140,7 @@ export function ChessTutorialBoard({
         onSquareClick={onSquareClick}
         onPromotionCheck={onPromotionCheck}
         onPromotionPieceSelect={onPromotionPieceSelect}
+        isDraggablePiece={isDraggablePiece}
         customBoardStyle={{
           borderRadius: "4px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
