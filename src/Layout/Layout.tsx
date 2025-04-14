@@ -9,7 +9,7 @@ import {
 } from "./styles";
 
 import LogoImg from "src/assets/logo/logo.png";
-import Image from "../Image/Image";
+import Image from "../components/Image/Image";
 
 interface LayoutProps {
   children: React.ReactNode;

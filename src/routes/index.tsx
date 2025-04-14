@@ -19,7 +19,7 @@ import PuzzleList from "src/pages/PuzzleList";
 import { PuzzleSolver } from "src/pages/PuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
-import { Layout } from "src/components/Layout/Layout";
+import { Layout } from "src/Layout/Layout";
 import Account from "src/pages/Account/Account";
 
 // Получаем базовый путь из окружения или используем корневой путь

@@ -1,9 +1,9 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import chessboardBackground from "../../assets/background/chessboard_background.jpg";
-import buttonExit from "../../assets/elements/button_exit.png";
-import buttonAccount from "../../assets/elements/button_account.png";
-import userIcon from "../../assets/elements/user_x.png";
+import chessboardBackground from "../assets/background/chessboard_background.jpg";
+import buttonExit from "../assets/elements/button_exit.png";
+import buttonAccount from "../assets/elements/button_account.png";
+import userIcon from "../assets/elements/user_x.png";
 
 export const LayoutContainer = styled.div`
   min-height: 100vh;
