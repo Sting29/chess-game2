@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { memo, useMemo } from "react";
-import { ChessTutorialWrap, PalmLeaves, Clouds } from "./styles";
+import { ChessTutorialWrap, PalmLeaves, Clouds, TextBlock } from "./styles";
 
 import Island0Img from "../../assets/images/island0.png";
 import Island1Img from "../../assets/images/island1.png";
@@ -115,6 +115,8 @@ const ChessTutorial = memo(function ChessTutorial() {
           animationType={island.animationType}
         />
       ))}
+
+      <TextBlock $isMobile={isMobile}>Chess Map</TextBlock>
     </ChessTutorialWrap>
   );
 });

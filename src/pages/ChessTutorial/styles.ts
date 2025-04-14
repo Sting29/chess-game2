@@ -1,5 +1,6 @@
 import styled, { keyframes } from "styled-components";
 import chessboardBackground from "../../assets/background/backgroundIslands.png";
+import textBlockImg from "../../assets/images/text_block.png";
 
 export const BackButtonWrap = styled.button({
   marginBottom: "20px",
@@ -13,7 +14,7 @@ export const BackButtonWrap = styled.button({
 export const ChessTutorialWrap = styled.div`
   position: relative;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 96px);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -78,4 +79,28 @@ export const Clouds = styled.div<{ $isMobile: boolean }>`
     height: auto;
     animation: ${cloudAnimation} 20s ease-in-out infinite alternate;
   }
+`;
+
+export const TextBlock = styled.div<{ $isMobile: boolean }>`
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: ${(props) => (props.$isMobile ? "220px" : "428px")};
+  height: ${(props) => (props.$isMobile ? "60px" : "128px")};
+  background-image: url(${textBlockImg});
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Wendy One", sans-serif;
+  font-size: clamp(
+    18px,
+    ${(props) => (props.$isMobile ? "5vw" : "5vw")},
+    ${(props) => (props.$isMobile ? "24px" : "40px")}
+  );
+  color: #8b4513;
+  padding-top: 10px;
 `;
