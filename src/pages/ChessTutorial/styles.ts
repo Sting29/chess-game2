@@ -19,11 +19,7 @@ export const ChessTutorialWrap = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: linear-gradient(
-      rgba(245, 245, 245, 0.2),
-      rgba(245, 245, 245, 0.2)
-    ),
-    url(${chessboardBackground});
+  background-image: url(${chessboardBackground});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
