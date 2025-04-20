@@ -66,7 +66,7 @@ export type Square =
   | "h1";
 
 export type Piece = "p" | "n" | "b" | "r" | "q" | "k";
-export type Color = "w" | "b";
+type Color = "w" | "b";
 
 // Остальные типы остаются без изменений
 export type PromotionPiece = "q" | "r" | "n" | "b";

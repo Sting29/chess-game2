@@ -16,13 +16,15 @@
     "@types/jest": "29.5.14",
     "@types/react": "19.0.12",
     "@types/react-dom": "19.0.4",
-    "babel-plugin-styled-components": "2.1.4"
+    "babel-plugin-styled-components": "2.1.4",
+    "ts-prune": "0.10.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "find-dead-exports": "ts-prune"
   },
   "eslintConfig": {
     "extends": [

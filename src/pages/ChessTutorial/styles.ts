@@ -2,15 +2,6 @@ import styled, { keyframes } from "styled-components";
 import chessboardBackground from "../../assets/background/background_fhd.png";
 import textBlockImg from "../../assets/images/text_block.png";
 
-export const BackButtonWrap = styled.button({
-  marginBottom: "20px",
-  padding: "8px 16px",
-  backgroundColor: "#f0f0f0",
-  border: "1px solid #ccc",
-  borderRadius: "4px",
-  cursor: "pointer",
-});
-
 export const ChessTutorialWrap = styled.div`
   position: relative;
   width: 100%;

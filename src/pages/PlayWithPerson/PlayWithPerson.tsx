@@ -8,7 +8,7 @@ import {
   ResetButton,
 } from "./styles";
 
-export function PlayWithPerson() {
+function PlayWithPerson() {
   const [gameResult, setGameResult] = useState<string | null>(null);
 
   const handleGameEnd = (result: string) => {

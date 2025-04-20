@@ -59,18 +59,6 @@ export const LogoutButton = styled.button`
   }
 `;
 
-export const BackgroundImage = styled.div`
-  background: linear-gradient(
-      rgba(245, 245, 245, 0.2),
-      rgba(245, 245, 245, 0.2)
-    ),
-    url(${chessboardBackground});
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-`;
-
 export const AccountButton = styled(Link)`
   display: block;
   position: relative;

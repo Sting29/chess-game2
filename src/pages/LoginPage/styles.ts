@@ -102,13 +102,6 @@ export const LogoContainer = styled.div`
   }
 `;
 
-export const LogoText = styled.p`
-  font-family: "Wendy One", sans-serif;
-  font-size: 40px;
-  color: #fff;
-  line-height: 42px;
-`;
-
 export const PlayButton = styled.button`
   width: 398px;
   height: 82px;
