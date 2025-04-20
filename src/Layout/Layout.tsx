@@ -6,6 +6,7 @@ import {
   LogoutButton,
   AccountButton,
   LogoContainer,
+  LogoText,
 } from "./styles";
 
 import LogoImg from "src/assets/logo/logo.png";
@@ -25,7 +26,8 @@ export function Layout({ children }: LayoutProps) {
   return (
     <LayoutContainer>
       <LogoContainer>
-        <Image src={LogoImg} height={148} />
+        <Image src={LogoImg} height={124} />
+        <LogoText>Chess for Everyone</LogoText>
       </LogoContainer>
       <Header>
         <AccountButton to="/account" aria-label="Account settings" />

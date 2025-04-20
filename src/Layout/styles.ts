@@ -16,7 +16,7 @@ export const Header = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  background-color: #4188c9;
+  background-color: #006acd;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
 `;
@@ -24,16 +24,20 @@ export const Header = styled.div`
 export const LogoContainer = styled.div`
   position: absolute;
   left: 40px;
-  top: 8px;
+  top: -10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
   overflow: hidden;
   z-index: 1;
   border-radius: 28px;
 `;
 
-export const Logo = styled.img`
-  height: 40px;
-  width: auto;
-  border-radius: 4px;
+export const LogoText = styled.p`
+  font-family: "Wendy One", sans-serif;
+  font-size: 44px;
+  color: #fff;
+  line-height: 46px;
 `;
 
 export const MainContent = styled.main`
