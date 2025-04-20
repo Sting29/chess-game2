@@ -8,13 +8,17 @@ import {
   FormGroup,
   SrOnly,
   Input,
-  LoginButton,
+  PlayButton,
   BlueLine,
   LogoContainer,
+  CatContainer,
+  BoyContainer,
 } from "./styles";
 
 import LogoImg from "src/assets/logo/logo_big.png";
 import LogoTitle from "src/assets/elements/enter_your_account.png";
+import Cat from "src/assets/images/cat.png";
+import Boy from "src/assets/images/boy.png";
 import Image from "src/components/Image/Image";
 
 export function LoginPage() {
@@ -60,6 +64,7 @@ export function LoginPage() {
               autoComplete="email"
               required
               placeholder="Email"
+              disabled={true}
             />
           </FormGroup>
 
@@ -72,12 +77,19 @@ export function LoginPage() {
               autoComplete="current-password"
               required
               placeholder="Password"
+              disabled={true}
             />
           </FormGroup>
 
-          <LoginButton type="submit">Login</LoginButton>
+          <PlayButton type="submit" aria-label="Login and Play" />
         </LoginForm>
       </LoginBox>
+      <CatContainer>
+        <Image src={Cat} height={256} />
+      </CatContainer>
+      <BoyContainer>
+        <Image src={Boy} height={385} />
+      </BoyContainer>
     </LoginContainer>
   );
 }

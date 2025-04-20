@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import chessboardBackground from "../../assets/background/background_login_test.png";
+import buttonPlay from "../../assets/elements/button_play.png";
 
 export const LoginContainer = styled.div`
   min-height: 100vh;
@@ -20,16 +21,16 @@ export const LoginBox = styled.div`
 `;
 
 export const LoginHeader = styled.div`
-  margin: 0.5rem 0 1.5rem;
+  margin: 2rem 0;
 `;
 
 export const LoginForm = styled.form`
-  width: 95%;
+  width: 398px;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  gap: 1rem;
+  gap: 2rem;
 `;
 
 export const FormGroup = styled.div`
@@ -52,11 +53,13 @@ export const SrOnly = styled.label`
 export const Input = styled.input`
   width: 100%;
   height: 80px;
-  padding: 0.75rem;
+  padding: 0.75rem 20px;
   border: 2px solid black;
   border-radius: 24px;
   font-size: 0.875rem;
   transition: border-color 0.2s;
+  font-size: 40px;
+  font-family: Roboto;
 
   &:focus {
     outline: none;
@@ -73,30 +76,10 @@ export const Input = styled.input`
     font-size: 40px;
     color: #bdbdbd;
     font-family: Roboto;
-    line-height: 42px;
-    vertical-align: middle;
-  }
-`;
-
-export const LoginButton = styled.button`
-  width: 100%;
-  padding: 0.75rem;
-  background-color: #4a90e2;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #357abd;
-  }
-
-  &:focus {
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.4);
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    line-height: normal;
   }
 `;
 
@@ -124,4 +107,29 @@ export const LogoText = styled.p`
   font-size: 40px;
   color: #fff;
   line-height: 42px;
+`;
+
+export const PlayButton = styled.button`
+  width: 398px;
+  height: 82px;
+  border: none;
+  background: url(${buttonPlay}) no-repeat center center;
+  background-size: contain;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+export const CatContainer = styled.div`
+  position: absolute;
+  bottom: 10%;
+  left: 20%;
+`;
+
+export const BoyContainer = styled.div`
+  position: absolute;
+  bottom: 15%;
+  right: 17%;
 `;
