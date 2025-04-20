@@ -9,7 +9,13 @@ import {
   SrOnly,
   Input,
   LoginButton,
+  BlueLine,
+  LogoContainer,
 } from "./styles";
+
+import LogoImg from "src/assets/logo/logo_big.png";
+import LogoTitle from "src/assets/elements/enter_your_account.png";
+import Image from "src/components/Image/Image";
 
 export function LoginPage() {
   const navigate = useNavigate();
@@ -35,9 +41,13 @@ export function LoginPage() {
 
   return (
     <LoginContainer>
+      <BlueLine />
+      <LogoContainer>
+        <Image src={LogoImg} height={310} />
+      </LogoContainer>
       <LoginBox>
         <LoginHeader>
-          <p>Enter your account</p>
+          <Image src={LogoTitle} height={42} width={366} />
         </LoginHeader>
 
         <LoginForm onSubmit={handleLogin}>
@@ -50,7 +60,6 @@ export function LoginPage() {
               autoComplete="email"
               required
               placeholder="Email"
-              disabled
             />
           </FormGroup>
 
@@ -63,7 +72,6 @@ export function LoginPage() {
               autoComplete="current-password"
               required
               placeholder="Password"
-              disabled
             />
           </FormGroup>
 

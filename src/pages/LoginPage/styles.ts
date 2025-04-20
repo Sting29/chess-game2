@@ -1,17 +1,10 @@
 import styled from "styled-components";
-import chessboardBackground from "../../assets/background/login_background.jpg";
-import loginFormBackground from "../../assets/background/login_form2.jpg";
+import chessboardBackground from "../../assets/background/background_login_test.png";
 
 export const LoginContainer = styled.div`
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(
-      rgba(245, 245, 245, 0.3),
-      rgba(245, 245, 245, 0.3)
-    ),
-    url(${chessboardBackground});
+  display: block;
+  background-image: url(${chessboardBackground});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -21,37 +14,17 @@ export const LoginBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 502px;
-  max-width: 502px;
-  height: 502px;
-  padding: 2rem;
-  background-image: url(${loginFormBackground});
-  background-size: cover;
-  background-position: center;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(5px);
-  transition: transform 0.2s, box-shadow 0.2s;
-
-  &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  }
+  width: 400px;
+  max-width: 400px;
+  margin: 0 auto;
 `;
 
 export const LoginHeader = styled.div`
-  text-align: center;
-  margin-bottom: 0.5rem;
-
-  p {
-    margin-top: 140px;
-    font-size: 1.2rem;
-    color: #666;
-  }
+  margin: 0.5rem 0 1.5rem;
 `;
 
 export const LoginForm = styled.form`
-  min-width: 220px;
+  width: 95%;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -78,9 +51,10 @@ export const SrOnly = styled.label`
 
 export const Input = styled.input`
   width: 100%;
+  height: 80px;
   padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 4px;
+  border: 2px solid black;
+  border-radius: 24px;
   font-size: 0.875rem;
   transition: border-color 0.2s;
 
@@ -93,6 +67,14 @@ export const Input = styled.input`
   &:disabled {
     background-color: #f5f5f5;
     cursor: not-allowed;
+  }
+
+  &::placeholder {
+    font-size: 40px;
+    color: #bdbdbd;
+    font-family: Roboto;
+    line-height: 42px;
+    vertical-align: middle;
   }
 `;
 
@@ -116,4 +98,30 @@ export const LoginButton = styled.button`
     outline: none;
     box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.4);
   }
+`;
+
+export const BlueLine = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 96px;
+  background-color: #006acd;
+`;
+
+export const LogoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    z-index: 1;
+  }
+`;
+
+export const LogoText = styled.p`
+  font-family: "Wendy One", sans-serif;
+  font-size: 40px;
+  color: #fff;
+  line-height: 42px;
 `;

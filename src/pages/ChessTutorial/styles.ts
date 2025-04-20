@@ -1,5 +1,5 @@
 import styled, { keyframes } from "styled-components";
-import chessboardBackground from "../../assets/background/backgroundIslands.png";
+import chessboardBackground from "../../assets/background/background_fhd.png";
 import textBlockImg from "../../assets/images/text_block.png";
 
 export const BackButtonWrap = styled.button({

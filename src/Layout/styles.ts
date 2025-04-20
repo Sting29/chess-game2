@@ -36,7 +36,7 @@ export const LogoContainer = styled.div`
 export const LogoText = styled.p`
   font-family: "Wendy One", sans-serif;
   font-size: 44px;
-  color: #fff;
+  color: #fff7db;
   line-height: 46px;
 `;
 
