@@ -252,11 +252,10 @@ export class SimplifiedChessEngine {
     targetSquare: Square,
     piece: string
   ): boolean {
-    if (!piece.endsWith("P")) return false;
+    if (piece.toLowerCase() !== "p") return false;
     const [, toRank] = targetSquare.split("");
     return (
-      (piece.startsWith("P") && toRank === "8") ||
-      (piece.startsWith("p") && toRank === "1")
+      (piece === "P" && toRank === "8") || (piece === "p" && toRank === "1")
     );
   }
 
@@ -498,7 +497,7 @@ export class SimplifiedChessEngine {
     // Filter out moves that would leave the king in check
     return possibleMoves.filter(
       (move) => !this.wouldMoveLeaveKingInCheck(square, move)
-    );
+    ) as Square[];
   }
 
   hasWhitePieces(): boolean {
@@ -547,5 +546,9 @@ export class SimplifiedChessEngine {
 
   hasPiece(square: Square): boolean {
     return this.position.has(square);
+  }
+
+  getPiece(square: Square): string | undefined {
+    return this.position.get(square);
   }
 }
