@@ -7,12 +7,7 @@ import { LoginPage } from "src/pages/LoginPage/LoginPage";
 import HowToMove from "src/pages/HowToMove/HowToMove";
 import ChessTutorial from "src/pages/ChessTutorial/ChessTutorial";
 import HowToPlay from "src/pages/HowToPlay/HowToPlay";
-import PawnMove from "src/pages/PawnMove/PawnMove";
-import RookMove from "src/pages/RookMove/RookMove";
-import KnightMove from "src/pages/KnightMove/KnightMove";
-import BishopMove from "src/pages/BishopMove/BishopMove";
-import QueenMove from "src/pages/QueenMove/QueenMove";
-import KingMove from "src/pages/KingMove/KingMove";
+import ChessMoves from "src/pages/ChessMoves/ChessMoves";
 import PawnBattle from "src/pages/PawnBattle";
 import KnightBattle from "src/pages/KnightBattle";
 import PuzzleList from "src/pages/PuzzleList";
@@ -75,34 +70,8 @@ const router = createBrowserRouter(
       // title: "Solve Puzzle",
     },
     {
-      path: "/how-to-move/pawn-move",
-      element: protectedElement(<PawnMove />),
-      // title: "How to Move: Pawn",
-    },
-    {
-      path: "/how-to-move/rook-move",
-      element: protectedElement(<RookMove />),
-      // title: "How to Move: Rook",
-    },
-    {
-      path: "/how-to-move/knight-move",
-      element: protectedElement(<KnightMove />),
-      // title: "How to Move: Knight",
-    },
-    {
-      path: "/how-to-move/bishop-move",
-      element: protectedElement(<BishopMove />),
-      // title: "How to Move: Bishop",
-    },
-    {
-      path: "/how-to-move/queen-move",
-      element: protectedElement(<QueenMove />),
-      // title: "How to Move: Queen",
-    },
-    {
-      path: "/how-to-move/king-move",
-      element: protectedElement(<KingMove />),
-      // title: "How to Move: King",
+      path: "/how-to-move/:pieceId",
+      element: protectedElement(<ChessMoves />),
     },
     {
       path: "/how-to-play/pawn-battle",
