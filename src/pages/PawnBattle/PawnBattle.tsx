@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { ChessBattleBoard } from "../components/ChessBattleBoard";
+import { ChessBattleBoard } from "../../components/ChessBattleBoard";
 import { useState } from "react";
-import { Square } from "../types/types";
+import { Square } from "../../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
 import BackButton from "src/components/BackButton/BackButton";
 

@@ -1,10 +1,16 @@
 import styled from "styled-components";
-
+import backgroundCheckLesson from "../../assets/background/background_check_lesson.png";
 export const TutorialPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 2rem;
+  height: calc(100vh - 96px);
+  padding: 0 40px;
+  background-image: url(${backgroundCheckLesson});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 `;
 
 export const TutorialTitle = styled.h1`

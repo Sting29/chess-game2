@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import BackButton from "src/components/BackButton/BackButton";
+import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import {
   TutorialPageContainer,
   TutorialTitle,
@@ -34,7 +34,7 @@ function HowToPlay() {
       <TutorialTitle>How to Play Chess</TutorialTitle>
       <TutorialDescription>Learn how to play with pieces:</TutorialDescription>
 
-      <BackButton linkToPage={previousPage} />
+      <BackButtonImage linkToPage={previousPage} />
 
       <NavigationLinksContainer>
         {pages.map((link) => (

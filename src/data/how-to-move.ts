@@ -1,3 +1,10 @@
+import ChessPawn from "src/assets/images/chess_pawn.jpg";
+import ChessRook from "src/assets/images/chess_rook.jpg";
+import ChessKnight from "src/assets/images/chess_knight.jpg";
+import ChessBishop from "src/assets/images/chess_bishop.jpg";
+import ChessQueen from "src/assets/images/chess_queen.jpg";
+import ChessKing from "src/assets/images/chess_king.jpg";
+
 export const HOW_TO_MOVE = [
   {
     id: "pawn-move",
@@ -10,6 +17,7 @@ export const HOW_TO_MOVE = [
       "Captures diagonally one square forward",
       "When reaching the last rank, promotes to any piece (except king)",
     ],
+    image: ChessPawn,
   },
   {
     id: "rook-move",
@@ -22,6 +30,7 @@ export const HOW_TO_MOVE = [
       "Cannot jump over other pieces",
       "Captures enemy pieces by moving to their square",
     ],
+    image: ChessRook,
   },
   {
     id: "knight-move",
@@ -34,6 +43,7 @@ export const HOW_TO_MOVE = [
       "Can only move to squares of the opposite color",
       "Captures enemy pieces, moving to their place",
     ],
+    image: ChessKnight,
   },
   {
     id: "bishop-move",
@@ -46,6 +56,7 @@ export const HOW_TO_MOVE = [
       "Cannot jump over other pieces",
       "Captures enemy pieces by moving to their square",
     ],
+    image: ChessBishop,
   },
   {
     id: "queen-move",
@@ -58,6 +69,7 @@ export const HOW_TO_MOVE = [
       "Cannot jump over other pieces",
       "Captures enemy pieces by moving to their square",
     ],
+    image: ChessQueen,
   },
   {
     id: "king-move",
@@ -70,5 +82,6 @@ export const HOW_TO_MOVE = [
       "Cannot move to a square that is already occupied by a friendly piece",
       "Cannot move to a square that is already occupied by an enemy piece",
     ],
+    image: ChessKing,
   },
 ];

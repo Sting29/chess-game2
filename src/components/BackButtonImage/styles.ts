@@ -1,0 +1,20 @@
+import styled from "styled-components";
+import { Link } from "react-router-dom";
+import buttonBack from "../../assets/elements/button_back.png";
+
+export const BackButtonWrap = styled(Link)`
+  display: block;
+  position: relative;
+  height: 56px;
+  width: 200px;
+  margin-right: 28px;
+  border: none;
+  background: url(${buttonBack}) no-repeat center center;
+  background-size: contain;
+  transition: transform 0.2s;
+  text-decoration: none;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
