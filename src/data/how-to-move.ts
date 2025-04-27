@@ -2,7 +2,7 @@ export const HOW_TO_MOVE = [
   {
     id: "pawn-move",
     pageTitle: "How to move: Pawn",
-    initialPosition: "8/1p6/p7/8/8/8/1P6/8 w - - 0 1",
+    initialPosition: "8/Pp6/p7/8/8/8/1P6/8 w - - 0 1",
     descriptionTitle: "Pawn Movement Rules",
     description: [
       "Pawn moves forward one square at a time",

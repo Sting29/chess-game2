@@ -45,6 +45,7 @@ export function ChessTutorialBoard({
     piece: string
   ): boolean {
     if (!piece.endsWith("P")) return false;
+    if (sourceSquare[0] !== targetSquare[0]) return false;
     const [, toRank] = targetSquare.split("");
     return toRank === "8";
   }
@@ -55,6 +56,7 @@ export function ChessTutorialBoard({
     targetSquare?: Square
   ): boolean {
     if (!promotionPiece || !targetSquare) return false;
+
     // If sourceSquare is not provided, use the saved one
     const actualSourceSquare = sourceSquare ?? lastSourceSquare;
     if (!actualSourceSquare) return false;
