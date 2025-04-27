@@ -57,10 +57,8 @@ export function ChessTutorialBoard({
     targetSquare?: Square
   ): boolean {
     if (!promotionPiece || !targetSquare) return false;
-
-    // Если sourceSquare не передан, используем сохраненный
-    const actualSourceSquare =
-      lastMoveType === "drop" ? sourceSquare : lastSourceSquare;
+    // If sourceSquare is not provided, use the saved one
+    const actualSourceSquare = sourceSquare ?? lastSourceSquare;
     if (!actualSourceSquare) return false;
 
     const piece = promotionPiece.charAt(1).toLowerCase() as PromotionPiece;
