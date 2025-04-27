@@ -17,19 +17,6 @@ export const ChessTutorialWrap = styled.div`
   background-attachment: fixed;
 `;
 
-export const ChessTutorialTitle = styled.h1`
-  color: #333;
-  margin-bottom: 2rem;
-  text-align: center;
-`;
-
-export const ChessTutorialLinks = styled.div({
-  display: "flex",
-  gap: "2rem",
-  justifyContent: "center",
-  flexWrap: "wrap",
-});
-
 export const PalmLeaves = styled.div<{ $isMobile: boolean }>`
   position: absolute;
   top: 0;
