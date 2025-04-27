@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { ChessPuzzleBoard } from "../components/ChessPuzzleBoard";
-import { CHESS_PUZZLES } from "../data/puzzles";
-import BackButton from "../components/BackButton/BackButton";
+import { ChessPuzzleBoard } from "../../components/ChessPuzzleBoard";
+import { CHESS_PUZZLES } from "../../data/puzzles";
+import BackButton from "../../components/BackButton/BackButton";
 
 export function PuzzleSolver() {
   const { categoryId, puzzleId } = useParams();

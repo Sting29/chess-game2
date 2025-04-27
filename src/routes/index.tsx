@@ -11,7 +11,7 @@ import ChessMoves from "src/pages/ChessMoves/ChessMoves";
 import PawnBattle from "src/pages/PawnBattle";
 import KnightBattle from "src/pages/KnightBattle";
 import PuzzleList from "src/pages/PuzzleList";
-import { PuzzleSolver } from "src/pages/PuzzleSolver";
+import { PuzzleSolver } from "src/pages/PuzzleSolver/PuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/Layout/Layout";
