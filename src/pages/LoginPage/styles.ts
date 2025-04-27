@@ -17,7 +17,7 @@ export const LoginBox = styled.div`
   align-items: center;
   width: 400px;
   max-width: 400px;
-  margin: 200px auto 0;
+  margin: 120px auto 0;
 `;
 
 export const LoginHeader = styled.div`
@@ -115,14 +115,16 @@ export const PlayButton = styled.button`
   }
 `;
 
-export const CatContainer = styled.div`
+export const CatContainer = styled.div<{ $isMobile: boolean }>`
   position: absolute;
   bottom: 10%;
   left: 20%;
+  display: ${(props) => (props.$isMobile ? "none" : "block")};
 `;
 
-export const BoyContainer = styled.div`
+export const BoyContainer = styled.div<{ $isMobile: boolean }>`
   position: absolute;
   bottom: 15%;
   right: 17%;
+  display: ${(props) => (props.$isMobile ? "none" : "block")};
 `;

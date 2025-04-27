@@ -20,9 +20,11 @@ import LogoImg from "src/assets/logo/logo_big.png";
 import Cat from "src/assets/images/cat.png";
 import Boy from "src/assets/images/boy.png";
 import Image from "src/components/Image/Image";
+import { useIsMobile } from "src/hooks/useIsMobile";
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     // Если пользователь уже авторизован, перенаправляем на главную
@@ -80,13 +82,13 @@ export function LoginPage() {
               disabled={true}
             />
           </FormGroup> */}
+          <PlayButton type="submit" aria-label="Login and Play" />
         </LoginForm>
-        <PlayButton type="submit" aria-label="Login and Play" />
       </LoginBox>
-      <CatContainer>
+      <CatContainer $isMobile={isMobile}>
         <Image src={Cat} height={256} />
       </CatContainer>
-      <BoyContainer>
+      <BoyContainer $isMobile={isMobile}>
         <Image src={Boy} height={385} />
       </BoyContainer>
     </LoginContainer>
