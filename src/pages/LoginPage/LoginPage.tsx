@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import {
   LoginContainer,
   LoginBox,
-  LoginHeader,
+  // LoginHeader,
   LoginForm,
-  FormGroup,
-  SrOnly,
-  Input,
+  // FormGroup,
+  // SrOnly,
+  // Input,
   PlayButton,
   BlueLine,
   LogoContainer,
@@ -16,7 +16,7 @@ import {
 } from "./styles";
 
 import LogoImg from "src/assets/logo/logo_big.png";
-import LogoTitle from "src/assets/elements/enter_your_account.png";
+// import LogoTitle from "src/assets/elements/enter_your_account.png";
 import Cat from "src/assets/images/cat.png";
 import Boy from "src/assets/images/boy.png";
 import Image from "src/components/Image/Image";
@@ -50,12 +50,12 @@ export function LoginPage() {
         <Image src={LogoImg} height={310} />
       </LogoContainer>
       <LoginBox>
-        <LoginHeader>
+        {/* <LoginHeader>
           <Image src={LogoTitle} height={42} width={366} />
-        </LoginHeader>
+        </LoginHeader> */}
 
         <LoginForm onSubmit={handleLogin}>
-          <FormGroup>
+          {/* <FormGroup>
             <SrOnly htmlFor="email-address">Email</SrOnly>
             <Input
               id="email-address"
@@ -79,10 +79,9 @@ export function LoginPage() {
               placeholder="Password"
               disabled={true}
             />
-          </FormGroup>
-
-          <PlayButton type="submit" aria-label="Login and Play" />
+          </FormGroup> */}
         </LoginForm>
+        <PlayButton type="submit" aria-label="Login and Play" />
       </LoginBox>
       <CatContainer>
         <Image src={Cat} height={256} />

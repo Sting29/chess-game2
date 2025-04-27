@@ -17,7 +17,7 @@ export const LoginBox = styled.div`
   align-items: center;
   width: 400px;
   max-width: 400px;
-  margin: 0 auto;
+  margin: 200px auto 0;
 `;
 
 export const LoginHeader = styled.div`
