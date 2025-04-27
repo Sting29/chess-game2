@@ -26,9 +26,7 @@ export function ChessTutorialBoard({
     "playing" | "white_wins" | "draw"
   >("playing");
   const [promotionSquare, setPromotionSquare] = useState<Square | null>(null);
-  const [lastMoveType, setLastMoveType] = useState<"drop" | "click" | null>(
-    null
-  );
+  const [, setLastMoveType] = useState<"drop" | "click" | null>(null);
   const [lastSourceSquare, setLastSourceSquare] = useState<Square | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
