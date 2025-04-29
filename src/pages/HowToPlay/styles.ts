@@ -27,6 +27,7 @@ export const TutorialDescription = styled.p`
 `;
 
 export const NavigationLinksContainer = styled.div`
+  margin-top: 40px;
   display: flex;
   gap: 2rem;
   justify-content: flex-start;

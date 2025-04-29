@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import backgroundHowToMove from "src/assets/background/background_how_to_move.png";
+import backgroundHowToMove from "src/assets/background/background_game_how_to_play.png";
 
 export const PageContainer = styled.div`
   padding: 2rem;

@@ -6,28 +6,16 @@ import {
   TutorialDescription,
   NavigationLinksContainer,
 } from "./styles";
-import ChessTutorialButton from "src/components/ChessTutorialButton/ChessTutorialButton";
+import ChessTutorialButton, {
+  WidgetSize,
+} from "src/components/ChessTutorialButton/ChessTutorialButton";
 
-import ChessPawn from "src/assets/images/chess_pawn.jpg";
-import ChessKnight from "src/assets/images/chess_knight.jpg";
+import { HOW_TO_PLAY } from "src/data/how-to-play";
 
 function HowToPlay() {
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
   const previousPage = "/";
-
-  const pages = [
-    {
-      path: `${currentPath}/pawn-battle`,
-      title: "Pawn Battle",
-      image: ChessPawn,
-    },
-    {
-      path: `${currentPath}/knight-battle`,
-      title: "Knight Battle",
-      image: ChessKnight,
-    },
-  ];
 
   return (
     <TutorialPageContainer>
@@ -37,12 +25,13 @@ function HowToPlay() {
       <BackButtonImage linkToPage={previousPage} />
 
       <NavigationLinksContainer>
-        {pages.map((link) => (
+        {HOW_TO_PLAY.map((link) => (
           <ChessTutorialButton
+            widgetSize={link.widgetSize as WidgetSize}
             key={link.path}
             title={link.title}
             image={link.image}
-            onClick={() => navigate(link.path)}
+            onClick={() => navigate(`${currentPath}${link.path}`)}
           />
         ))}
       </NavigationLinksContainer>

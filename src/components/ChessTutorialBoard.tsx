@@ -210,7 +210,7 @@ export function ChessTutorialBoard({
   const customPieces = useCustomPieces();
 
   return (
-    <div style={{ width: "500px", margin: "0 auto" }}>
+    <div style={{ width: "550px", margin: "0 auto" }}>
       <div
         className="move-message"
         style={{
