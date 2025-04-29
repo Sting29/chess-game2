@@ -14,8 +14,8 @@ function ChessTutorialButton({
 }: ChessTutorialButtonProps) {
   return (
     <ChessTutorialButtonWrap onClick={onClick}>
+      <Image src={image} height={280} />
       <LinkHeader>{title}</LinkHeader>
-      <Image src={image} height={200} />
     </ChessTutorialButtonWrap>
   );
 }

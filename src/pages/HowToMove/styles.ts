@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import backgroundCheckLesson from "../../assets/background/background_check_lesson.png";
+import backgroundCheckLesson from "../../assets/background/background_how_to_move.png";
 
 export const TutorialPageContainer = styled.div`
   display: flex;
@@ -16,15 +16,22 @@ export const TutorialPageContainer = styled.div`
 
 export const TutorialTitle = styled.h1`
   color: #333;
-  margin-bottom: 0.5rem;
+  margin: 40px 0 20px;
   text-align: center;
+  font-family: "Wendy One", sans-serif;
+  font-size: 70px;
+  line-height: 74px;
+  color: #fff7db;
 `;
 
 export const TutorialDescription = styled.p`
-  font-size: 1.2rem;
   color: #555;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
   text-align: center;
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 46px;
+  color: #5c7b07;
 `;
 
 export const NavigationLinksContainer = styled.div`
@@ -32,4 +39,10 @@ export const NavigationLinksContainer = styled.div`
   gap: 2rem;
   justify-content: flex-start;
   flex-wrap: wrap;
+`;
+
+export const BackButtonWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 40px;
 `;

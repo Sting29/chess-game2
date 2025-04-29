@@ -4,7 +4,7 @@ import {
   TutorialTitle,
   TutorialDescription,
   NavigationLinksContainer,
-  // NavigationButton,
+  BackButtonWrap,
 } from "./styles";
 import ChessTutorialButton from "src/components/ChessTutorialButton/ChessTutorialButton";
 
@@ -20,8 +20,9 @@ function HowToMove() {
     <TutorialPageContainer>
       <TutorialTitle>How to Move</TutorialTitle>
       <TutorialDescription>Learn how chess pieces move:</TutorialDescription>
-
-      <BackButtonImage linkToPage={previousPage} />
+      <BackButtonWrap>
+        <BackButtonImage linkToPage={previousPage} />
+      </BackButtonWrap>
 
       <NavigationLinksContainer>
         {HOW_TO_MOVE.map((link) => (

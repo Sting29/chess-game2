@@ -14,7 +14,6 @@ function BackButton({ linkToPage }: { linkToPage: string }) {
   return (
     <BackButtonWrap
       to={linkToPage}
-      className="back-button"
       onClick={handleClick}
       aria-label="Back to previous page"
     />

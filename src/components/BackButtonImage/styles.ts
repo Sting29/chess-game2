@@ -5,9 +5,8 @@ import buttonBack from "../../assets/elements/button_back.png";
 export const BackButtonWrap = styled(Link)`
   display: block;
   position: relative;
-  height: 56px;
-  width: 200px;
-  margin-right: 28px;
+  height: 116px;
+  width: 140px;
   border: none;
   background: url(${buttonBack}) no-repeat center center;
   background-size: contain;
