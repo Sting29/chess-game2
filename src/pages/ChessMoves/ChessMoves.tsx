@@ -3,7 +3,6 @@ import { ChessTutorialBoard } from "../../components/ChessTutorialBoard";
 import { useState } from "react";
 import { Square } from "../../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
-import BackButton from "src/components/BackButton/BackButton";
 import { Description } from "../../components/Description/Description";
 import { HOW_TO_MOVE } from "../../data/how-to-move";
 import {
@@ -15,7 +14,9 @@ import {
   BoardContainer,
   ResetButton,
   BoomAnimation,
+  BackButtonWrap,
 } from "./styles";
+import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 
 function ChessMoves() {
   const { pieceId } = useParams<{ pieceId: string }>();
@@ -50,7 +51,9 @@ function ChessMoves() {
       <ContentContainer>
         <MainContent>
           <Title>{pieceData.pageTitle}</Title>
-          <BackButton linkToPage={previousPage} />
+          <BackButtonWrap>
+            <BackButtonImage linkToPage={previousPage} />
+          </BackButtonWrap>
 
           <BoardContainer>
             <ChessTutorialBoard

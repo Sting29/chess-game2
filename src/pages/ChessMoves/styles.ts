@@ -2,7 +2,6 @@ import styled from "styled-components";
 import backgroundHowToMove from "src/assets/background/background_game_how_to_play.png";
 
 export const PageContainer = styled.div`
-  padding: 2rem;
   margin: 0 auto;
   background-image: url(${backgroundHowToMove});
   background-size: cover;
@@ -27,8 +26,12 @@ export const MainContent = styled.div`
 
 export const Title = styled.h1`
   color: #333;
-  margin-bottom: 2rem;
+  margin: 40px 0 20px;
   text-align: center;
+  font-family: "Wendy One", sans-serif;
+  font-size: 70px;
+  line-height: 74px;
+  color: #fff7db;
 `;
 
 export const SideContent = styled.div`
@@ -79,4 +82,10 @@ export const BoomAnimation = styled.div`
       opacity: 0;
     }
   }
+`;
+
+export const BackButtonWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 40px;
 `;

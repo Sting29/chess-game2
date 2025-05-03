@@ -13,6 +13,15 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { HOW_TO_MOVE } from "src/data/how-to-move";
 
 import { useBreakpoint } from "src/hooks/useBreakpoint";
+import { useMemo } from "react";
+
+const visibleCountMap = {
+  mobile: 1,
+  tablet: 2,
+  laptop: 3,
+  desktop: 4,
+  fullHD: 4,
+};
 
 function HowToMove() {
   const navigate = useNavigate();
@@ -20,21 +29,20 @@ function HowToMove() {
   const previousPage = "/";
   const { breakpoint } = useBreakpoint();
 
-  const getVisibleCount = () => {
-    switch (breakpoint) {
-      case "mobile":
-        return 1;
-      case "tablet":
-        return 2;
-      case "laptop":
-        return 3;
-      case "desktop":
-      case "fullHD":
-        return 4;
-      default:
-        return 4;
-    }
-  };
+  const visibleCount = visibleCountMap[breakpoint] ?? 4;
+
+  const buttons = useMemo(
+    () =>
+      HOW_TO_MOVE.map((link) => (
+        <ChessTutorialButton
+          key={`${currentPath}/${link.id}`}
+          title={link.pageTitle}
+          image={link.image}
+          onClick={() => navigate(link.id)}
+        />
+      )),
+    [currentPath, navigate]
+  );
 
   return (
     <TutorialPageContainer>
@@ -45,16 +53,7 @@ function HowToMove() {
       </BackButtonWrap>
 
       <NavigationLinksContainer>
-        <TutorialSlider visibleCount={getVisibleCount()}>
-          {HOW_TO_MOVE.map((link) => (
-            <ChessTutorialButton
-              key={`${currentPath}/${link.id}`}
-              title={link.pageTitle}
-              image={link.image}
-              onClick={() => navigate(link.id)}
-            />
-          ))}
-        </TutorialSlider>
+        <TutorialSlider visibleCount={visibleCount}>{buttons}</TutorialSlider>
       </NavigationLinksContainer>
     </TutorialPageContainer>
   );
