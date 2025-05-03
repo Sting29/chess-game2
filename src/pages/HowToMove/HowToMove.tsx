@@ -7,6 +7,7 @@ import {
   BackButtonWrap,
 } from "./styles";
 import ChessTutorialButton from "src/components/ChessTutorialButton/ChessTutorialButton";
+import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
 
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { HOW_TO_MOVE } from "src/data/how-to-move";
@@ -25,14 +26,16 @@ function HowToMove() {
       </BackButtonWrap>
 
       <NavigationLinksContainer>
-        {HOW_TO_MOVE.map((link) => (
-          <ChessTutorialButton
-            key={`${currentPath}/${link.id}`}
-            title={link.pageTitle}
-            image={link.image}
-            onClick={() => navigate(link.id)}
-          />
-        ))}
+        <TutorialSlider visibleCount={4}>
+          {HOW_TO_MOVE.map((link) => (
+            <ChessTutorialButton
+              key={`${currentPath}/${link.id}`}
+              title={link.pageTitle}
+              image={link.image}
+              onClick={() => navigate(link.id)}
+            />
+          ))}
+        </TutorialSlider>
       </NavigationLinksContainer>
     </TutorialPageContainer>
   );
