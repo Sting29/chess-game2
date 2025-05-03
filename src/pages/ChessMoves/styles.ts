@@ -35,16 +35,10 @@ export const Title = styled.h1`
 `;
 
 export const SideContent = styled.div`
+  position: absolute;
+  top: 120px;
+  right: 0;
   width: 300px;
-  flex-shrink: 0;
-  margin-top: 10rem;
-`;
-
-export const BoardContainer = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  justify-content: center;
 `;
 
 export const ResetButton = styled.button`
@@ -88,4 +82,10 @@ export const BackButtonWrap = styled.div`
   position: absolute;
   top: 20px;
   left: 40px;
+`;
+
+export const QuestionButtonWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 40px;
 `;

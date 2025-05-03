@@ -2,7 +2,7 @@ import { useParams } from "react-router-dom";
 import { ChessTutorialBoard } from "../../components/ChessTutorialBoard";
 import { useState } from "react";
 import { Square } from "../../types/types";
-import GameComplete from "src/components/GameComplete/GameComplete";
+// import GameComplete from "src/components/GameComplete/GameComplete";
 import { Description } from "../../components/Description/Description";
 import { HOW_TO_MOVE } from "../../data/how-to-move";
 import {
@@ -11,20 +11,22 @@ import {
   MainContent,
   Title,
   SideContent,
-  BoardContainer,
   ResetButton,
   BoomAnimation,
   BackButtonWrap,
+  QuestionButtonWrap,
 } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
+import QuestionButton from "src/components/QuestionButton/QuestionButton";
 
 function ChessMoves() {
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);
-  const [gameComplete, setGameComplete] = useState(false);
-  const [currentGameStatus, setCurrentGameStatus] = useState<
-    "playing" | "white_wins" | "draw"
-  >("playing");
+  // const [gameComplete, setGameComplete] = useState(false);
+  // const [currentGameStatus, setCurrentGameStatus] = useState<
+  //   "playing" | "white_wins" | "draw"
+  // >("playing");
+  const [showSideContent, setShowSideContent] = useState(true);
 
   const pieceData = HOW_TO_MOVE.find((piece) => piece.id === pieceId);
 
@@ -39,12 +41,12 @@ function ChessMoves() {
     setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
-    if (gameStatus === "white_wins" || gameStatus === "draw") {
-      setGameComplete(true);
-    }
-    setCurrentGameStatus(gameStatus);
-  };
+  // const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
+  //   if (gameStatus === "white_wins" || gameStatus === "draw") {
+  //     setGameComplete(true);
+  //   }
+  //   setCurrentGameStatus(gameStatus);
+  // };
 
   return (
     <PageContainer>
@@ -54,29 +56,30 @@ function ChessMoves() {
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
           </BackButtonWrap>
-
-          <BoardContainer>
-            <ChessTutorialBoard
-              initialPosition={pieceData.initialPosition}
-              onCapture={handleCapture}
-              onComplete={handleComplete}
+          <QuestionButtonWrap>
+            <QuestionButton
+              onClick={() => setShowSideContent(!showSideContent)}
             />
-            {showBoom && <BoomAnimation>BOOM!</BoomAnimation>}
-          </BoardContainer>
-
-          {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
-
+            {showSideContent && (
+              <SideContent>
+                <Description
+                  title={pieceData.descriptionTitle}
+                  hints={pieceData.description}
+                />
+              </SideContent>
+            )}
+          </QuestionButtonWrap>
+          <ChessTutorialBoard
+            initialPosition={pieceData.initialPosition}
+            onCapture={handleCapture}
+            // onComplete={handleComplete}
+          />
+          {showBoom && <BoomAnimation>BOOM!</BoomAnimation>}
+          {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
           <ResetButton onClick={() => window.location.reload()}>
             Reset
           </ResetButton>
         </MainContent>
-
-        <SideContent>
-          <Description
-            title={pieceData.descriptionTitle}
-            hints={pieceData.description}
-          />
-        </SideContent>
       </ContentContainer>
     </PageContainer>
   );
