@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import {
+  SliderWrapper,
+  ArrowButtonLeft,
+  ArrowButtonRight,
+  SlidesContainer,
+} from "./styles";
 
 interface TutorialSliderProps {
   children: React.ReactNode[];
@@ -11,43 +17,44 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
 }) => {
   const [startIndex, setStartIndex] = useState(0);
 
-  const maxIndex = Math.max(0, children.length - visibleCount);
+  // Последний возможный стартовый индекс, чтобы не выйти за пределы массива
+  const lastSliceStart =
+    children.length <= visibleCount
+      ? 0
+      : children.length - (children.length % visibleCount || visibleCount);
 
   const handlePrev = () => {
     setStartIndex((prev) => Math.max(0, prev - visibleCount));
   };
 
   const handleNext = () => {
-    setStartIndex((prev) => Math.min(maxIndex, prev + visibleCount));
+    const nextIndex = startIndex + visibleCount;
+    if (nextIndex >= children.length) {
+      setStartIndex(lastSliceStart);
+    } else {
+      setStartIndex(nextIndex);
+    }
   };
 
+  // Определяем, показываем ли последний слайс
+  const isLastSlice = startIndex >= lastSliceStart;
+
   return (
-    <div style={{ display: "flex", alignItems: "center", width: "100%" }}>
-      <button
+    <SliderWrapper>
+      <ArrowButtonLeft
         onClick={handlePrev}
         disabled={startIndex === 0}
-        style={{ fontSize: 24, padding: "0 12px" }}
-      >
-        ←
-      </button>
-      <div
-        style={{
-          display: "flex",
-          gap: "1rem",
-          flex: 1,
-          justifyContent: "center",
-        }}
-      >
+        aria-label="Previous"
+      />
+      <SlidesContainer>
         {children.slice(startIndex, startIndex + visibleCount)}
-      </div>
-      <button
+      </SlidesContainer>
+      <ArrowButtonRight
         onClick={handleNext}
-        disabled={startIndex >= maxIndex}
-        style={{ fontSize: 24, padding: "0 12px" }}
-      >
-        →
-      </button>
-    </div>
+        disabled={isLastSlice}
+        aria-label="Next"
+      />
+    </SliderWrapper>
   );
 };
 
