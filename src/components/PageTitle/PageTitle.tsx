@@ -8,6 +8,7 @@ const StyledTitle = styled.h1`
   font-size: 70px;
   line-height: 74px;
   color: #fff7db;
+  -webkit-text-stroke: 1px black;
 `;
 
 interface PageTitleProps {

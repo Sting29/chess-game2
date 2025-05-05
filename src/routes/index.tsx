@@ -8,14 +8,13 @@ import HowToMove from "src/pages/HowToMove/HowToMove";
 import ChessTutorial from "src/pages/ChessTutorial/ChessTutorial";
 import HowToPlay from "src/pages/HowToPlay/HowToPlay";
 import ChessMoves from "src/pages/ChessMoves/ChessMoves";
-import PawnBattle from "src/pages/PawnBattle/PawnBattle";
-import KnightBattle from "src/pages/KnightBattle/KnightBattle";
 import PuzzleList from "src/pages/PuzzleList";
 import { PuzzleSolver } from "src/pages/PuzzleSolver/PuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/Layout/Layout";
 import Account from "src/pages/Account/Account";
+import ChessBattle from "src/pages/ChessBattle/ChessBattle";
 
 // Получаем базовый путь из окружения или используем корневой путь
 const basename = process.env.PUBLIC_URL || "/";
@@ -42,51 +41,38 @@ const router = createBrowserRouter(
     {
       path: "/",
       element: protectedElement(<ChessTutorial />),
-      // title: "Chess Tutorial",
     },
     {
       path: "/how-to-move",
       element: protectedElement(<HowToMove />),
-      // title: "How to Move",
     },
     {
       path: "/how-to-play",
       element: protectedElement(<HowToPlay />),
-      // title: "How to Play",
     },
     {
       path: "/puzzles",
       element: protectedElement(<PuzzleList />),
-      // title: "Chess Puzzles",
     },
     {
       path: "/puzzles/:categoryId",
       element: protectedElement(<PuzzleList />),
-      // title: "Puzzle Category",
     },
     {
       path: "/puzzles/:categoryId/:puzzleId",
       element: protectedElement(<PuzzleSolver />),
-      // title: "Solve Puzzle",
     },
     {
       path: "/how-to-move/:pieceId",
       element: protectedElement(<ChessMoves />),
     },
     {
-      path: "/how-to-play/pawn-battle",
-      element: protectedElement(<PawnBattle />),
-      // title: "Pawn Battle",
-    },
-    {
-      path: "/how-to-play/knight-battle",
-      element: protectedElement(<KnightBattle />),
-      // title: "Knight Battle",
+      path: "/how-to-play/:battleId",
+      element: protectedElement(<ChessBattle />),
     },
     {
       path: "/play-with-computer",
       element: protectedElement(<PlayWithComputer />),
-      // title: "Play with Computer",
     },
     {
       path: "/play-with-person",
@@ -99,7 +85,6 @@ const router = createBrowserRouter(
     {
       path: "*",
       element: <Navigate to="/" replace />,
-      // title: "404",
     },
   ],
   {

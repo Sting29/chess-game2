@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { ChessTutorialBoard } from "../../components/ChessTutorialBoard";
+import { ChessTutorialBoard } from "../../components/ChessTutorialBoard/ChessTutorialBoard";
 import { useState } from "react";
 import { Square } from "../../types/types";
 // import GameComplete from "src/components/GameComplete/GameComplete";
@@ -18,6 +18,7 @@ import {
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
+
 function ChessMoves() {
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { Chessboard } from "react-chessboard";
-import { PromotionPiece, Piece } from "../types/types";
-import { Square } from "../types/playTypes";
-import { SimplifiedChessEngine } from "../utils/SimplifiedChessEngine";
-import { useCustomPieces } from "./CustomPieces/CustomPieces";
+import { PromotionPiece, Piece } from "../../types/types";
+import { Square } from "../../types/playTypes";
+import { SimplifiedChessEngine } from "../../utils/SimplifiedChessEngine";
+import { useCustomPieces } from "../CustomPieces/CustomPieces";
 
 interface ChessTutorialBoardProps {
   initialPosition: string;

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { WidgetSize } from "./ChessTutorialButton";
 
-export const ChessTutorialButtonWrap = styled.button<{
+export const ChessTutorialButtonWrap = styled.a<{
   $image: string;
   $widgetSize: WidgetSize;
 }>(({ $image, $widgetSize }) => ({

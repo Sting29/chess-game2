@@ -29,10 +29,10 @@ function HowToPlay() {
         {HOW_TO_PLAY.map((link) => (
           <ChessTutorialButton
             widgetSize={link.widgetSize as WidgetSize}
-            key={link.path}
+            key={link.id}
             title={link.title}
             image={link.image}
-            onClick={() => navigate(`${currentPath}${link.path}`)}
+            onClick={() => navigate(`${currentPath}/${link.id}`)}
           />
         ))}
       </NavigationLinksContainer>
