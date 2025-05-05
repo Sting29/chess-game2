@@ -8,7 +8,7 @@ import HowToMove from "src/pages/HowToMove/HowToMove";
 import ChessTutorial from "src/pages/ChessTutorial/ChessTutorial";
 import HowToPlay from "src/pages/HowToPlay/HowToPlay";
 import ChessMoves from "src/pages/ChessMoves/ChessMoves";
-import PuzzleList from "src/pages/PuzzleList";
+import PuzzleList from "src/pages/PuzzleList/PuzzleList";
 import { PuzzleSolver } from "src/pages/PuzzleSolver/PuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";

@@ -3,11 +3,11 @@ import { ChessBattleBoard } from "../../components/ChessBattleBoard";
 import { useState } from "react";
 import { Square } from "../../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
-import { BackButtonWrap, PageContainer, ResetButton } from "./styles";
+import { PageContainer, ResetButton } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { HOW_TO_PLAY } from "src/data/how-to-play";
-
+import { BackButtonWrap } from "src/styles/commonStyles";
 function ChessBattle() {
   const { battleId } = useParams<{ battleId: string }>();
   const [showBoom, setShowBoom] = useState(false);
@@ -22,7 +22,6 @@ function ChessBattle() {
   if (!battleData) {
     return <div>Battle not found</div>;
   }
-  const initialPosition = battleData.initialPosition;
   const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
   const handleCapture = (square: Square) => {

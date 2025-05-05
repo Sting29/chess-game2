@@ -12,12 +12,6 @@ export const PageContainer = styled.div`
   flex-direction: column;
 `;
 
-export const BackButtonWrap = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 40px;
-`;
-
 export const ResetButton = styled.button`
   margin: 20px auto 8px;
   padding: 0.8rem 1.5rem;

@@ -4,13 +4,12 @@ import {
   TutorialPageContainer,
   TutorialDescription,
   NavigationLinksContainer,
-  BackButtonWrap,
 } from "./styles";
 import ChessTutorialButton, {
   WidgetSize,
 } from "src/components/ChessTutorialButton/ChessTutorialButton";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
-
+import { BackButtonWrap } from "src/styles/commonStyles";
 import { HOW_TO_PLAY } from "src/data/how-to-play";
 
 function HowToPlay() {

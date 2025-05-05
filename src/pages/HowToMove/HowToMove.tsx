@@ -3,14 +3,13 @@ import {
   TutorialPageContainer,
   TutorialDescription,
   NavigationLinksContainer,
-  BackButtonWrap,
 } from "./styles";
 import ChessTutorialButton from "src/components/ChessTutorialButton/ChessTutorialButton";
 import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { HOW_TO_MOVE } from "src/data/how-to-move";
-
+import { BackButtonWrap } from "src/styles/commonStyles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useMemo } from "react";
 

@@ -68,12 +68,6 @@ export const BoomAnimation = styled.div`
   }
 `;
 
-export const BackButtonWrap = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 40px;
-`;
-
 export const QuestionButtonWrap = styled.div`
   position: absolute;
   top: 20px;

@@ -30,9 +30,3 @@ export const NavigationLinksContainer = styled.div`
   justify-content: flex-start;
   flex-wrap: wrap;
 `;
-
-export const BackButtonWrap = styled.div`
-  position: absolute;
-  top: 20px;
-  left: 40px;
-`;
