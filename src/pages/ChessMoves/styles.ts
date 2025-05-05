@@ -24,16 +24,6 @@ export const MainContent = styled.div`
   align-items: center;
 `;
 
-export const Title = styled.h1`
-  color: #333;
-  margin: 40px 0 20px;
-  text-align: center;
-  font-family: "Wendy One", sans-serif;
-  font-size: 70px;
-  line-height: 74px;
-  color: #fff7db;
-`;
-
 export const SideContent = styled.div`
   position: absolute;
   top: 120px;

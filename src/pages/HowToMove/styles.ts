@@ -14,16 +14,6 @@ export const TutorialPageContainer = styled.div`
   background-attachment: fixed;
 `;
 
-export const TutorialTitle = styled.h1`
-  color: #333;
-  margin: 40px 0 20px;
-  text-align: center;
-  font-family: "Wendy One", sans-serif;
-  font-size: 70px;
-  line-height: 74px;
-  color: #fff7db;
-`;
-
 export const TutorialDescription = styled.p`
   color: #555;
   margin-bottom: 20px;

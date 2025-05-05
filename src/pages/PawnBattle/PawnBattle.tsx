@@ -3,8 +3,9 @@ import { ChessBattleBoard } from "../../components/ChessBattleBoard";
 import { useState } from "react";
 import { Square } from "../../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
-import { Title, PageContainer } from "./styles";
+import { BackButtonWrap, PageContainer, ResetButton } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
+import { PageTitle } from "src/components/PageTitle/PageTitle";
 function PawnBattle() {
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
@@ -35,8 +36,10 @@ function PawnBattle() {
 
   return (
     <PageContainer>
-      <Title>Pawn Battle</Title>
-      <BackButtonImage linkToPage={previousPage} />
+      <PageTitle title="Pawn Battle" />
+      <BackButtonWrap>
+        <BackButtonImage linkToPage={previousPage} />
+      </BackButtonWrap>
 
       <ChessBattleBoard
         initialPosition={initialPosition}
@@ -47,9 +50,7 @@ function PawnBattle() {
       {showBoom && <div className="boom-animation">BOOM!</div>}
       {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
-      <button className="reset-button" onClick={() => window.location.reload()}>
-        Reset
-      </button>
+      <ResetButton onClick={() => window.location.reload()}>Reset</ResetButton>
     </PageContainer>
   );
 }

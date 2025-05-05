@@ -1,14 +1,13 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import {
   TutorialPageContainer,
-  TutorialTitle,
   TutorialDescription,
   NavigationLinksContainer,
   BackButtonWrap,
 } from "./styles";
 import ChessTutorialButton from "src/components/ChessTutorialButton/ChessTutorialButton";
 import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
-
+import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { HOW_TO_MOVE } from "src/data/how-to-move";
 
@@ -46,7 +45,7 @@ function HowToMove() {
 
   return (
     <TutorialPageContainer>
-      <TutorialTitle>How to Move</TutorialTitle>
+      <PageTitle title="How to Move" />
       <TutorialDescription>Learn how chess pieces move:</TutorialDescription>
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />

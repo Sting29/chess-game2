@@ -9,7 +9,6 @@ import {
   PageContainer,
   ContentContainer,
   MainContent,
-  Title,
   SideContent,
   ResetButton,
   BoomAnimation,
@@ -18,7 +17,7 @@ import {
 } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
-
+import { PageTitle } from "src/components/PageTitle/PageTitle";
 function ChessMoves() {
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);
@@ -52,7 +51,7 @@ function ChessMoves() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <Title>{pieceData.pageTitle}</Title>
+          <PageTitle title={pieceData.pageTitle} />
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
           </BackButtonWrap>

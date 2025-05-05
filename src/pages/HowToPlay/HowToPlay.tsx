@@ -2,13 +2,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import {
   TutorialPageContainer,
-  TutorialTitle,
   TutorialDescription,
   NavigationLinksContainer,
+  BackButtonWrap,
 } from "./styles";
 import ChessTutorialButton, {
   WidgetSize,
 } from "src/components/ChessTutorialButton/ChessTutorialButton";
+import { PageTitle } from "src/components/PageTitle/PageTitle";
 
 import { HOW_TO_PLAY } from "src/data/how-to-play";
 
@@ -19,11 +20,11 @@ function HowToPlay() {
 
   return (
     <TutorialPageContainer>
-      <TutorialTitle>How to Play Chess</TutorialTitle>
+      <PageTitle title="How to Play Chess" />
       <TutorialDescription>Learn how to play with pieces:</TutorialDescription>
-
-      <BackButtonImage linkToPage={previousPage} />
-
+      <BackButtonWrap>
+        <BackButtonImage linkToPage={previousPage} />
+      </BackButtonWrap>
       <NavigationLinksContainer>
         {HOW_TO_PLAY.map((link) => (
           <ChessTutorialButton
