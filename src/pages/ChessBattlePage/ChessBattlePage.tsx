@@ -1,19 +1,19 @@
 import { useLocation } from "react-router-dom";
-import { ChessBattleBoard } from "src/components/ChessBattleBoard";
+import { ChessBattleBoard } from "../../components/ChessBattleBoard";
 import { useState } from "react";
-import { Square } from "src/types/types";
+import { Square } from "../../types/types";
 import GameComplete from "src/components/GameComplete/GameComplete";
 import { BackButtonWrap, PageContainer, ResetButton } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
-function KnightBattle() {
+function PawnBattle() {
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
   const [currentGameStatus, setCurrentGameStatus] = useState<
     "playing" | "white_wins" | "black_wins" | "draw"
   >("playing");
 
-  const initialPosition = "1n4n1/8/8/8/8/8/8/1N4N1 w - - 0 1";
+  const initialPosition = "8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1";
   const previousPage = useLocation().pathname.split("/").slice(0, -1).join("/");
 
   const handleCapture = (square: Square) => {
@@ -36,7 +36,7 @@ function KnightBattle() {
 
   return (
     <PageContainer>
-      <PageTitle title="Knight Battle" />
+      <PageTitle title="Pawn Battle" />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -55,4 +55,4 @@ function KnightBattle() {
   );
 }
 
-export default KnightBattle;
+export default PawnBattle;
