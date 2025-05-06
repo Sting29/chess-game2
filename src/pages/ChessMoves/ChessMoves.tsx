@@ -17,7 +17,7 @@ import {
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
-import { BackButtonWrap } from "src/styles/commonStyles";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 function ChessMoves() {
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);

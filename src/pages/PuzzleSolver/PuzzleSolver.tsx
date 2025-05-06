@@ -1,12 +1,29 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ChessPuzzleBoard } from "../../components/ChessPuzzleBoard";
 import { CHESS_PUZZLES } from "../../data/puzzles";
-import BackButton from "../../components/BackButton/BackButton";
+import {
+  SolverPage,
+  PuzzleDescription,
+  PuzzleControls,
+  HintButton,
+  ResetButton,
+  HintContainer,
+  HintText,
+  GameComplete,
+  PuzzleCompleteButtons,
+  NextPuzzleButton,
+} from "./styles";
+import { PageTitle } from "src/components/PageTitle/PageTitle";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
+import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 
 export function PuzzleSolver() {
   const { categoryId, puzzleId } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
   const [showHint, setShowHint] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
@@ -54,55 +71,49 @@ export function PuzzleSolver() {
   };
 
   return (
-    <div className="tutorial-page">
-      <h1>{puzzle.title}</h1>
-      <BackButton linkToPage={`/puzzles/${categoryId}`} />
-
-      <div className="puzzle-description">
+    <SolverPage>
+      <PageTitle title={puzzle.title} />
+      <BackButtonWrap>
+        <BackButtonImage linkToPage={previousPage} />
+      </BackButtonWrap>
+      <PuzzleDescription>
         <p>{puzzle.description}</p>
-      </div>
-
+      </PuzzleDescription>
       <ChessPuzzleBoard
-        key={key} // Ключ для перерендера
+        key={key}
         initialPosition={puzzle.initialPosition}
         correctMoves={puzzle.correctMoves}
         onComplete={handleComplete}
       />
-
-      <div className="puzzle-controls">
-        <button className="hint-button" onClick={() => setShowHint(!showHint)}>
+      <PuzzleControls>
+        <HintButton onClick={() => setShowHint(!showHint)}>
           {showHint ? "Hide hint" : "Show hint"}
-        </button>
-        <button className="reset-button" onClick={handleReset}>
-          Start over
-        </button>
-      </div>
-
+        </HintButton>
+        <ResetButton onClick={handleReset}>Start over</ResetButton>
+      </PuzzleControls>
       {showHint && (
-        <div className="hint-container">
-          <p className="hint-text">{puzzle.hint}</p>
-        </div>
+        <HintContainer>
+          <HintText>{puzzle.hint}</HintText>
+        </HintContainer>
       )}
-
       {gameComplete && (
-        <div className="game-complete">
+        <GameComplete>
           <h2>Task solved!</h2>
-          <div className="puzzle-complete-buttons">
+          <PuzzleCompleteButtons>
             {hasNextPuzzle ? (
-              <button className="next-puzzle-button" onClick={handleNextPuzzle}>
+              <NextPuzzleButton onClick={handleNextPuzzle}>
                 Next task
-              </button>
+              </NextPuzzleButton>
             ) : (
-              <button
-                className="next-puzzle-button"
+              <NextPuzzleButton
                 onClick={() => navigate(`/puzzles/${categoryId}`)}
               >
                 Back to task list
-              </button>
+              </NextPuzzleButton>
             )}
-          </div>
-        </div>
+          </PuzzleCompleteButtons>
+        </GameComplete>
       )}
-    </div>
+    </SolverPage>
   );
 }

@@ -9,7 +9,7 @@ import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { HOW_TO_MOVE } from "src/data/how-to-move";
-import { BackButtonWrap } from "src/styles/commonStyles";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useMemo } from "react";
 

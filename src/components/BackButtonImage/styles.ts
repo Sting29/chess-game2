@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import buttonBack from "../../assets/elements/button_back.png";
 
-export const BackButtonWrap = styled(Link)`
+export const BackButtonLink = styled(Link)`
   display: block;
   position: relative;
   height: 116px;
@@ -16,4 +16,10 @@ export const BackButtonWrap = styled(Link)`
   &:hover {
     transform: scale(1.05);
   }
+`;
+
+export const BackButtonWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  left: 40px;
 `;

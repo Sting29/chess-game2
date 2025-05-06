@@ -8,7 +8,7 @@ import {
   PuzzleListWrap,
   PuzzleItem,
 } from "./styles";
-import { BackButtonWrap } from "src/styles/commonStyles";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";

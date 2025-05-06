@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { BackButtonWrap } from "./styles";
+import { BackButtonLink } from "./styles";
 
 function BackButton({ linkToPage }: { linkToPage: string }) {
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ function BackButton({ linkToPage }: { linkToPage: string }) {
     }
   };
   return (
-    <BackButtonWrap
+    <BackButtonLink
       to={linkToPage}
       onClick={handleClick}
       aria-label="Back to previous page"

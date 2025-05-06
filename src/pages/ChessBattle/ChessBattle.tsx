@@ -7,7 +7,7 @@ import { PageContainer, ResetButton } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { HOW_TO_PLAY } from "src/data/how-to-play";
-import { BackButtonWrap } from "src/styles/commonStyles";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 function ChessBattle() {
   const { battleId } = useParams<{ battleId: string }>();
   const [showBoom, setShowBoom] = useState(false);
