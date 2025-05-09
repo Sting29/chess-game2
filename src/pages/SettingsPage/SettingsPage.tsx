@@ -1,12 +1,16 @@
-import { AccountContainer, Title } from "./styles";
-import BackButton from "src/components/BackButton/BackButton";
+import { PageTitle } from "src/components/PageTitle/PageTitle";
+import { PageContainer } from "./styles";
+import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 
 function SettingsPage() {
   return (
-    <AccountContainer>
-      <BackButton linkToPage="-1" />
-      <Title>Settings</Title>
-    </AccountContainer>
+    <PageContainer>
+      <PageTitle title="Settings" />
+      <BackButtonWrap>
+        <BackButtonImage linkToPage="-1" />
+      </BackButtonWrap>
+    </PageContainer>
   );
 }
 

@@ -22,7 +22,9 @@ function PuzzleList() {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const location = useLocation();
-  const previousPage = location.pathname.split("/").slice(0, -1).join("/");
+  const previousPage = categoryId
+    ? location.pathname.split("/").slice(0, -1).join("/")
+    : "-1";
   const category = CHESS_PUZZLES.find((c) => c.id === categoryId);
 
   // Если categoryId не указан, показываем список категорий
