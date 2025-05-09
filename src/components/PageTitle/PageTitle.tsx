@@ -12,7 +12,7 @@ const StyledTitle = styled.h1`
 `;
 
 interface PageTitleProps {
-  title: string;
+  title: string | undefined;
 }
 
 export function PageTitle({ title }: PageTitleProps) {

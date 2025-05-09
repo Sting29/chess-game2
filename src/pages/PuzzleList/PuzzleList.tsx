@@ -4,7 +4,7 @@ import {
   TutorialPage,
   PuzzleCategories,
   PuzzleBoardButton,
-  PuzzleListWrap,
+  // PuzzleListWrap,
   PuzzleItem,
   PuzzleCount,
   PuzzleCategory,
@@ -23,17 +23,19 @@ function PuzzleList() {
   const { categoryId } = useParams();
   const location = useLocation();
   const previousPage = location.pathname.split("/").slice(0, -1).join("/");
+  const category = CHESS_PUZZLES.find((c) => c.id === categoryId);
 
   // Если categoryId не указан, показываем список категорий
-  if (!categoryId) {
-    return (
-      <TutorialPage>
-        <PageTitle title="Chess puzzles" />
-        <BackButtonWrap>
-          <BackButtonImage linkToPage={previousPage} />
-        </BackButtonWrap>
-        <PuzzleCategories>
-          {CHESS_PUZZLES.map((category) => (
+
+  return (
+    <TutorialPage>
+      <PageTitle title={!categoryId ? "Chess Puzzles" : category?.title} />
+      <BackButtonWrap>
+        <BackButtonImage linkToPage={previousPage} />
+      </BackButtonWrap>
+      <PuzzleCategories>
+        {!categoryId ? (
+          CHESS_PUZZLES.map((category) => (
             <PuzzleBoardButton
               key={category.id}
               onClick={() => navigate(`/puzzles/${category.id}`)}
@@ -53,35 +55,21 @@ function PuzzleList() {
               </PuzzleCategory>
               <Image src={category.image} alt="" width={100} height={100} />
             </PuzzleBoardButton>
-          ))}
-        </PuzzleCategories>
-      </TutorialPage>
-    );
-  }
-
-  // Показываем список задач в выбранной категории
-  const category = CHESS_PUZZLES.find((c) => c.id === categoryId);
-  if (!category) {
-    return <div>Category not found</div>;
-  }
-
-  return (
-    <TutorialPage>
-      <PageTitle title={category.title} />
-      <BackButtonWrap>
-        <BackButtonImage linkToPage={previousPage} />
-      </BackButtonWrap>
-      <PuzzleListWrap>
-        {category.puzzles.map((puzzle) => (
-          <PuzzleItem
-            key={puzzle.id}
-            onClick={() => navigate(`/puzzles/${categoryId}/${puzzle.id}`)}
-          >
-            <h3>{puzzle.title}</h3>
-            <p>{puzzle.description}</p>
-          </PuzzleItem>
-        ))}
-      </PuzzleListWrap>
+          ))
+        ) : !category ? (
+          <PuzzleCategoryTitle>Category not found</PuzzleCategoryTitle>
+        ) : (
+          category.puzzles.map((puzzle) => (
+            <PuzzleItem
+              key={puzzle.id}
+              onClick={() => navigate(`/puzzles/${categoryId}/${puzzle.id}`)}
+            >
+              <h3>{puzzle.title}</h3>
+              <p>{puzzle.description}</p>
+            </PuzzleItem>
+          ))
+        )}
+      </PuzzleCategories>
     </TutorialPage>
   );
 }
