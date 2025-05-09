@@ -22,5 +22,6 @@ export interface PuzzleCategory {
   id: string;
   title: string;
   description: string;
+  image: string;
   puzzles: ChessPuzzle[];
 }

@@ -1,9 +1,13 @@
 import { PuzzleCategory } from "../types/types";
+import Compass from "src/assets/images/compass.png";
+import Darts from "src/assets/images/darts.png";
+import Fire from "src/assets/images/fire.png";
 
 export const CHESS_PUZZLES: PuzzleCategory[] = [
   {
     id: "mate-in-one",
     title: "Mate in 1 move",
+    image: Compass,
     description: "Find the move that leads to checkmate",
     puzzles: [
       {
@@ -29,6 +33,7 @@ export const CHESS_PUZZLES: PuzzleCategory[] = [
   {
     id: "mate-in-two",
     title: "Mate in 2 moves",
+    image: Fire,
     description: "Find the combination of two moves leading to checkmate",
     puzzles: [
       {
@@ -49,6 +54,7 @@ export const CHESS_PUZZLES: PuzzleCategory[] = [
   {
     id: "basic-tactics",
     title: "Basic Tactics",
+    image: Darts,
     description: "Learn basic tactical patterns",
     puzzles: [
       {

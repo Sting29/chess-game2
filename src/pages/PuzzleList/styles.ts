@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import backgroundPuzzlesSelect from "src/assets/background/background_puzzles_select.png";
+import BoardPuzzle from "src/assets/images/board_puzzle.png";
 
 export const TutorialPage = styled.div`
   display: flex;
@@ -16,40 +17,25 @@ export const TutorialPage = styled.div`
 
 export const PuzzleCategories = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
   gap: 24px;
-  margin-top: 24px;
 `;
 
 export const PuzzleCategory = styled.div`
-  background: #f7f7f7;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
-  padding: 24px 20px 16px 20px;
-  cursor: pointer;
-  flex: 1 1 220px;
-  min-width: 220px;
-  transition: box-shadow 0.2s, transform 0.2s;
-  &:hover {
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.13);
-    transform: translateY(-2px) scale(1.03);
-  }
-  h2 {
-    margin: 0 0 8px 0;
-    font-size: 1.2rem;
-  }
-  p {
-    margin: 0 0 12px 0;
-    color: #666;
-    font-size: 1rem;
-  }
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-top: 20px;
 `;
 
 export const PuzzleCount = styled.span`
-  display: inline-block;
-  margin-top: 8px;
-  font-size: 0.95rem;
-  color: #888;
+  min-width: 124px;
+  max-width: 124px;
+  height: 42px;
+  background-color: #6ecf0c;
+  border-radius: 8px;
+  border: 1px solid #3e302a;
 `;
 
 export const PuzzleListWrap = styled.div`
@@ -79,4 +65,51 @@ export const PuzzleItem = styled.div`
     color: #666;
     font-size: 0.98rem;
   }
+`;
+
+export const PuzzleBoardButton = styled.button`
+  display: flex;
+  gap: 16px;
+  width: 612px;
+  height: 169px;
+  padding: 24px 48px 16px 48px;
+  background-image: url(${BoardPuzzle});
+  background-size: cover;
+  background-color: transparent;
+  border: none;
+`;
+
+export const PuzzleCategoryTitle = styled.h2`
+  text-align: start;
+  color: #f0ed9c;
+  font-size: 34px;
+  font-weight: 800;
+  line-height: 38px;
+`;
+
+export const PuzzleCategoryDescriptionWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+`;
+
+export const PuzzleCategoryDescription = styled.p`
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 20px;
+  color: #dbbd53;
+  text-align: start;
+`;
+
+export const PuzzleCountText = styled.p`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+  background-color: #b3e644;
+  color: ##3e302a;
+  border-radius: 8px;
 `;

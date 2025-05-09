@@ -1,22 +1,28 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { CHESS_PUZZLES } from "../../data/puzzles";
 import {
   TutorialPage,
   PuzzleCategories,
-  PuzzleCategory,
-  PuzzleCount,
+  PuzzleBoardButton,
   PuzzleListWrap,
   PuzzleItem,
+  PuzzleCount,
+  PuzzleCategory,
+  PuzzleCategoryTitle,
+  PuzzleCategoryDescriptionWrap,
+  PuzzleCategoryDescription,
+  PuzzleCountText,
 } from "./styles";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
-
+import Image from "src/components/Image/Image";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 
 function PuzzleList() {
   const navigate = useNavigate();
   const { categoryId } = useParams();
-  const previousPage = "/";
+  const location = useLocation();
+  const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
   // Если categoryId не указан, показываем список категорий
   if (!categoryId) {
@@ -28,14 +34,25 @@ function PuzzleList() {
         </BackButtonWrap>
         <PuzzleCategories>
           {CHESS_PUZZLES.map((category) => (
-            <PuzzleCategory
+            <PuzzleBoardButton
               key={category.id}
               onClick={() => navigate(`/puzzles/${category.id}`)}
             >
-              <h2>{category.title}</h2>
-              <p>{category.description}</p>
-              <PuzzleCount>Tasks: {category.puzzles.length}</PuzzleCount>
-            </PuzzleCategory>
+              <PuzzleCategory>
+                <PuzzleCategoryTitle>{category.title}</PuzzleCategoryTitle>
+                <PuzzleCategoryDescriptionWrap>
+                  <PuzzleCategoryDescription>
+                    {category.description}
+                  </PuzzleCategoryDescription>
+                  <PuzzleCount>
+                    <PuzzleCountText>
+                      Tasks: {category.puzzles.length}
+                    </PuzzleCountText>
+                  </PuzzleCount>
+                </PuzzleCategoryDescriptionWrap>
+              </PuzzleCategory>
+              <Image src={category.image} alt="" width={100} height={100} />
+            </PuzzleBoardButton>
           ))}
         </PuzzleCategories>
       </TutorialPage>
