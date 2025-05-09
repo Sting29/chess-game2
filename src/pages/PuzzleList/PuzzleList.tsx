@@ -1,4 +1,5 @@
 import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useMemo, useCallback } from "react";
 import { CHESS_PUZZLES } from "../../data/puzzles";
 import {
   TutorialPage,
@@ -22,11 +23,26 @@ function PuzzleList() {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const location = useLocation();
-  const previousPage = categoryId
-    ? location.pathname.split("/").slice(0, -1).join("/")
-    : "-1";
-  const category = CHESS_PUZZLES.find((c) => c.id === categoryId);
+  const previousPage = useMemo(
+    () =>
+      categoryId ? location.pathname.split("/").slice(0, -1).join("/") : "-1",
+    [categoryId, location.pathname]
+  );
 
+  const category = useMemo(
+    () => CHESS_PUZZLES.find((c) => c.id === categoryId),
+    [categoryId]
+  );
+
+  const handleCategoryClick = useCallback(
+    (id: string) => navigate(`/puzzles/${id}`),
+    [navigate]
+  );
+
+  const handlePuzzleClick = useCallback(
+    (puzzleId: string) => navigate(`/puzzles/${categoryId}/${puzzleId}`),
+    [navigate, categoryId]
+  );
   // Если categoryId не указан, показываем список категорий
 
   return (
@@ -40,7 +56,7 @@ function PuzzleList() {
           CHESS_PUZZLES.map((category) => (
             <PuzzleBoardButton
               key={category.id}
-              onClick={() => navigate(`/puzzles/${category.id}`)}
+              onClick={() => handleCategoryClick(category.id)}
             >
               <PuzzleCategory>
                 <PuzzleCategoryTitle>{category.title}</PuzzleCategoryTitle>
@@ -64,7 +80,7 @@ function PuzzleList() {
           category.puzzles.map((puzzle) => (
             <PuzzleItem
               key={puzzle.id}
-              onClick={() => navigate(`/puzzles/${categoryId}/${puzzle.id}`)}
+              onClick={() => handlePuzzleClick(puzzle.id)}
             >
               <h3>{puzzle.title}</h3>
               <p>{puzzle.description}</p>

@@ -13,3 +13,39 @@ export const PageContainer = styled.div`
   background-repeat: no-repeat;
   background-attachment: fixed;
 `;
+
+export const SettingsContainer = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  width: 800px;
+  margin-top: 20px;
+`;
+
+export const SettingsTitle = styled.h2`
+  width: 200px;
+  font-size: 24px;
+  font-weight: 600;
+`;
+
+export const SettingsLanguage = styled.div`
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+`;
+
+export const SettingsLanguageButton = styled.button<{ current: boolean }>`
+  width: 150px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid black;
+  background-color: ${({ current }) => (current ? "green" : "white")};
+  font-size: 16px;
+  font-weight: 600;
+  color: black;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
