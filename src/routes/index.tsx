@@ -15,7 +15,7 @@ import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/Layout/Layout";
 import Account from "src/pages/Account/Account";
 import ChessBattle from "src/pages/ChessBattle/ChessBattle";
-
+import SettingsPage from "src/pages/SettingsPage/SettingsPage";
 // Получаем базовый путь из окружения или используем корневой путь
 const basename = process.env.PUBLIC_URL || "/";
 
@@ -81,6 +81,10 @@ const router = createBrowserRouter(
     {
       path: "/account",
       element: protectedElement(<Account />),
+    },
+    {
+      path: "/settings",
+      element: protectedElement(<SettingsPage />),
     },
     {
       path: "*",

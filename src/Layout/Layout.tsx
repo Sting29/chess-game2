@@ -7,6 +7,7 @@ import {
   AccountButton,
   LogoContainer,
   LogoText,
+  SettingsButton,
 } from "./styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 
@@ -37,6 +38,7 @@ export function Layout({ children }: LayoutProps) {
         )}
       </LogoContainer>
       <Header>
+        <SettingsButton to="/settings" aria-label="Settings" />
         <AccountButton to="/account" aria-label="Account settings" />
         <LogoutButton onClick={handleLogout} aria-label="Exit" />
       </Header>

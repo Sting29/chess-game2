@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import buttonExit from "../assets/elements/button_exit.png";
 import buttonAccount from "../assets/elements/button_account.png";
 import userIcon from "../assets/elements/user_x.png";
-
+import buttonSettings from "../assets/elements/button_settings.png";
 export const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
@@ -52,6 +52,21 @@ export const LogoutButton = styled.button`
   background: url(${buttonExit}) no-repeat center center;
   background-size: contain;
   transition: transform 0.2s;
+  cursor: pointer;
+  &:hover {
+    transform: scale(1.05);
+  }
+`;
+
+export const SettingsButton = styled(Link)`
+  width: 72px;
+  height: 56px;
+  margin-right: 72px;
+  border: none;
+  background: url(${buttonSettings}) no-repeat center center;
+  background-size: contain;
+  transition: transform 0.2s;
+  cursor: pointer;
 
   &:hover {
     transform: scale(1.05);
