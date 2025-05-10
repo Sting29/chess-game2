@@ -8,38 +8,38 @@ import {
 } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
-import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 function SettingsPage() {
-  const [language, setLanguage] = useState("en");
+  const { t, i18n } = useTranslation();
 
   const handleLanguageChange = (lang: string) => {
-    setLanguage(lang);
+    i18n.changeLanguage(lang);
   };
 
   return (
     <PageContainer>
-      <PageTitle title="Settings" />
+      <PageTitle title={t("settings")} />
       <BackButtonWrap>
         <BackButtonImage linkToPage="-1" />
       </BackButtonWrap>
       <SettingsContainer>
-        <SettingsTitle>Select Language:</SettingsTitle>
+        <SettingsTitle>{t("select_language")}</SettingsTitle>
         <SettingsLanguage>
           <SettingsLanguageButton
-            current={language === "en"}
+            current={i18n.language === "en"}
             onClick={() => handleLanguageChange("en")}
           >
             English
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={language === "he"}
+            current={i18n.language === "he"}
             onClick={() => handleLanguageChange("he")}
           >
             Hebrew
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={language === "ru"}
+            current={i18n.language === "ru"}
             onClick={() => handleLanguageChange("ru")}
           >
             Russian

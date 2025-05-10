@@ -18,8 +18,10 @@ import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import Image from "src/components/Image/Image";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
+import { useTranslation } from "react-i18next";
 
 function PuzzleList() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const location = useLocation();
@@ -47,7 +49,7 @@ function PuzzleList() {
 
   return (
     <TutorialPage>
-      <PageTitle title={!categoryId ? "Chess Puzzles" : category?.title} />
+      <PageTitle title={!categoryId ? t("chess_puzzles") : category?.title} />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -66,7 +68,7 @@ function PuzzleList() {
                   </PuzzleCategoryDescription>
                   <PuzzleCount>
                     <PuzzleCountText>
-                      Tasks: {category.puzzles.length}
+                      {t("tasks")}: {category.puzzles.length}
                     </PuzzleCountText>
                   </PuzzleCount>
                 </PuzzleCategoryDescriptionWrap>
@@ -75,7 +77,7 @@ function PuzzleList() {
             </PuzzleBoardButton>
           ))
         ) : !category ? (
-          <PuzzleCategoryTitle>Category not found</PuzzleCategoryTitle>
+          <PuzzleCategoryTitle>{t("category_not_found")}</PuzzleCategoryTitle>
         ) : (
           category.puzzles.map((puzzle) => (
             <PuzzleItem
