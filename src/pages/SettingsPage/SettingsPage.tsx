@@ -24,7 +24,7 @@ function SettingsPage() {
         <BackButtonImage linkToPage="-1" />
       </BackButtonWrap>
       <SettingsContainer>
-        <SettingsTitle>Select Language</SettingsTitle>
+        <SettingsTitle>Select Language:</SettingsTitle>
         <SettingsLanguage>
           <SettingsLanguageButton
             current={language === "en"}
