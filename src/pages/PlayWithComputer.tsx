@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ComputerChessBoard } from "../components/ComputerChessBoard";
 import BackButton from "../components/BackButton/BackButton";
+import { useTranslation } from "react-i18next";
 
 interface GameSettings {
   depth: number; // глубина расчета (1-20)
@@ -8,6 +9,7 @@ interface GameSettings {
 }
 
 function PlayWithComputer() {
+  const { t } = useTranslation();
   const [settings, setSettings] = useState<GameSettings>({
     depth: 10,
     skill: 10,
@@ -23,7 +25,7 @@ function PlayWithComputer() {
 
   return (
     <div className="tutorial-page">
-      <h1>Play with Computer</h1>
+      <h1>{t("play_with_computer")}</h1>
       <BackButton linkToPage="/" />
 
       <div className="game-controls">
@@ -31,7 +33,7 @@ function PlayWithComputer() {
           className="settings-button"
           onClick={() => setIsSettingsOpen(true)}
         >
-          Settings
+          {t("settings")}
         </button>
       </div>
 
@@ -40,10 +42,12 @@ function PlayWithComputer() {
       {isSettingsOpen && (
         <div className="settings-modal">
           <div className="settings-content">
-            <h2>Game Settings</h2>
+            <h2>{t("game_settings")}</h2>
 
             <div className="setting-item">
-              <label>Calculation depth: {settings.depth}</label>
+              <label>
+                {t("calculation_depth")}: {settings.depth}
+              </label>
               <input
                 type="range"
                 min="1"
@@ -56,7 +60,9 @@ function PlayWithComputer() {
             </div>
 
             <div className="setting-item">
-              <label>Difficulty level: {settings.skill}</label>
+              <label>
+                {t("difficulty_level")}: {settings.skill}
+              </label>
               <input
                 type="range"
                 min="0"
@@ -72,7 +78,7 @@ function PlayWithComputer() {
               className="close-button"
               onClick={() => setIsSettingsOpen(false)}
             >
-              Close
+              {t("close")}
             </button>
           </div>
         </div>

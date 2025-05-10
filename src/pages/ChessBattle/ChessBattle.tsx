@@ -8,7 +8,10 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { HOW_TO_PLAY } from "src/data/how-to-play";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
+import { useTranslation } from "react-i18next";
+
 function ChessBattle() {
+  const { t } = useTranslation();
   const { battleId } = useParams<{ battleId: string }>();
   const [showBoom, setShowBoom] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
@@ -20,7 +23,7 @@ function ChessBattle() {
   const location = useLocation();
 
   if (!battleData) {
-    return <div>Battle not found</div>;
+    return <div>{t("battle_not_found")}</div>;
   }
   const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
@@ -44,7 +47,7 @@ function ChessBattle() {
 
   return (
     <PageContainer>
-      <PageTitle title={battleData.title} />
+      <PageTitle title={t(battleData.titleKey)} />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -55,10 +58,12 @@ function ChessBattle() {
         onComplete={handleComplete}
       />
 
-      {showBoom && <div className="boom-animation">BOOM!</div>}
+      {showBoom && <div className="boom-animation">{t("boom")}</div>}
       {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
-      <ResetButton onClick={() => window.location.reload()}>Reset</ResetButton>
+      <ResetButton onClick={() => window.location.reload()}>
+        {t("reset")}
+      </ResetButton>
     </PageContainer>
   );
 }

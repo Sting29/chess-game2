@@ -11,16 +11,20 @@ import ChessTutorialButton, {
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { HOW_TO_PLAY } from "src/data/how-to-play";
+import { useTranslation } from "react-i18next";
 
 function HowToPlay() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
   const previousPage = "/";
 
   return (
     <TutorialPageContainer>
-      <PageTitle title="How to Play Chess" />
-      <TutorialDescription>Learn how to play with pieces:</TutorialDescription>
+      <PageTitle title={t("how_to_play_chess")} />
+      <TutorialDescription>
+        {t("learn_how_to_play_with_pieces")}
+      </TutorialDescription>
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -29,7 +33,7 @@ function HowToPlay() {
           <ChessTutorialButton
             widgetSize={link.widgetSize as WidgetSize}
             key={link.id}
-            title={link.title}
+            title={t(link.titleKey)}
             image={link.image}
             onClick={() => navigate(`${currentPath}/${link.id}`)}
           />

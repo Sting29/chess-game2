@@ -25,11 +25,23 @@ function PuzzleList() {
   const navigate = useNavigate();
   const { categoryId } = useParams();
   const location = useLocation();
-  const previousPage = useMemo(
-    () =>
-      categoryId ? location.pathname.split("/").slice(0, -1).join("/") : "-1",
-    [categoryId, location.pathname]
-  );
+
+  // const prevPageLink = () => {
+  //   console.log(location.pathname);
+  //   if (location.pathname === "/puzzles") {
+  //     return "/";
+  //   }
+  //   return previousPage;
+  // };
+
+  const previousPage = useMemo(() => {
+    if (location.pathname === "/puzzles") {
+      return "/";
+    }
+    return categoryId
+      ? location.pathname.split("/").slice(0, -1).join("/")
+      : "-1";
+  }, [categoryId, location.pathname]);
 
   const category = useMemo(
     () => CHESS_PUZZLES.find((c) => c.id === categoryId),
@@ -49,7 +61,15 @@ function PuzzleList() {
 
   return (
     <TutorialPage>
-      <PageTitle title={!categoryId ? t("chess_puzzles") : category?.title} />
+      <PageTitle
+        title={
+          !categoryId
+            ? t("chess_puzzles")
+            : category
+            ? t(category.titleKey)
+            : ""
+        }
+      />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -61,10 +81,12 @@ function PuzzleList() {
               onClick={() => handleCategoryClick(category.id)}
             >
               <PuzzleCategory>
-                <PuzzleCategoryTitle>{category.title}</PuzzleCategoryTitle>
+                <PuzzleCategoryTitle>
+                  {t(category.titleKey)}
+                </PuzzleCategoryTitle>
                 <PuzzleCategoryDescriptionWrap>
                   <PuzzleCategoryDescription>
-                    {category.description}
+                    {t(category.descriptionKey)}
                   </PuzzleCategoryDescription>
                   <PuzzleCount>
                     <PuzzleCountText>
@@ -84,8 +106,8 @@ function PuzzleList() {
               key={puzzle.id}
               onClick={() => handlePuzzleClick(puzzle.id)}
             >
-              <h3>{puzzle.title}</h3>
-              <p>{puzzle.description}</p>
+              <h3>{t(puzzle.titleKey)}</h3>
+              <p>{t(puzzle.descriptionKey)}</p>
             </PuzzleItem>
           ))
         )}

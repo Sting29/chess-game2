@@ -18,7 +18,10 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
+import { useTranslation } from "react-i18next";
+
 function ChessMoves() {
+  const { t } = useTranslation();
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);
   // const [gameComplete, setGameComplete] = useState(false);
@@ -30,7 +33,7 @@ function ChessMoves() {
   const pieceData = HOW_TO_MOVE.find((piece) => piece.id === pieceId);
 
   if (!pieceData) {
-    return <div>Piece not found</div>;
+    return <div>{t("piece_not_found")}</div>;
   }
 
   const previousPage = "/how-to-move";
@@ -51,7 +54,7 @@ function ChessMoves() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <PageTitle title={pieceData.pageTitle} />
+          <PageTitle title={t(pieceData.pageTitleKey)} />
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
           </BackButtonWrap>
@@ -62,8 +65,12 @@ function ChessMoves() {
             {showSideContent && (
               <SideContent>
                 <Description
-                  title={pieceData.descriptionTitle}
-                  hints={pieceData.description}
+                  title={t(pieceData.descriptionTitleKey)}
+                  hints={
+                    t(pieceData.descriptionKey, {
+                      returnObjects: true,
+                    }) as string[]
+                  }
                 />
               </SideContent>
             )}
@@ -73,10 +80,10 @@ function ChessMoves() {
             onCapture={handleCapture}
             // onComplete={handleComplete}
           />
-          {showBoom && <BoomAnimation>BOOM!</BoomAnimation>}
+          {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
           {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
           <ResetButton onClick={() => window.location.reload()}>
-            Reset
+            {t("reset")}
           </ResetButton>
         </MainContent>
       </ContentContainer>

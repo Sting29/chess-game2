@@ -21,8 +21,10 @@ import Cat from "src/assets/images/cat.png";
 import Boy from "src/assets/images/boy.png";
 import Image from "src/components/Image/Image";
 import { useIsMobile } from "src/hooks/useIsMobile";
+import { useTranslation } from "react-i18next";
 
 export function LoginPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -56,7 +58,7 @@ export function LoginPage() {
           <Image src={LogoTitle} height={42} width={366} />
         </LoginHeader> */}
 
-        <LoginForm onSubmit={handleLogin}>
+        <LoginForm onSubmit={handleLogin} aria-label={t("login_and_play")}>
           {/* <FormGroup>
             <SrOnly htmlFor="email-address">Email</SrOnly>
             <Input
@@ -82,7 +84,7 @@ export function LoginPage() {
               disabled={true}
             />
           </FormGroup> */}
-          <PlayButton type="submit" aria-label="Login and Play" />
+          <PlayButton type="submit" aria-label={t("login_and_play")} />
         </LoginForm>
       </LoginBox>
       <CatContainer $isMobile={isMobile}>

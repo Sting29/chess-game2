@@ -7,8 +7,10 @@ import {
   GameCompleteMessage,
   ResetButton,
 } from "./styles";
+import { useTranslation } from "react-i18next";
 
 function PlayWithPerson() {
+  const { t } = useTranslation();
   const [gameResult, setGameResult] = useState<string | null>(null);
 
   const handleGameEnd = (result: string) => {
@@ -23,12 +25,12 @@ function PlayWithPerson() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <h1>Play with Friend</h1>
+          <h1>{t("play_with_friend")}</h1>
           <PersonsChessBoard onGameEnd={handleGameEnd} />
           {gameResult && (
             <>
               <GameCompleteMessage>{gameResult}</GameCompleteMessage>
-              <ResetButton onClick={handleReset}>Play Again</ResetButton>
+              <ResetButton onClick={handleReset}>{t("play_again")}</ResetButton>
             </>
           )}
         </MainContent>

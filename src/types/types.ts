@@ -5,8 +5,8 @@ export type PromotionPiece = "q" | "r" | "n" | "b";
 
 export interface ChessPuzzle {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   initialPosition: string;
   correctMoves: Array<{
     from: string;
@@ -14,14 +14,14 @@ export interface ChessPuzzle {
     piece: string;
     isComputerMove?: boolean;
   }>;
-  hint: string;
+  hintKey: string;
   playerColor: "w" | "b";
 }
 
 export interface PuzzleCategory {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   image: string;
   puzzles: ChessPuzzle[];
 }

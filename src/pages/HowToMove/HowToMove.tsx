@@ -12,6 +12,7 @@ import { HOW_TO_MOVE } from "src/data/how-to-move";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 const visibleCountMap = {
   mobile: 1,
@@ -22,6 +23,7 @@ const visibleCountMap = {
 };
 
 function HowToMove() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const currentPath = useLocation().pathname;
   const previousPage = "/";
@@ -34,18 +36,18 @@ function HowToMove() {
       HOW_TO_MOVE.map((link) => (
         <ChessTutorialButton
           key={`${currentPath}/${link.id}`}
-          title={link.pageTitle}
+          title={t(link.pageTitleKey)}
           image={link.image}
           onClick={() => navigate(link.id)}
         />
       )),
-    [currentPath, navigate]
+    [currentPath, navigate, t]
   );
 
   return (
     <TutorialPageContainer>
-      <PageTitle title="How to Move" />
-      <TutorialDescription>Learn how chess pieces move:</TutorialDescription>
+      <PageTitle title={t("how_to_move")} />
+      <TutorialDescription>{t("learn_how_pieces_move")}</TutorialDescription>
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>

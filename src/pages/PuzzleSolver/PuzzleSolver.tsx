@@ -17,11 +17,16 @@ import {
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
+import { useTranslation } from "react-i18next";
 
 export function PuzzleSolver() {
+  const { t } = useTranslation();
   const { categoryId, puzzleId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
+
+  console.log(location, "location");
+  console.log(navigate, "navigate");
 
   const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
@@ -47,7 +52,7 @@ export function PuzzleSolver() {
     : null;
 
   if (!puzzle) {
-    return <div>Task not found</div>;
+    return <div>{t("task_not_found")}</div>;
   }
 
   const handleComplete = (result: "success" | "failure") => {
@@ -72,12 +77,12 @@ export function PuzzleSolver() {
 
   return (
     <SolverPage>
-      <PageTitle title={puzzle.title} />
+      <PageTitle title={t(puzzle.titleKey)} />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
       <PuzzleDescription>
-        <p>{puzzle.description}</p>
+        <p>{t(puzzle.descriptionKey)}</p>
       </PuzzleDescription>
       <ChessPuzzleBoard
         key={key}
@@ -87,28 +92,28 @@ export function PuzzleSolver() {
       />
       <PuzzleControls>
         <HintButton onClick={() => setShowHint(!showHint)}>
-          {showHint ? "Hide hint" : "Show hint"}
+          {showHint ? t("hide_hint") : t("show_hint")}
         </HintButton>
-        <ResetButton onClick={handleReset}>Start over</ResetButton>
+        <ResetButton onClick={handleReset}>{t("start_over")}</ResetButton>
       </PuzzleControls>
       {showHint && (
         <HintContainer>
-          <HintText>{puzzle.hint}</HintText>
+          <HintText>{t(puzzle.hintKey)}</HintText>
         </HintContainer>
       )}
       {gameComplete && (
         <GameComplete>
-          <h2>Task solved!</h2>
+          <h2>{t("task_solved")}</h2>
           <PuzzleCompleteButtons>
             {hasNextPuzzle ? (
               <NextPuzzleButton onClick={handleNextPuzzle}>
-                Next task
+                {t("next_task")}
               </NextPuzzleButton>
             ) : (
               <NextPuzzleButton
                 onClick={() => navigate(`/puzzles/${categoryId}`)}
               >
-                Back to task list
+                {t("back_to_task_list")}
               </NextPuzzleButton>
             )}
           </PuzzleCompleteButtons>

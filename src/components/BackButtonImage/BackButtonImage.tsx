@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { BackButtonLink } from "./styles";
+import { useTranslation } from "react-i18next";
 
 function BackButton({ linkToPage }: { linkToPage: string }) {
+  const { t } = useTranslation();
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -15,7 +17,7 @@ function BackButton({ linkToPage }: { linkToPage: string }) {
     <BackButtonLink
       to={linkToPage}
       onClick={handleClick}
-      aria-label="Back to previous page"
+      aria-label={t("back_button")}
     />
   );
 }
