@@ -47,19 +47,19 @@ function SettingsPage() {
         <SettingsTitle>{t("select_language")}</SettingsTitle>
         <SettingsLanguage>
           <SettingsLanguageButton
-            $current={language === "en"}
-            onClick={() => handleLanguageChange("en")}
-          >
-            <SettingsLanguageButtonText $current={language === "en"}>
-              English
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          <SettingsLanguageButton
             $current={language === "he"}
             onClick={() => handleLanguageChange("he")}
           >
             <SettingsLanguageButtonText $current={language === "he"}>
               עברית
+            </SettingsLanguageButtonText>
+          </SettingsLanguageButton>
+          <SettingsLanguageButton
+            $current={language === "en"}
+            onClick={() => handleLanguageChange("en")}
+          >
+            <SettingsLanguageButtonText $current={language === "en"}>
+              English
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton

@@ -14,12 +14,13 @@ i18n
       ru: { translation: ru },
       he: { translation: he },
     },
-    fallbackLng: "en",
+    fallbackLng: "he",
     interpolation: { escapeValue: false },
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
     },
+    lng: "he",
   });
 
 export default i18n;
