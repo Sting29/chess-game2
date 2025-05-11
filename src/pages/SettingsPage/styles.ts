@@ -18,7 +18,7 @@ export const SettingsContainer = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 20px;
-  width: 800px;
+  width: 900px;
   margin-top: 20px;
 `;
 
