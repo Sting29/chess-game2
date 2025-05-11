@@ -25,9 +25,6 @@ export function PuzzleSolver() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  console.log(location, "location");
-  console.log(navigate, "navigate");
-
   const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
   const [showHint, setShowHint] = useState(false);
