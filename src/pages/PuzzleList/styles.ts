@@ -29,7 +29,7 @@ export const PuzzleCategory = styled.div`
   margin-top: 20px;
 `;
 
-export const PuzzleCount = styled.span`
+export const PuzzleCount = styled.p`
   min-width: 124px;
   max-width: 124px;
   height: 42px;
@@ -101,7 +101,7 @@ export const PuzzleCategoryDescription = styled.p`
   text-align: start;
 `;
 
-export const PuzzleCountText = styled.p`
+export const PuzzleCountText = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,6 +110,6 @@ export const PuzzleCountText = styled.p`
   font-weight: 600;
   line-height: 22px;
   background-color: #b3e644;
-  color: ##3e302a;
+  color: #3e302a;
   border-radius: 8px;
 `;

@@ -35,17 +35,31 @@ export const SettingsLanguage = styled.div`
 `;
 
 export const SettingsLanguageButton = styled.button<{ current: boolean }>`
+  display: flex;
+  flex-direction: column;
   width: 150px;
-  height: 40px;
-  border-radius: 12px;
-  border: 1px solid black;
-  background-color: ${({ current }) => (current ? "green" : "white")};
-  font-size: 16px;
-  font-weight: 600;
+  height: 42px;
+  background-color: ${({ current }) => (current ? "#6ecf0c" : "#96a1be")};
   color: black;
   cursor: pointer;
+  border-radius: 20px;
+  border: 1px solid #3e302a;
+  overflow: hidden;
 
   &:hover {
     transform: scale(1.05);
   }
+`;
+
+export const SettingsLanguageButtonText = styled.span<{ current: boolean }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 22px;
+  background-color: ${({ current }) => (current ? "#b3e644" : "#bdcce5")};
+  color: #3e302a;
+  border-radius: 20px;
 `;
