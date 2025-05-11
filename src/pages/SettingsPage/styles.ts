@@ -34,12 +34,12 @@ export const SettingsLanguage = styled.div`
   gap: 12px;
 `;
 
-export const SettingsLanguageButton = styled.button<{ current: boolean }>`
+export const SettingsLanguageButton = styled.button<{ $current: boolean }>`
   display: flex;
   flex-direction: column;
   width: 150px;
   height: 42px;
-  background-color: ${({ current }) => (current ? "#6ecf0c" : "#96a1be")};
+  background-color: ${({ $current }) => ($current ? "#6ecf0c" : "#96a1be")};
   color: black;
   cursor: pointer;
   border-radius: 20px;
@@ -51,7 +51,7 @@ export const SettingsLanguageButton = styled.button<{ current: boolean }>`
   }
 `;
 
-export const SettingsLanguageButtonText = styled.span<{ current: boolean }>`
+export const SettingsLanguageButtonText = styled.span<{ $current: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -59,7 +59,7 @@ export const SettingsLanguageButtonText = styled.span<{ current: boolean }>`
   font-size: 18px;
   font-weight: 600;
   line-height: 22px;
-  background-color: ${({ current }) => (current ? "#b3e644" : "#bdcce5")};
+  background-color: ${({ $current }) => ($current ? "#b3e644" : "#bdcce5")};
   color: #3e302a;
   border-radius: 20px;
 `;

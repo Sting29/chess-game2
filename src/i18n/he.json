@@ -101,5 +101,10 @@
   "puzzles_basic_tactics_desc": "תרגלו מוטיבים טקטיים בסיסיים.",
   "puzzles_basic_tactics_1_title": "טקטיקה בסיסית #1",
   "puzzles_basic_tactics_1_desc": "לבן מתחיל וזוכה בחומר.",
-  "puzzles_basic_tactics_1_hint": "חפשו מזלג עם הפרש."
+  "puzzles_basic_tactics_1_hint": "חפשו מזלג עם הפרש.",
+  "select_chess_set": ":בחר ערכת שחמט",
+  "chess_set_1": "ערכת 1",
+  "chess_set_2": "ערכת 2",
+  "chess_set_3": "ערכת 3",
+  "chess_set_4": "ערכת 4"
 }

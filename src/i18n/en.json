@@ -101,5 +101,10 @@
   "puzzles_basic_tactics_desc": "Practice basic tactical motifs.",
   "puzzles_basic_tactics_1_title": "Basic Tactic #1",
   "puzzles_basic_tactics_1_desc": "White to move and win material.",
-  "puzzles_basic_tactics_1_hint": "Look for a fork with the knight."
+  "puzzles_basic_tactics_1_hint": "Look for a fork with the knight.",
+  "select_chess_set": "Select Chess Set:",
+  "chess_set_1": "Chess Set 1",
+  "chess_set_2": "Chess Set 2",
+  "chess_set_3": "Chess Set 3",
+  "chess_set_4": "Chess Set 4"
 }

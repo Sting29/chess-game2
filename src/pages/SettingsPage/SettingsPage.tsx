@@ -34,26 +34,26 @@ function SettingsPage() {
         <SettingsTitle>{t("select_language")}</SettingsTitle>
         <SettingsLanguage>
           <SettingsLanguageButton
-            current={i18n.language === "he"}
+            $current={i18n.language === "he"}
             onClick={() => handleLanguageChange("he")}
           >
-            <SettingsLanguageButtonText current={i18n.language === "he"}>
+            <SettingsLanguageButtonText $current={i18n.language === "he"}>
               עברית
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={i18n.language === "en"}
+            $current={i18n.language === "en"}
             onClick={() => handleLanguageChange("en")}
           >
-            <SettingsLanguageButtonText current={i18n.language === "en"}>
+            <SettingsLanguageButtonText $current={i18n.language === "en"}>
               English
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={i18n.language === "ru"}
+            $current={i18n.language === "ru"}
             onClick={() => handleLanguageChange("ru")}
           >
-            <SettingsLanguageButtonText current={i18n.language === "ru"}>
+            <SettingsLanguageButtonText $current={i18n.language === "ru"}>
               Русский
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
@@ -61,42 +61,44 @@ function SettingsPage() {
       </SettingsContainer>
 
       <SettingsContainer>
-        <SettingsTitle>Select Chess Set:</SettingsTitle>
+        <SettingsTitle>{t("select_chess_set")}</SettingsTitle>
         <SettingsLanguage>
           <SettingsLanguageButton
-            current={chessSet === 1}
+            $current={chessSet === 1}
             onClick={() => handleChessSetChange(1)}
           >
-            <SettingsLanguageButtonText current={chessSet === 1}>
-              Chess Set 1
+            <SettingsLanguageButtonText $current={chessSet === 1}>
+              {t("chess_set_1")}
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={chessSet === 2}
+            $current={chessSet === 2}
             onClick={() => handleChessSetChange(2)}
           >
-            <SettingsLanguageButtonText current={chessSet === 2}>
-              Chess Set 2
+            <SettingsLanguageButtonText $current={chessSet === 2}>
+              {t("chess_set_2")}
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={chessSet === 3}
+            $current={chessSet === 3}
             onClick={() => handleChessSetChange(3)}
           >
-            <SettingsLanguageButtonText current={chessSet === 3}>
-              Chess Set 3
+            <SettingsLanguageButtonText $current={chessSet === 3}>
+              {t("chess_set_3")}
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton
-            current={chessSet === 4}
+            $current={chessSet === 4}
             onClick={() => handleChessSetChange(4)}
           >
-            <SettingsLanguageButtonText current={chessSet === 4}>
-              Chess Set 4
+            <SettingsLanguageButtonText $current={chessSet === 4}>
+              {t("chess_set_4")}
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
         </SettingsLanguage>
       </SettingsContainer>
+
+      <p></p>
     </PageContainer>
   );
 }
