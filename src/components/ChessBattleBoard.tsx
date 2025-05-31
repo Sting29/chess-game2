@@ -1,5 +1,5 @@
 import { Chessboard } from "react-chessboard";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Square, PromotionPiece } from "../types/types";
 import { BattleChessEngine } from "../utils/BattleChessEngine";
 import { useCustomPieces } from "./CustomPieces/CustomPieces";
@@ -119,6 +119,84 @@ export function ChessBattleBoard({
   }
 
   const customPieces = useCustomPieces();
+
+  // Функция для хода компьютера (черные)
+  function makeComputerMove(currentGame: BattleChessEngine) {
+    // Сначала ищем все возможные ходы для черных пешек
+    const promotionMoves: { from: Square; to: Square }[] = [];
+    const captureMoves: { from: Square; to: Square }[] = [];
+    const normalMoves: { from: Square; to: Square }[] = [];
+    for (const file of "abcdefgh") {
+      for (let rank = 1; rank <= 8; rank++) {
+        const square = `${file}${rank}` as Square;
+        const piece = (currentGame as any).position?.get(square);
+        if (
+          piece &&
+          piece === piece.toLowerCase() &&
+          piece.toLowerCase() === "p"
+        ) {
+          // только черные пешки
+          const legalMoves = currentGame.getLegalMoves(square);
+          for (const to of legalMoves) {
+            const targetPiece = (currentGame as any).position?.get(to);
+            const isPromotion = to[1] === "1";
+            if (isPromotion) {
+              promotionMoves.push({ from: square, to });
+            } else if (
+              targetPiece &&
+              targetPiece !== targetPiece.toLowerCase()
+            ) {
+              // Это взятие
+              captureMoves.push({ from: square, to });
+            } else if (!targetPiece) {
+              // Обычный ход
+              normalMoves.push({ from: square, to });
+            }
+          }
+        }
+      }
+    }
+    let move: { from: Square; to: Square } | undefined;
+    let promotion: "q" | undefined = undefined;
+    if (promotionMoves.length > 0) {
+      // Если есть ход с промоушеном — делаем его и всегда превращаем в ферзя
+      move = promotionMoves[Math.floor(Math.random() * promotionMoves.length)];
+      promotion = "q";
+    } else if (captureMoves.length > 0) {
+      // Если есть взятия — выбираем их
+      move = captureMoves[Math.floor(Math.random() * captureMoves.length)];
+    } else if (normalMoves.length > 0) {
+      // Если нет взятий — обычный ход
+      move = normalMoves[Math.floor(Math.random() * normalMoves.length)];
+    } else {
+      return;
+    }
+    const result = currentGame.move(move.from, move.to, promotion);
+    if (result) {
+      const newFen = currentGame.fen();
+      setGame(new BattleChessEngine(newFen));
+      setHighlightSquares([]);
+      setSelectedSquare(null);
+      if (result.captured) {
+        onCapture?.(move.to);
+      }
+      const newGameStatus = currentGame.getGameStatus();
+      setGameStatus(newGameStatus);
+      if (newGameStatus !== "playing") {
+        onComplete?.(newGameStatus);
+      }
+    }
+  }
+
+  // useEffect для автоматического хода компьютера
+  useEffect(() => {
+    if (gameStatus !== "playing") return;
+    const currentTurn = game.fen().split(" ")[1];
+    if (currentTurn === "b") {
+      setTimeout(() => makeComputerMove(game), 500);
+    }
+    // eslint-disable-next-line
+  }, [game, gameStatus]);
 
   return (
     <div style={{ width: "400px", margin: "0 auto" }}>
