@@ -384,6 +384,12 @@ export class BattleChessEngine {
     }
 
     if (!hasLegalMoves) return "draw";
+
+    // if (!hasLegalMoves) return "draw";
+    // if (whitePieces.length > blackPieces.length) return "white_wins";
+    // if (blackPieces.length > whitePieces.length) return "black_wins";
+    // return "draw";
+
     return "playing";
   }
 }

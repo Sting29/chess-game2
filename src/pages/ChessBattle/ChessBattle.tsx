@@ -52,11 +52,14 @@ function ChessBattle() {
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
 
-      <ChessBattleBoard
-        initialPosition={battleData.initialPosition}
-        onCapture={handleCapture}
-        onComplete={handleComplete}
-      />
+      {battleData.board === "ChessBattleBoard" && (
+        <ChessBattleBoard
+          initialPosition={battleData.initialPosition}
+          onCapture={handleCapture}
+          onComplete={handleComplete}
+          rulesOfWin={battleData.rulesOfWin as "promotion" | "noFiguresLeft"}
+        />
+      )}
 
       {showBoom && <div className="boom-animation">{t("boom")}</div>}
       {gameComplete && <GameComplete gameStatus={currentGameStatus} />}

@@ -10,7 +10,6 @@ interface ChessBattleBoardProps {
   onComplete?: (
     result: "playing" | "white_wins" | "black_wins" | "draw"
   ) => void;
-  rulesOfWin?: "promotion" | "noFiguresLeft";
 }
 
 export function ChessBattleBoard({
@@ -198,6 +197,8 @@ export function ChessBattleBoard({
     }
     // eslint-disable-next-line
   }, [game, gameStatus]);
+
+  // If comment useEffect and makeComputerMove it will be a play for 2 players
 
   return (
     <div style={{ width: "400px", margin: "0 auto" }}>
