@@ -2,7 +2,6 @@ import { useLocation, useParams } from "react-router-dom";
 import { ChessBattleBoard } from "src/components/ChessBattleBoard/ChessBattleBoard";
 import { useState } from "react";
 import { Square } from "src/types/types";
-import GameComplete from "src/components/GameComplete/GameComplete";
 import { PageContainer } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
@@ -23,12 +22,7 @@ function ChessBattle() {
   const { t } = useTranslation();
   const { battleId } = useParams<{ battleId: string }>();
   const [showBoom, setShowBoom] = useState(false);
-  const [gameComplete, setGameComplete] = useState(false);
   const [showSideContent, setShowSideContent] = useState(true);
-
-  const [currentGameStatus, setCurrentGameStatus] = useState<
-    "playing" | "white_wins" | "black_wins" | "draw"
-  >("playing");
 
   const gameData = HOW_TO_PLAY.find((battle) => battle.id === battleId);
   const location = useLocation();
@@ -41,19 +35,6 @@ function ChessBattle() {
   const handleCapture = (square: Square) => {
     setShowBoom(true);
     setTimeout(() => setShowBoom(false), 500);
-  };
-
-  const handleComplete = (
-    gameStatus: "playing" | "white_wins" | "black_wins" | "draw"
-  ) => {
-    if (
-      gameStatus === "white_wins" ||
-      gameStatus === "black_wins" ||
-      gameStatus === "draw"
-    ) {
-      setGameComplete(true);
-    }
-    setCurrentGameStatus(gameStatus);
   };
 
   return (
@@ -87,13 +68,11 @@ function ChessBattle() {
             <ChessBattleBoard
               initialPosition={gameData.initialPosition}
               onCapture={handleCapture}
-              onComplete={handleComplete}
               rulesOfWin={gameData.rulesOfWin as "promotion" | "noFiguresLeft"}
             />
           )}
 
           {showBoom && <div className="boom-animation">{t("boom")}</div>}
-          {gameComplete && <GameComplete gameStatus={currentGameStatus} />}
 
           <ResetButton onClick={() => window.location.reload()}>
             {t("reset")}

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Square, PromotionPiece } from "src/types/types";
 import { BattleChessEngine } from "src/utils/BattleChessEngine";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
+import { useTranslation } from "react-i18next";
 
 interface ChessBattleBoardProps {
   initialPosition: string;
@@ -32,15 +33,17 @@ export function ChessBattleBoard({
   const [, setLastMoveType] = useState<"drop" | "click" | null>(null);
   const [lastSourceSquare, setLastSourceSquare] = useState<Square | null>(null);
 
+  const { t } = useTranslation();
+
   const currentTurn = game.fen().split(" ")[1];
-  let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
+  let turnMessage = currentTurn === "w" ? t("white_move") : t("black_move");
 
   if (gameStatus === "white_wins") {
-    turnMessage = "White wins!";
+    turnMessage = t("white_wins");
   } else if (gameStatus === "black_wins") {
-    turnMessage = "Black wins!";
+    turnMessage = t("black_wins");
   } else if (gameStatus === "draw") {
-    turnMessage = "Draw!";
+    turnMessage = t("draw");
   }
 
   function onPromotionCheck(
@@ -293,7 +296,11 @@ export function ChessBattleBoard({
           color: errorMessage ? "red" : "black",
         }}
       >
-        {errorMessage ? `${turnMessage} - ${errorMessage}` : turnMessage}
+        {gameStatus === "playing"
+          ? errorMessage
+            ? `${turnMessage} - ${errorMessage}`
+            : turnMessage
+          : turnMessage}
       </div>
 
       <Chessboard

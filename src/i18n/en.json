@@ -125,5 +125,10 @@
     "1. Move the pieces",
     "2. Capture the opponent's pieces",
     "3. Win the game"
-  ]
+  ],
+  "white_move": "White move",
+  "black_move": "Black move",
+  "white_wins": "White wins!",
+  "black_wins": "Black wins!",
+  "draw": "Draw!"
 }
