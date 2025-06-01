@@ -3,9 +3,15 @@ import { Square, PromotionPiece } from "../types/types";
 export class BattleChessEngine {
   private position: Map<Square, string>;
   private turn!: "w" | "b";
+  private rulesOfWin: "promotion" | "noFiguresLeft";
+  private lastPromotion: "w" | "b" | null = null;
 
-  constructor(fen: string) {
+  constructor(
+    fen: string,
+    rulesOfWin: "promotion" | "noFiguresLeft" = "noFiguresLeft"
+  ) {
     this.position = new Map();
+    this.rulesOfWin = rulesOfWin;
     this.parseFen(fen);
   }
 
@@ -69,8 +75,10 @@ export class BattleChessEngine {
         to,
         this.turn === "w" ? promotion.toUpperCase() : promotion.toLowerCase()
       );
+      this.lastPromotion = this.turn;
     } else {
       newPosition.set(to, piece);
+      this.lastPromotion = null;
     }
 
     this.position = newPosition;
@@ -358,6 +366,11 @@ export class BattleChessEngine {
   }
 
   getGameStatus(): "playing" | "white_wins" | "black_wins" | "draw" {
+    if (this.rulesOfWin === "promotion") {
+      if (this.lastPromotion === "w") return "white_wins";
+      if (this.lastPromotion === "b") return "black_wins";
+    }
+
     const whitePieces = Array.from(this.position.values()).filter(
       (p) => p === p.toUpperCase()
     );
@@ -383,12 +396,15 @@ export class BattleChessEngine {
       }
     }
 
-    if (!hasLegalMoves) return "draw";
-
-    // if (!hasLegalMoves) return "draw";
-    // if (whitePieces.length > blackPieces.length) return "white_wins";
-    // if (blackPieces.length > whitePieces.length) return "black_wins";
-    // return "draw";
+    if (!hasLegalMoves) {
+      if (this.rulesOfWin === "promotion") {
+        if (whitePieces.length > blackPieces.length) return "white_wins";
+        if (blackPieces.length > whitePieces.length) return "black_wins";
+        return "draw";
+      } else {
+        return "draw";
+      }
+    }
 
     return "playing";
   }

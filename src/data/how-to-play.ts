@@ -12,7 +12,7 @@ export const HOW_TO_PLAY = [
     rulesOfWin: "promotion",
   },
   {
-    id: `pawn-battle`,
+    id: `pawn-battle-1`,
     titleKey: "how_to_play_pawn_battle_1",
     image: ChessPawn,
     widgetSize: "large",

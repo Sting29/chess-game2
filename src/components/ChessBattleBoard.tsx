@@ -17,9 +17,10 @@ export function ChessBattleBoard({
   initialPosition,
   onCapture,
   onComplete,
+  rulesOfWin = "noFiguresLeft",
 }: ChessBattleBoardProps) {
   const [game, setGame] = useState<BattleChessEngine>(
-    new BattleChessEngine(initialPosition)
+    new BattleChessEngine(initialPosition, rulesOfWin)
   );
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
@@ -60,10 +61,12 @@ export function ChessBattleBoard({
 
     const result = game.move(sourceSquare, targetSquare, piece);
     if (result) {
-      const newFen = game.fen();
-
-      const newGame = new BattleChessEngine(newFen);
-      setGame(newGame);
+      setGame(
+        Object.create(
+          Object.getPrototypeOf(game),
+          Object.getOwnPropertyDescriptors(game)
+        )
+      );
 
       setHighlightSquares([]);
       setSelectedSquare(null);
@@ -72,7 +75,7 @@ export function ChessBattleBoard({
         onCapture?.(targetSquare);
       }
 
-      const newGameStatus = newGame.getGameStatus();
+      const newGameStatus = game.getGameStatus();
       setGameStatus(newGameStatus);
       if (newGameStatus !== "playing") {
         onComplete?.(newGameStatus);
@@ -86,8 +89,12 @@ export function ChessBattleBoard({
     const result = game.move(sourceSquare, targetSquare);
 
     if (result) {
-      const newGame = new BattleChessEngine(game.fen());
-      setGame(newGame);
+      setGame(
+        Object.create(
+          Object.getPrototypeOf(game),
+          Object.getOwnPropertyDescriptors(game)
+        )
+      );
       setHighlightSquares([]);
       setSelectedSquare(null);
 
@@ -95,7 +102,7 @@ export function ChessBattleBoard({
         onCapture?.(targetSquare);
       }
 
-      const newGameStatus = newGame.getGameStatus();
+      const newGameStatus = game.getGameStatus();
       setGameStatus(newGameStatus);
       if (newGameStatus !== "playing") {
         onComplete?.(newGameStatus);
@@ -174,8 +181,12 @@ export function ChessBattleBoard({
     }
     const result = currentGame.move(move.from, move.to, promotion);
     if (result) {
-      const newFen = currentGame.fen();
-      setGame(new BattleChessEngine(newFen));
+      setGame(
+        Object.create(
+          Object.getPrototypeOf(currentGame),
+          Object.getOwnPropertyDescriptors(currentGame)
+        )
+      );
       setHighlightSquares([]);
       setSelectedSquare(null);
       if (result.captured) {
