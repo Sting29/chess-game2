@@ -107,5 +107,23 @@
   "chess_set_1": "Набор 1",
   "chess_set_2": "Набор 2",
   "chess_set_3": "Набор 3",
-  "chess_set_4": "Набор 4"
+  "chess_set_4": "Набор 4",
+  "how_to_play_pawn_battle_title": "Как играть",
+  "how_to_play_pawn_battle_desc": [
+    "1. Переместите фигуры",
+    "2. Захватите фигуры противника",
+    "3. Выиграйте игру"
+  ],
+  "how_to_play_pawn_battle_1_title": "Как играть",
+  "how_to_play_pawn_battle_1_desc": [
+    "1. Переместите фигуры",
+    "2. Захватите фигуры противника",
+    "3. Выиграйте игру"
+  ],
+  "how_to_play_knight_battle_title": "Как играть",
+  "how_to_play_knight_battle_desc": [
+    "1. Переместите фигуры",
+    "2. Захватите фигуры противника",
+    "3. Выиграйте игру"
+  ]
 }

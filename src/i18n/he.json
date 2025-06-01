@@ -107,5 +107,23 @@
   "chess_set_1": "ערכת 1",
   "chess_set_2": "ערכת 2",
   "chess_set_3": "ערכת 3",
-  "chess_set_4": "ערכת 4"
+  "chess_set_4": "ערכת 4",
+  "how_to_play_pawn_battle_title": "איך לשחק",
+  "how_to_play_pawn_battle_desc": [
+    "1. הזזו את הכלים",
+    "2. קחו כלי יריב",
+    "3. זכו במשחק"
+  ],
+  "how_to_play_pawn_battle_1_title": "איך לשחק",
+  "how_to_play_pawn_battle_1_desc": [
+    "1. הזזו את הכלים",
+    "2. קחו כלי יריב",
+    "3. זכו במשחק"
+  ],
+  "how_to_play_knight_battle_title": "איך לשחק",
+  "how_to_play_knight_battle_desc": [
+    "1. הזזו את הכלים",
+    "2. קחו כלי יריב",
+    "3. זכו במשחק"
+  ]
 }

@@ -11,18 +11,3 @@ export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
-export const ResetButton = styled.button`
-  margin: 20px auto 8px;
-  padding: 0.8rem 1.5rem;
-  background-color: #4a4a4a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background-color 0.2s;
-
-  &:hover {
-    background-color: #333;
-  }
-`;

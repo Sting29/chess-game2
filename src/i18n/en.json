@@ -107,5 +107,23 @@
   "chess_set_1": "Chess Set 1",
   "chess_set_2": "Chess Set 2",
   "chess_set_3": "Chess Set 3",
-  "chess_set_4": "Chess Set 4"
+  "chess_set_4": "Chess Set 4",
+  "how_to_play_pawn_battle_title": "How to Play",
+  "how_to_play_pawn_battle_desc": [
+    "1. Move the pieces",
+    "2. Capture the opponent's pieces",
+    "3. Win the game"
+  ],
+  "how_to_play_pawn_battle_1_title": "How to Play",
+  "how_to_play_pawn_battle_1_desc": [
+    "1. Move the pieces",
+    "2. Capture the opponent's pieces",
+    "3. Win the game"
+  ],
+  "how_to_play_knight_battle_title": "How to Play",
+  "how_to_play_knight_battle_desc": [
+    "1. Move the pieces",
+    "2. Capture the opponent's pieces",
+    "3. Win the game"
+  ]
 }

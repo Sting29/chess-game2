@@ -10,6 +10,8 @@ export const HOW_TO_PLAY = [
     initialPosition: "8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1",
     board: "ChessBattleBoard",
     rulesOfWin: "promotion",
+    descriptionTitleKey: "how_to_play_pawn_battle_title",
+    descriptionKey: "how_to_play_pawn_battle_desc",
   },
   {
     id: `pawn-battle-1`,
@@ -19,6 +21,8 @@ export const HOW_TO_PLAY = [
     initialPosition: "8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1",
     board: "ChessBattleBoard",
     rulesOfWin: "noFiguresLeft",
+    descriptionTitleKey: "how_to_play_pawn_battle_1_title",
+    descriptionKey: "how_to_play_pawn_battle_1_desc",
   },
   {
     id: `knight-battle`,
@@ -28,6 +32,8 @@ export const HOW_TO_PLAY = [
     initialPosition: "1n4n1/8/8/8/8/8/8/1N4N1 w - - 0 1",
     board: "ChessBattleBoard",
     rulesOfWin: "noFiguresLeft",
+    descriptionTitleKey: "how_to_play_knight_battle_title",
+    descriptionKey: "how_to_play_knight_battle_desc",
   },
   // {
   //   id: `knight-battle`,

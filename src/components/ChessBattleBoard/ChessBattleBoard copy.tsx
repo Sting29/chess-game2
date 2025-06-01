@@ -1,8 +1,8 @@
 import { Chessboard } from "react-chessboard";
 import { useState, useEffect } from "react";
-import { Square, PromotionPiece } from "../types/types";
-import { BattleChessEngine } from "../utils/BattleChessEngine";
-import { useCustomPieces } from "./CustomPieces/CustomPieces";
+import { Square, PromotionPiece } from "src/types/types";
+import { BattleChessEngine } from "src/utils/BattleChessEngine";
+import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 
 interface ChessBattleBoardProps {
   initialPosition: string;

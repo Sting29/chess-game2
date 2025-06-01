@@ -30,9 +30,9 @@ function ChessMoves() {
   // >("playing");
   const [showSideContent, setShowSideContent] = useState(true);
 
-  const pieceData = HOW_TO_MOVE.find((piece) => piece.id === pieceId);
+  const gameData = HOW_TO_MOVE.find((piece) => piece.id === pieceId);
 
-  if (!pieceData) {
+  if (!gameData) {
     return <div>{t("piece_not_found")}</div>;
   }
 
@@ -54,7 +54,7 @@ function ChessMoves() {
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <PageTitle title={t(pieceData.pageTitleKey)} />
+          <PageTitle title={t(gameData.pageTitleKey)} />
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
           </BackButtonWrap>
@@ -65,9 +65,9 @@ function ChessMoves() {
             {showSideContent && (
               <SideContent>
                 <Description
-                  title={t(pieceData.descriptionTitleKey)}
+                  title={t(gameData.descriptionTitleKey)}
                   hints={
-                    t(pieceData.descriptionKey, {
+                    t(gameData.descriptionKey, {
                       returnObjects: true,
                     }) as string[]
                   }
@@ -76,7 +76,7 @@ function ChessMoves() {
             )}
           </QuestionButtonWrap>
           <ChessTutorialBoard
-            initialPosition={pieceData.initialPosition}
+            initialPosition={gameData.initialPosition}
             onCapture={handleCapture}
             // onComplete={handleComplete}
           />
