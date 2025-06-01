@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import {
   TutorialPageContainer,
@@ -12,12 +12,39 @@ import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { HOW_TO_PLAY } from "src/data/how-to-play";
 import { useTranslation } from "react-i18next";
+import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
+import { useMemo } from "react";
+import { useBreakpoint } from "src/hooks/useBreakpoint";
+
+const visibleCountMap = {
+  mobile: 1,
+  tablet: 2,
+  laptop: 3,
+  desktop: 4,
+  fullHD: 4,
+};
 
 function HowToPlay() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const currentPath = useLocation().pathname;
   const previousPage = "/";
+  const { breakpoint } = useBreakpoint();
+
+  const visibleCount = visibleCountMap[breakpoint] ?? 4;
+
+  const buttons = useMemo(
+    () =>
+      HOW_TO_PLAY.map((link) => (
+        <ChessTutorialButton
+          widgetSize={link.widgetSize as WidgetSize}
+          key={link.id}
+          title={t(link.titleKey)}
+          image={link.image}
+          onClick={() => navigate(link.id)}
+        />
+      )),
+    [navigate, t]
+  );
 
   return (
     <TutorialPageContainer>
@@ -29,15 +56,7 @@ function HowToPlay() {
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
       <NavigationLinksContainer>
-        {HOW_TO_PLAY.map((link) => (
-          <ChessTutorialButton
-            widgetSize={link.widgetSize as WidgetSize}
-            key={link.id}
-            title={t(link.titleKey)}
-            image={link.image}
-            onClick={() => navigate(`${currentPath}/${link.id}`)}
-          />
-        ))}
+        <TutorialSlider visibleCount={visibleCount}>{buttons}</TutorialSlider>
       </NavigationLinksContainer>
     </TutorialPageContainer>
   );

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   TutorialPageContainer,
   TutorialDescription,
@@ -17,15 +17,14 @@ import { useTranslation } from "react-i18next";
 const visibleCountMap = {
   mobile: 1,
   tablet: 2,
-  laptop: 3,
-  desktop: 4,
-  fullHD: 4,
+  laptop: 2,
+  desktop: 3,
+  fullHD: 3,
 };
 
 function HowToMove() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const currentPath = useLocation().pathname;
   const previousPage = "/";
   const { breakpoint } = useBreakpoint();
 
@@ -35,13 +34,13 @@ function HowToMove() {
     () =>
       HOW_TO_MOVE.map((link) => (
         <ChessTutorialButton
-          key={`${currentPath}/${link.id}`}
+          key={link.id}
           title={t(link.pageTitleKey)}
           image={link.image}
           onClick={() => navigate(link.id)}
         />
       )),
-    [currentPath, navigate, t]
+    [navigate, t]
   );
 
   return (
