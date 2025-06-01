@@ -408,4 +408,8 @@ export class BattleChessEngine {
 
     return "playing";
   }
+
+  getPiece(square: Square): string | undefined {
+    return this.position.get(square);
+  }
 }

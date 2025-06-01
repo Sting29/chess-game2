@@ -28,6 +28,9 @@ export function ChessBattleBoard({
   const [gameStatus, setGameStatus] = useState<
     "playing" | "white_wins" | "black_wins" | "draw"
   >("playing");
+  const [promotionSquare, setPromotionSquare] = useState<Square | null>(null);
+  const [, setLastMoveType] = useState<"drop" | "click" | null>(null);
+  const [lastSourceSquare, setLastSourceSquare] = useState<Square | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
   let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
@@ -55,11 +58,12 @@ export function ChessBattleBoard({
     sourceSquare?: Square,
     targetSquare?: Square
   ): boolean {
-    if (!promotionPiece || !sourceSquare || !targetSquare) return false;
-
+    if (!promotionPiece || !targetSquare) return false;
+    // Если sourceSquare не передан, используем сохранённый
+    const actualSourceSquare = sourceSquare ?? lastSourceSquare;
+    if (!actualSourceSquare) return false;
     const piece = promotionPiece.charAt(1).toLowerCase() as PromotionPiece;
-
-    const result = game.move(sourceSquare, targetSquare, piece);
+    const result = game.move(actualSourceSquare, targetSquare, piece);
     if (result) {
       setGame(
         Object.create(
@@ -67,14 +71,14 @@ export function ChessBattleBoard({
           Object.getOwnPropertyDescriptors(game)
         )
       );
-
       setHighlightSquares([]);
       setSelectedSquare(null);
-
+      setPromotionSquare(null);
+      setLastMoveType(null);
+      setLastSourceSquare(null);
       if (result.captured) {
         onCapture?.(targetSquare);
       }
-
       const newGameStatus = game.getGameStatus();
       setGameStatus(newGameStatus);
       if (newGameStatus !== "playing") {
@@ -86,8 +90,17 @@ export function ChessBattleBoard({
   }
 
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
+    const piece = game.getPiece(sourceSquare);
+    if (!piece) return false;
+    // Проверяем, является ли ход промоушеном
+    const isPromotion = onPromotionCheck(sourceSquare, targetSquare, piece);
+    if (isPromotion) {
+      setLastMoveType("drop");
+      setLastSourceSquare(sourceSquare);
+      setPromotionSquare(targetSquare);
+      return true;
+    }
     const result = game.move(sourceSquare, targetSquare);
-
     if (result) {
       setGame(
         Object.create(
@@ -97,11 +110,12 @@ export function ChessBattleBoard({
       );
       setHighlightSquares([]);
       setSelectedSquare(null);
-
+      setPromotionSquare(null);
+      setLastMoveType(null);
+      setLastSourceSquare(null);
       if (result.captured) {
         onCapture?.(targetSquare);
       }
-
       const newGameStatus = game.getGameStatus();
       setGameStatus(newGameStatus);
       if (newGameStatus !== "playing") {
@@ -109,18 +123,76 @@ export function ChessBattleBoard({
       }
       return true;
     }
-
     setErrorMessage("Invalid move");
     setTimeout(() => setErrorMessage(null), 500);
     return false;
   }
 
   function onSquareClick(square: Square) {
-    const legalMoves = game.getLegalMoves(square);
-    if (legalMoves.length > 0) {
-      setSelectedSquare(square);
-      setHighlightSquares(legalMoves);
+    // Если нет выбранной клетки, выбираем фигуру и показываем возможные ходы
+    if (!selectedSquare) {
+      const piece = game.getPiece(square);
+      if (!piece) return;
+      const legalMoves = game.getLegalMoves(square);
+      if (legalMoves.length > 0) {
+        setSelectedSquare(square);
+        setHighlightSquares(legalMoves);
+      }
+      return;
+    }
+    // Если кликнули на ту же клетку, снимаем выделение
+    if (square === selectedSquare) {
+      setSelectedSquare(null);
+      setHighlightSquares([]);
+      return;
+    }
+    // Если кликнули на подсвеченную клетку, делаем ход
+    if (highlightSquares.includes(square)) {
+      const piece = game.getPiece(selectedSquare);
+      if (!piece) return;
+      // Проверяем, является ли ход промоушеном
+      const isPromotion = onPromotionCheck(selectedSquare, square, piece);
+      if (isPromotion) {
+        setLastMoveType("click");
+        setLastSourceSquare(selectedSquare);
+        setPromotionSquare(square);
+        return;
+      }
+      // Если это обычный ход
+      const result = game.move(selectedSquare, square);
+      if (result) {
+        setGame(
+          Object.create(
+            Object.getPrototypeOf(game),
+            Object.getOwnPropertyDescriptors(game)
+          )
+        );
+        setHighlightSquares([]);
+        setSelectedSquare(null);
+        setPromotionSquare(null);
+        setLastMoveType(null);
+        setLastSourceSquare(null);
+        if (result.captured) {
+          onCapture?.(square);
+        }
+        const newGameStatus = game.getGameStatus();
+        setGameStatus(newGameStatus);
+        if (newGameStatus !== "playing") {
+          onComplete?.(newGameStatus);
+        }
+      }
+      return;
+    }
+    // Если кликнули на другую фигуру, выбираем её
+    const piece = game.getPiece(square);
+    if (piece) {
+      const legalMoves = game.getLegalMoves(square);
+      if (legalMoves.length > 0) {
+        setSelectedSquare(square);
+        setHighlightSquares(legalMoves);
+      }
     } else {
+      // Если кликнули на пустую клетку, снимаем выделение
       setSelectedSquare(null);
       setHighlightSquares([]);
     }
@@ -228,8 +300,10 @@ export function ChessBattleBoard({
         position={game.fen()}
         onPieceDrop={onDrop}
         onSquareClick={onSquareClick}
-        onPromotionCheck={onPromotionCheck} // TODO: remove not needed
+        onPromotionCheck={onPromotionCheck}
         onPromotionPieceSelect={onPromotionPieceSelect}
+        promotionToSquare={promotionSquare as any}
+        showPromotionDialog={!!promotionSquare}
         customBoardStyle={{
           borderRadius: "4px",
           boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
