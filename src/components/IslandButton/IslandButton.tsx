@@ -126,7 +126,7 @@ const StyledIslandButton = styled.button
   border: none;
   outline: none;
   padding: 0;
-  transition: transform 0.3s ease-out;
+  transition: transform 0.3s ease-out, box-shadow 0.2s, border 0.2s;
 
   img {
     width: 100%;
@@ -142,6 +142,15 @@ const StyledIslandButton = styled.button
           infinite;
       `;
     }}
+    border-radius: 12px;
+  }
+
+  // Белая обводка и увеличение только при фокусе с клавиатуры
+  &:focus-visible img {
+    border: 2px solid #fff;
+    box-shadow: 0 0 0 2px #fff;
+    transform: scale(1.05);
+    transition: transform 0.2s, box-shadow 0.2s, border 0.2s;
   }
 `;
 
