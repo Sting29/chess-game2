@@ -1,18 +1,19 @@
 import styled from "styled-components";
+import question from "../../assets/images/question.png";
 
 export const QuestionButtonWrap = styled.button`
-  background-color: #4a4a4a;
-  color: white;
+  display: block;
+  position: relative;
   width: 100px;
   height: 100px;
-  border-radius: 50%;
-  border: 1px solid black;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: "Wendy One", sans-serif;
-  font-size: 32px;
-  line-height: 36px;
-  font-weight: bold;
-  cursor: pointer;
+  border-radius: 8px;
+  border: none;
+  background: url(${question}) no-repeat center center;
+  background-size: contain;
+  transition: transform 0.2s;
+  text-decoration: none;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
