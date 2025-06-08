@@ -16,6 +16,7 @@ import {
 } from "./styles";
 
 import LogoImg from "src/assets/logo/logo_big.png";
+import LogoImgHe from "src/assets/logo/logo_he.png";
 // import LogoTitle from "src/assets/elements/enter_your_account.png";
 import Cat from "src/assets/images/cat.png";
 import Boy from "src/assets/images/boy.png";
@@ -24,7 +25,7 @@ import { useIsMobile } from "src/hooks/useIsMobile";
 import { useTranslation } from "react-i18next";
 
 export function LoginPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
 
@@ -51,7 +52,10 @@ export function LoginPage() {
     <LoginContainer>
       <BlueLine />
       <LogoContainer>
-        <Image src={LogoImg} height={310} />
+        <Image
+          src={i18n.language === "he" ? LogoImgHe : LogoImg}
+          height={310}
+        />
       </LogoContainer>
       <LoginBox>
         {/* <LoginHeader>
