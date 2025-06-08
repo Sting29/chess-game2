@@ -63,17 +63,18 @@ export class BattleChessEngine {
       piece.toUpperCase() === "P" &&
       ((isWhitePiece && to[1] === "8") || (!isWhitePiece && to[1] === "1"));
 
-    if (isPromotion && !promotion) {
-      return null;
-    }
-
     const newPosition = new Map(this.position);
     newPosition.delete(from);
-
-    if (isPromotion && promotion) {
+    if (isPromotion) {
+      // В битве пешек всегда превращаем в ферзя
+      const promoteTo =
+        promotion || (this.rulesOfWin === "promotion" ? "q" : undefined);
+      if (!promoteTo) {
+        return null;
+      }
       newPosition.set(
         to,
-        this.turn === "w" ? promotion.toUpperCase() : promotion.toLowerCase()
+        this.turn === "w" ? promoteTo.toUpperCase() : promoteTo.toLowerCase()
       );
       this.lastPromotion = this.turn;
     } else {

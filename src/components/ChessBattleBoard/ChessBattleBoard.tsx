@@ -51,6 +51,7 @@ export function ChessBattleBoard({
     targetSquare: Square,
     piece: string
   ): boolean {
+    if (rulesOfWin === "promotion") return false;
     if (!piece.endsWith("P")) return false;
     const [, toRank] = targetSquare.split("");
     return toRank === "8";
