@@ -14,6 +14,7 @@ import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/store";
 import { setLanguage, setChessSet } from "src/store/settingsSlice";
+import { FIGURES_SETS } from "src/data/figures-sets";
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
@@ -36,6 +37,8 @@ function SettingsPage() {
   const handleChessSetChange = (set: string) => {
     dispatch(setChessSet(set));
   };
+
+  const figureOrder = ["pawn", "rook", "knight", "bishop", "queen", "king"];
 
   return (
     <PageContainer>
@@ -92,7 +95,7 @@ function SettingsPage() {
               {t("chess_set_2")}
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
-          <SettingsLanguageButton
+          {/* <SettingsLanguageButton
             $current={chessSet === "3"}
             onClick={() => handleChessSetChange("3")}
           >
@@ -107,8 +110,47 @@ function SettingsPage() {
             <SettingsLanguageButtonText $current={chessSet === "4"}>
               {t("chess_set_4")}
             </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
+          </SettingsLanguageButton> */}
         </SettingsLanguage>
+      </SettingsContainer>
+      <SettingsContainer style={{ marginTop: 16 }}>
+        <SettingsTitle>
+          {chessSet === "1" ? t("chess_set_1") : t("chess_set_2")}
+        </SettingsTitle>
+        <table>
+          <tbody>
+            <tr>
+              {figureOrder.map((fig) => {
+                const item = FIGURES_SETS[Number(chessSet) - 1].white.find(
+                  (f) => f.figure === fig
+                );
+                return (
+                  <td
+                    key={fig + "_w"}
+                    style={{ textAlign: "center", padding: 4 }}
+                  >
+                    <img src={item?.image} alt={fig + " white"} height={48} />
+                  </td>
+                );
+              })}
+            </tr>
+            <tr>
+              {figureOrder.map((fig) => {
+                const item = FIGURES_SETS[Number(chessSet) - 1].black.find(
+                  (f) => f.figure === fig
+                );
+                return (
+                  <td
+                    key={fig + "_b"}
+                    style={{ textAlign: "center", padding: 4 }}
+                  >
+                    <img src={item?.image} alt={fig + " black"} height={48} />
+                  </td>
+                );
+              })}
+            </tr>
+          </tbody>
+        </table>
       </SettingsContainer>
     </PageContainer>
   );
