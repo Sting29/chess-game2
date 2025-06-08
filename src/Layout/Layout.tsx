@@ -15,7 +15,6 @@ import { useTranslation } from "react-i18next";
 import LogoImg from "src/assets/logo/logo.png";
 import LogoImgHe from "src/assets/logo/logo_he.png";
 import Image from "../components/Image/Image";
-import i18n from "src/i18n";
 
 interface LayoutProps {
   children: React.ReactNode;

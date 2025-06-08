@@ -19,13 +19,13 @@ const ChessTutorial = memo(function ChessTutorial() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const isMobile = useIsMobile();
-  const [currentText, setCurrentText] = useState(t("chess_map"));
+  const [currentTextKey, setCurrentTextKey] = useState("chess_map");
 
   // Memoize islands array
   const islands = useMemo(
     () => [
       {
-        name: t("how_to_move"),
+        nameKey: "how_to_move",
         image: Island0Img,
         position: { bottom: "25%", left: "30%" },
         mobilePosition: { bottom: "30%", left: "15%" },
@@ -35,7 +35,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "default" as const,
       },
       {
-        name: t("how_to_play"),
+        nameKey: "how_to_play",
         image: Island1Img,
         position: { top: "28%", left: "20%" },
         mobilePosition: { top: "25%", left: "10%" },
@@ -45,7 +45,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "gentle" as const,
       },
       {
-        name: t("chess_puzzles"),
+        nameKey: "chess_puzzles",
         image: Island2Img,
         position: { top: "28%", right: "40%" },
         mobilePosition: { top: "25%", right: "10%" },
@@ -55,7 +55,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "swing" as const,
       },
       {
-        name: t("play_game_c"),
+        nameKey: "play_game_c",
         image: Island3Img,
         position: { bottom: "23%", right: "27%" },
         mobilePosition: { bottom: "30%", right: "15%" },
@@ -65,7 +65,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "bounce" as const,
       },
       {
-        name: t("play_game_p"),
+        nameKey: "play_game_p",
         image: Island3Img,
         position: { top: "23%", right: "20%" },
         mobilePosition: { bottom: "30%", right: "15%" },
@@ -75,7 +75,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "gentle" as const,
       },
     ],
-    [navigate, t]
+    [navigate]
   );
 
   // Memoize seagull position
@@ -108,7 +108,7 @@ const ChessTutorial = memo(function ChessTutorial() {
 
       {islands.map((island) => (
         <IslandButton
-          key={island.name}
+          key={island.nameKey}
           imageSrc={island.image}
           position={island.position}
           mobilePosition={island.mobilePosition}
@@ -116,12 +116,12 @@ const ChessTutorial = memo(function ChessTutorial() {
           mobileWidth={island.mobileWidth}
           onClick={island.onClick}
           animationType={island.animationType}
-          onMouseEnter={() => setCurrentText(island.name)}
-          onMouseLeave={() => setCurrentText(t("chess_map"))}
+          onMouseEnter={() => setCurrentTextKey(island.nameKey)}
+          onMouseLeave={() => setCurrentTextKey("chess_map")}
         />
       ))}
 
-      <TextBlock $isMobile={isMobile}>{currentText}</TextBlock>
+      <TextBlock $isMobile={isMobile}>{t(currentTextKey)}</TextBlock>
     </ChessTutorialWrap>
   );
 });

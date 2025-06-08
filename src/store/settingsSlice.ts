@@ -15,7 +15,7 @@ const getInitialSettings = (): SettingsState => {
     }
   }
   return {
-    language: "en",
+    language: "he",
     chessSet: "1",
   };
 };
