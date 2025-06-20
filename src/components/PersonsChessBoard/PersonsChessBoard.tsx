@@ -4,6 +4,7 @@ import { Square } from "chess.js";
 import { PersonsChessEngine } from "../../utils/PersonsChessEngine";
 import { BoardContainer, GameStatus } from "./styles";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
+import { boardStyles } from "src/data/boardSettings";
 interface PersonsChessBoardProps {
   onGameEnd?: (result: string) => void;
 }
@@ -68,16 +69,7 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
         position={game.fen()}
         onPieceDrop={onPieceDrop}
         onSquareClick={onSquareClick}
-        customBoardStyle={{
-          borderRadius: "4px",
-          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
-        }}
-        customDarkSquareStyle={{
-          backgroundColor: "#779952",
-        }}
-        customLightSquareStyle={{
-          backgroundColor: "#edeed1",
-        }}
+        {...boardStyles}
         customSquareStyles={{
           ...(selectedSquare && {
             [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },

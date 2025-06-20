@@ -4,6 +4,7 @@ import { PromotionPiece, Piece } from "../../types/types";
 import { Square } from "../../types/playTypes";
 import { SimplifiedChessEngine } from "../../utils/SimplifiedChessEngine";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
+import { boardStyles } from "src/data/boardSettings";
 
 interface ChessTutorialBoardProps {
   initialPosition: string;
@@ -232,16 +233,7 @@ export function ChessTutorialBoard({
         isDraggablePiece={isDraggablePiece}
         promotionToSquare={promotionSquare}
         showPromotionDialog={!!promotionSquare}
-        customBoardStyle={{
-          borderRadius: "4px",
-          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
-        }}
-        customDarkSquareStyle={{
-          backgroundColor: "#779952",
-        }}
-        customLightSquareStyle={{
-          backgroundColor: "#edeed1",
-        }}
+        {...boardStyles}
         customSquareStyles={{
           ...(selectedSquare && {
             [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },

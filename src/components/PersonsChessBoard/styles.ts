@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const BoardContainer = styled.div`
-  width: 400px;
+  width: 550px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;

@@ -4,6 +4,7 @@ import { Square, PromotionPiece } from "src/types/types";
 import { BattleChessEngine } from "src/utils/BattleChessEngine";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { useTranslation } from "react-i18next";
+import { boardStyles } from "src/data/boardSettings";
 
 interface ChessBattleBoardProps {
   initialPosition: string;
@@ -286,7 +287,7 @@ export function ChessBattleBoard({
   }, [game, gameStatus]);
 
   return (
-    <div style={{ width: "400px", margin: "0 auto" }}>
+    <div style={{ width: "550px", margin: "0 auto" }}>
       <div
         className="move-message"
         style={{
@@ -311,10 +312,7 @@ export function ChessBattleBoard({
         onPromotionPieceSelect={onPromotionPieceSelect}
         promotionToSquare={promotionSquare as any}
         showPromotionDialog={!!promotionSquare}
-        customBoardStyle={{
-          borderRadius: "4px",
-          boxShadow: "0 2px 10px rgba(0, 0, 0, 0.3)",
-        }}
+        {...boardStyles}
         customSquareStyles={{
           ...(selectedSquare && {
             [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
