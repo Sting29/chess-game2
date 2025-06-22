@@ -53,10 +53,6 @@ function PuzzleList() {
     [navigate]
   );
 
-  const handlePuzzleClick = useCallback(
-    (puzzleId: string) => navigate(`/puzzles/${categoryId}/${puzzleId}`),
-    [navigate, categoryId]
-  );
   // Если categoryId не указан, показываем список категорий
 
   return (
@@ -104,7 +100,7 @@ function PuzzleList() {
           category.puzzles.map((puzzle) => (
             <PuzzleItem
               key={puzzle.id}
-              onClick={() => handlePuzzleClick(puzzle.id)}
+              href={`/puzzles/${category.id}/${puzzle.id}`}
             >
               <h3>{t(puzzle.titleKey)}</h3>
               <p>{t(puzzle.descriptionKey)}</p>

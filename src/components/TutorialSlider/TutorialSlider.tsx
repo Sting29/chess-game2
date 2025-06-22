@@ -5,6 +5,7 @@ import {
   ArrowButtonRight,
   SlidesContainer,
 } from "./styles";
+import { useTranslation } from "react-i18next";
 
 interface TutorialSliderProps {
   children: React.ReactNode[];
@@ -15,6 +16,7 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
   children,
   visibleCount,
 }) => {
+  const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState(0);
 
   // Последний возможный стартовый индекс, чтобы не выйти за пределы массива
@@ -44,7 +46,7 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
       <ArrowButtonLeft
         onClick={handlePrev}
         disabled={startIndex === 0}
-        aria-label="Previous"
+        aria-label={t("previous")}
       />
       <SlidesContainer>
         {children.slice(startIndex, startIndex + visibleCount)}
@@ -52,7 +54,7 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
       <ArrowButtonRight
         onClick={handleNext}
         disabled={isLastSlice}
-        aria-label="Next"
+        aria-label={t("next")}
       />
     </SliderWrapper>
   );

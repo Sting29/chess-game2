@@ -45,13 +45,15 @@ export const PuzzleListWrap = styled.div`
   margin-top: 24px;
 `;
 
-export const PuzzleItem = styled.div`
+export const PuzzleItem = styled.a`
   background: #f7f7f7;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);
   padding: 18px 16px 12px 16px;
   cursor: pointer;
   transition: box-shadow 0.2s, transform 0.2s;
+  text-decoration: none;
+
   &:hover {
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.13);
     transform: translateY(-1px) scale(1.02);

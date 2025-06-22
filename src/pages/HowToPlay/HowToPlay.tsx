@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import {
   TutorialPageContainer,
@@ -26,7 +25,6 @@ const visibleCountMap = {
 
 function HowToPlay() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const previousPage = "/";
   const { breakpoint } = useBreakpoint();
 
@@ -40,10 +38,10 @@ function HowToPlay() {
           key={link.id}
           title={t(link.titleKey)}
           image={link.image}
-          onClick={() => navigate(link.id)}
+          href={`/how-to-play/${link.id}`}
         />
       )),
-    [navigate, t]
+    [t]
   );
 
   return (

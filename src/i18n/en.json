@@ -130,5 +130,7 @@
   "black_move": "Black move",
   "white_wins": "White wins!",
   "black_wins": "Black wins!",
-  "draw": "Draw!"
+  "draw": "Draw!",
+  "previous": "Previous",
+  "next": "Next"
 }

@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import {
   TutorialPageContainer,
   TutorialDescription,
@@ -24,7 +23,6 @@ const visibleCountMap = {
 
 function HowToMove() {
   const { t } = useTranslation();
-  const navigate = useNavigate();
   const previousPage = "/";
   const { breakpoint } = useBreakpoint();
 
@@ -37,10 +35,10 @@ function HowToMove() {
           key={link.id}
           title={t(link.pageTitleKey)}
           image={link.image}
-          onClick={() => navigate(link.id)}
+          href={`/how-to-move/${link.id}`}
         />
       )),
-    [navigate, t]
+    [t]
   );
 
   return (
