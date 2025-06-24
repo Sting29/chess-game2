@@ -102,7 +102,10 @@ function PuzzleList() {
               key={puzzle.id}
               href={`/puzzles/${category.id}/${puzzle.id}`}
             >
-              <h3>{t(puzzle.titleKey)}</h3>
+              <h3>
+                {t(puzzle.titleKey)}
+                {puzzle.id}
+              </h3>
               <p>{t(puzzle.descriptionKey)}</p>
             </PuzzleItem>
           ))
