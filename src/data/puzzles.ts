@@ -42,7 +42,7 @@ export const CHESS_PUZZLES: PuzzleCategory[] = [
         titleKey: "puzzles_mate_in_one_1_title",
         descriptionKey: "puzzles_mate_in_one_1_desc",
         initialPosition:
-          "r3kbnr/2qb3p/p7/1pp1PpBp/4N3/P1PP4/P5P/R2Q1RK1 w - - 0 1",
+          "r3kbnr/2qb3p/p7/1pp1PpBp/4N3/P1PP4/1P5P/R2Q1RK1 w - - 0 1",
         correctMoves: [{ from: "d1", to: "h5", piece: "Q" }],
         hintKey: "puzzles_mate_in_one_1_hint",
         playerColor: "w",

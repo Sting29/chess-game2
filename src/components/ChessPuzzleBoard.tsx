@@ -75,16 +75,16 @@ export function ChessPuzzleBoard({
     return false;
   }
 
-  function onSquareClick(square: Square) {
-    const legalMoves = game.getLegalMoves(square);
-    if (legalMoves.length > 0) {
-      setSelectedSquare(square);
-      setHighlightSquares(legalMoves);
-    } else {
-      setSelectedSquare(null);
-      setHighlightSquares([]);
-    }
-  }
+  // function onSquareClick(square: Square) {
+  //   const legalMoves = game.getLegalMoves(square);
+  //   if (legalMoves.length > 0) {
+  //     setSelectedSquare(square);
+  //     setHighlightSquares(legalMoves);
+  //   } else {
+  //     setSelectedSquare(null);
+  //     setHighlightSquares([]);
+  //   }
+  // }
 
   const customPieces = useCustomPieces();
 
@@ -105,7 +105,7 @@ export function ChessPuzzleBoard({
       <Chessboard
         position={game.fen()}
         onPieceDrop={onDrop}
-        onSquareClick={onSquareClick}
+        // onSquareClick={onSquareClick}
         {...boardStyles}
         customSquareStyles={{
           ...(selectedSquare && {
