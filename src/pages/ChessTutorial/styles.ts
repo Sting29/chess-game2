@@ -69,7 +69,7 @@ export const TextBlock = styled.div<{ $isMobile: boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: "Wendy One", sans-serif;
+  font-family: "RubikOne", sans-serif;
   font-size: clamp(
     18px,
     ${(props) => (props.$isMobile ? "5vw" : "5vw")},

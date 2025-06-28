@@ -130,5 +130,7 @@
   "black_wins": "שחור זכה!",
   "draw": "ניקוי!",
   "previous": "הקודם",
-  "next": "הבא"
+  "next": "הבא",
+  "layout_exit": "יציאה",
+  "layout_account_settings": "חשבון"
 }

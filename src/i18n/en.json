@@ -130,5 +130,7 @@
   "black_wins": "Black wins!",
   "draw": "Draw!",
   "previous": "Previous",
-  "next": "Next"
+  "next": "Next",
+  "layout_exit": "Exit",
+  "layout_account_settings": "Account"
 }

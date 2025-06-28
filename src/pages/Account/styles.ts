@@ -10,7 +10,7 @@ export const AccountContainer = styled.div`
 `;
 
 export const Title = styled.h1`
-  font-family: "Wendy One", sans-serif;
+  font-family: "RubikOne", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 48px;
