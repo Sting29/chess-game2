@@ -132,5 +132,7 @@
   "previous": "הקודם",
   "next": "הבא",
   "layout_exit": "יציאה",
-  "layout_account_settings": "חשבון"
+  "layout_account_settings": "חשבון",
+  "layout_settings_button": "הגדרות",
+  "layout_logo_text": "שחמט לכולם"
 }

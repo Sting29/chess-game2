@@ -109,6 +109,7 @@ export const PlayButton = styled.button`
   background: url(${buttonPlay}) no-repeat center center;
   background-size: contain;
   transition: transform 0.2s;
+  z-index: 1;
 
   &:hover {
     transform: scale(1.05);

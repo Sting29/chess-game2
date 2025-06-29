@@ -6,6 +6,7 @@ import buttonRed from "../assets/elements/button_red.png";
 import buttonYellow from "../assets/elements/button_yellow.png";
 import userIcon from "../assets/elements/user_x.png";
 import buttonSettings from "../assets/elements/button_settings.png";
+
 export const LayoutContainer = styled.div`
   min-height: 100vh;
   display: flex;
@@ -69,10 +70,10 @@ export const LogoutButton = styled.button`
   }
 `;
 
-export const SettingsButton = styled(Link)`
+export const SettingsButton = styled(Link)<{ $isHebrew: boolean }>`
   width: 72px;
   height: 56px;
-  margin-right: 84px;
+  margin-right: ${({ $isHebrew }) => ($isHebrew ? "72px" : "84px")};
   border: none;
   background: url(${buttonSettings}) no-repeat center center;
   background-size: contain;
@@ -84,7 +85,7 @@ export const SettingsButton = styled(Link)`
   }
 `;
 
-export const AccountButton = styled(Link)`
+export const AccountButton = styled(Link)<{ $isHebrew: boolean }>`
   display: block;
   position: relative;
   height: 56px;
@@ -96,7 +97,7 @@ export const AccountButton = styled(Link)`
   transition: transform 0.2s;
   text-decoration: none;
 
-  padding-top: 4px;
+  padding-top: 6px;
   font-family: "RubikOne", sans-serif;
   font-size: 32px;
   line-height: 100%px;
@@ -107,7 +108,7 @@ export const AccountButton = styled(Link)`
   &::before {
     content: "";
     position: absolute;
-    left: -56px;
+    left: ${({ $isHebrew }) => ($isHebrew ? "-40px" : "-56px")};
     top: 50%;
     transform: translateY(-50%);
     width: 80px;

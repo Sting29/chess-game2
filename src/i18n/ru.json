@@ -132,5 +132,7 @@
   "previous": "Назад",
   "next": "Вперёд",
   "layout_exit": "Выход",
-  "layout_account_settings": "Аккаунт"
+  "layout_account_settings": "Аккаунт",
+  "layout_settings_button": "Настройки",
+  "layout_logo_text": "Шахматы для всех"
 }

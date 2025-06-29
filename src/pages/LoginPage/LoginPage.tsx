@@ -21,13 +21,14 @@ import LogoImgHe from "src/assets/logo/logo_he.png";
 import Cat from "src/assets/images/cat.png";
 import Boy from "src/assets/images/boy.png";
 import Image from "src/components/Image/Image";
-import { useIsMobile } from "src/hooks/useIsMobile";
+// import { useIsMobile } from "src/hooks/useIsMobile";
+import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useTranslation } from "react-i18next";
 
 export function LoginPage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
-  const isMobile = useIsMobile();
+  const { breakpoint } = useBreakpoint();
 
   useEffect(() => {
     // Если пользователь уже авторизован, перенаправляем на главную
@@ -91,10 +92,12 @@ export function LoginPage() {
           <PlayButton type="submit" aria-label={t("login_and_play")} />
         </LoginForm>
       </LoginBox>
-      <CatContainer $isMobile={isMobile}>
+      <CatContainer $isMobile={breakpoint === "mobile"}>
         <Image src={Cat} height={256} />
       </CatContainer>
-      <BoyContainer $isMobile={isMobile}>
+      <BoyContainer
+        $isMobile={breakpoint === "mobile" || breakpoint === "tablet"}
+      >
         <Image src={Boy} height={385} />
       </BoyContainer>
     </LoginContainer>
