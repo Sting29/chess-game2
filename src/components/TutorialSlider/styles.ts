@@ -12,15 +12,17 @@ const arrowButtonBase = css`
   height: 48px;
   background: url(${buttonSlide}) center/contain no-repeat;
   border: none;
-  cursor: pointer;
-  transition: opacity 0.2s;
-  opacity: 1;
+  transition: transform 0.2s;
   padding: 0;
-  outline: none;
   background-color: transparent;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+
   &:disabled {
     opacity: 0.4;
-    cursor: default;
   }
 `;
 

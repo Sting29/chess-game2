@@ -74,7 +74,7 @@ export function PuzzleSolver() {
 
   return (
     <SolverPage>
-      <PageTitle title={t(puzzle.titleKey)} />
+      <PageTitle title={`${t(puzzle.titleKey)}${puzzleId}`} />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
