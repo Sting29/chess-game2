@@ -66,6 +66,14 @@ function SettingsPage() {
             </SettingsLanguageButtonText>
           </SettingsLanguageButton>
           <SettingsLanguageButton
+            $current={language === "ar"}
+            onClick={() => handleLanguageChange("ar")}
+          >
+            <SettingsLanguageButtonText $current={language === "ar"}>
+              العربية
+            </SettingsLanguageButtonText>
+          </SettingsLanguageButton>
+          <SettingsLanguageButton
             $current={language === "ru"}
             onClick={() => handleLanguageChange("ru")}
           >

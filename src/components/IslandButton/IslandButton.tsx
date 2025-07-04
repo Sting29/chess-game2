@@ -22,6 +22,7 @@ interface IslandButtonProps {
   animationType?: "default" | "gentle" | "swing" | "bounce";
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
+  onFocus?: () => void;
 }
 
 const islandFloatAnimation = keyframes`
@@ -164,6 +165,7 @@ const IslandButton = memo(function IslandButton({
   animationType = "default",
   onMouseEnter,
   onMouseLeave,
+  onFocus,
 }: IslandButtonProps) {
   const [isHovered, setIsHovered] = useState(false);
   const isMobile = useIsMobile();
@@ -190,6 +192,11 @@ const IslandButton = memo(function IslandButton({
     onMouseLeave?.();
   };
 
+  const handleFocus = () => {
+    setIsHovered(true);
+    onFocus?.();
+  };
+
   return (
     <StyledIslandButton
       $top={activePosition.top}
@@ -203,6 +210,7 @@ const IslandButton = memo(function IslandButton({
       onClick={onClick}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
+      onFocus={handleFocus}
     >
       <img src={imageSrc} alt="Island" />
     </StyledIslandButton>

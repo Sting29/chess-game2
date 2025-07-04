@@ -60,7 +60,7 @@ export const LogoutButton = styled.button`
   padding-bottom: 4px;
   font-family: "RubikOne", sans-serif;
   font-size: 32px;
-  line-height: 100%px;
+  line-height: 100%;
   color: #fff7db;
   text-align: center;
   -webkit-text-stroke: 1px black;
@@ -97,10 +97,10 @@ export const AccountButton = styled(Link)<{ $isHebrew: boolean }>`
   transition: transform 0.2s;
   text-decoration: none;
 
-  padding-top: 6px;
+  padding-top: 10px;
   font-family: "RubikOne", sans-serif;
   font-size: 32px;
-  line-height: 100%px;
+  line-height: 100%;
   color: #fff7db;
   text-align: center;
   -webkit-text-stroke: 1px black;

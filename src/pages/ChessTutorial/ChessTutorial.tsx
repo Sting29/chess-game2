@@ -117,6 +117,7 @@ const ChessTutorial = memo(function ChessTutorial() {
           onClick={island.onClick}
           animationType={island.animationType}
           onMouseEnter={() => setCurrentTextKey(island.nameKey)}
+          onFocus={() => setCurrentTextKey(island.nameKey)}
           onMouseLeave={() => setCurrentTextKey("chess_map")}
         />
       ))}

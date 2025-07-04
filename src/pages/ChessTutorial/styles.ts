@@ -55,7 +55,7 @@ export const Clouds = styled.div<{ $isMobile: boolean }>`
   }
 `;
 
-export const TextBlock = styled.div<{ $isMobile: boolean }>`
+export const TextBlock = styled.p<{ $isMobile: boolean }>`
   position: absolute;
   bottom: 40px;
   left: 50%;
