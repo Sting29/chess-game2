@@ -17,7 +17,7 @@ export const LoginBox = styled.div`
   align-items: center;
   width: 400px;
   max-width: 400px;
-  margin: 120px auto 0;
+  margin: 100px auto 0;
 `;
 
 export const LoginHeader = styled.div`
@@ -129,3 +129,11 @@ export const BoyContainer = styled.div<{ $isMobile: boolean }>`
   right: 17%;
   display: ${(props) => (props.$isMobile ? "none" : "block")};
 `;
+
+// export const Title = styled.p`
+//   font-family: "WendyOne", sans-serif;
+//   font-size: 44px;
+//   color: #fff7db;
+//   line-height: 46px;
+//   font-weight: 700;
+// `;

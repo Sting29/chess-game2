@@ -3,21 +3,22 @@ import { useNavigate } from "react-router-dom";
 import {
   LoginContainer,
   LoginBox,
-  // LoginHeader,
+  LoginHeader,
   LoginForm,
-  // FormGroup,
-  // SrOnly,
-  // Input,
+  FormGroup,
+  SrOnly,
+  Input,
   PlayButton,
   BlueLine,
   LogoContainer,
   CatContainer,
   BoyContainer,
+  // Title,
 } from "./styles";
 
 import LogoImg from "src/assets/logo/logo_big.png";
 import LogoImgHe from "src/assets/logo/logo_he.png";
-// import LogoTitle from "src/assets/elements/enter_your_account.png";
+import LogoTitle from "src/assets/elements/enter_your_account.png";
 import Cat from "src/assets/images/cat.png";
 import Boy from "src/assets/images/boy.png";
 import Image from "src/components/Image/Image";
@@ -59,20 +60,30 @@ export function LoginPage() {
         />
       </LogoContainer>
       <LoginBox>
-        {/* <LoginHeader>
+        <LoginHeader>
           <Image src={LogoTitle} height={42} width={366} />
-        </LoginHeader> */}
+          {/* <Title>Enter your account</Title> */}
+        </LoginHeader>
+
+        <CatContainer $isMobile={breakpoint === "mobile"}>
+          <Image src={Cat} height={256} />
+        </CatContainer>
+        <BoyContainer
+          $isMobile={breakpoint === "mobile" || breakpoint === "tablet"}
+        >
+          <Image src={Boy} height={385} />
+        </BoyContainer>
 
         <LoginForm onSubmit={handleLogin} aria-label={t("login_and_play")}>
-          {/* <FormGroup>
-            <SrOnly htmlFor="email-address">Email</SrOnly>
+          <FormGroup>
+            <SrOnly htmlFor="login">Login</SrOnly>
             <Input
-              id="email-address"
-              name="email"
-              type="email"
-              autoComplete="email"
+              id="login"
+              name="login"
+              type="text"
+              autoComplete="login"
               required
-              placeholder="Email"
+              placeholder="Login"
               disabled={true}
             />
           </FormGroup>
@@ -88,18 +99,10 @@ export function LoginPage() {
               placeholder="Password"
               disabled={true}
             />
-          </FormGroup> */}
+          </FormGroup>
           <PlayButton type="submit" aria-label={t("login_and_play")} />
         </LoginForm>
       </LoginBox>
-      <CatContainer $isMobile={breakpoint === "mobile"}>
-        <Image src={Cat} height={256} />
-      </CatContainer>
-      <BoyContainer
-        $isMobile={breakpoint === "mobile" || breakpoint === "tablet"}
-      >
-        <Image src={Boy} height={385} />
-      </BoyContainer>
     </LoginContainer>
   );
 }
