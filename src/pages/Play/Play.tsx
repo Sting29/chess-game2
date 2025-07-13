@@ -9,11 +9,12 @@ import ChessTutorialButton, {
 } from "src/components/ChessTutorialButton/ChessTutorialButton";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
-import { HOW_TO_PLAY } from "src/data/how-to-play";
 import { useTranslation } from "react-i18next";
 import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
 import { useMemo } from "react";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
+import ChessKnight from "src/assets/images/slides/slide_knight.png";
+import ChessPawn from "src/assets/images/slides/slide_pawn.png";
 
 const visibleCountMap = {
   mobile: 1,
@@ -23,7 +24,24 @@ const visibleCountMap = {
   fullHD: 3,
 };
 
-function HowToPlay() {
+const PLAY = [
+  {
+    id: `computer`,
+    titleKey: "computer",
+    // titleKey: "play_with_computer",
+    image: ChessPawn,
+    widgetSize: "large",
+  },
+  {
+    id: `person`,
+    titleKey: "person",
+    // titleKey: "play_with_person",
+    image: ChessKnight,
+    widgetSize: "large",
+  },
+];
+
+function Play() {
   const { t } = useTranslation();
   const previousPage = "/";
   const { breakpoint } = useBreakpoint();
@@ -32,13 +50,13 @@ function HowToPlay() {
 
   const buttons = useMemo(
     () =>
-      HOW_TO_PLAY.map((link) => (
+      PLAY.map((link) => (
         <ChessTutorialButton
           widgetSize={link.widgetSize as WidgetSize}
           key={link.id}
           title={t(link.titleKey)}
           image={link.image}
-          href={`/how-to-play/${link.id}`}
+          href={`/play/${link.id}`}
         />
       )),
     [t]
@@ -46,10 +64,8 @@ function HowToPlay() {
 
   return (
     <TutorialPageContainer>
-      <PageTitle title={t("how_to_play_chess")} />
-      <TutorialDescription>
-        {t("learn_how_to_play_with_pieces")}
-      </TutorialDescription>
+      <PageTitle title={t("play_chess")} />
+      <TutorialDescription>{t("choose_with_whom_to_play")}</TutorialDescription>
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -60,4 +76,4 @@ function HowToPlay() {
   );
 }
 
-export default HowToPlay;
+export default Play;

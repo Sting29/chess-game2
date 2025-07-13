@@ -23,6 +23,7 @@ const arrowButtonBase = css`
 
   &:disabled {
     opacity: 0.4;
+    cursor: default;
   }
 `;
 
@@ -31,6 +32,10 @@ export const ArrowButtonLeft = styled.button`
   transform: rotate(180deg);
   width: 120px;
   height: 120px;
+
+  &:hover {
+    transform: rotate(180deg);
+  }
 `;
 
 export const ArrowButtonRight = styled.button`

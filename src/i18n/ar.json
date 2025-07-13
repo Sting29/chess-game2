@@ -24,6 +24,7 @@
   "learn_how_pieces_move": ":تعلم كيفية حركة الألعاب الشطرنجية",
   "chess_map": "خريطة الشطرنج",
   "how_to_play": "كيفية اللعب",
+  "play_chess": "العب الشطرنج",
   "play_game_c": "العب مع الكمبيوتر",
   "play_game_p": "العب مع الإنسان",
   "palm_leaves_alt": "أوراق الزيتون",
@@ -132,5 +133,12 @@
   "layout_exit": "الخروج",
   "layout_account_settings": "الحساب",
   "layout_settings_button": "الإعدادات",
-  "layout_logo_text": "الشطرنج للجميع"
+  "layout_logo_text": "الشطرنج للجميع",
+  "choose_with_whom_to_play": "اختر مع أي من يريد اللعب",
+  "computer": "الكمبيوتر",
+  "person": "الإنسان",
+  "choose_rival": "اختر المنافس",
+  "easy": "سهل",
+  "medium": "متوسط",
+  "hard": "صعب"
 }

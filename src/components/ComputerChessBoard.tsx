@@ -10,9 +10,13 @@ interface ComputerChessBoardProps {
     depth: number;
     skill: number;
   };
+  onGameEnd?: (result: string) => void;
 }
 
-export function ComputerChessBoard({ settings }: ComputerChessBoardProps) {
+export function ComputerChessBoard({
+  settings,
+  onGameEnd, // TODO: add onGameEnd
+}: ComputerChessBoardProps) {
   const [game, setGame] = useState(new Chess());
   const engineRef = useRef<StockfishEngine>(new StockfishEngine());
   const [isThinking, setIsThinking] = useState(false);

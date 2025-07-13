@@ -6,26 +6,38 @@ import {
   MainContent,
   GameCompleteMessage,
   ResetButton,
+  BoomAnimation,
 } from "./styles";
 import { useTranslation } from "react-i18next";
+import { PageTitle } from "src/components/PageTitle/PageTitle";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
+import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 
 function PlayWithPerson() {
   const { t } = useTranslation();
   const [gameResult, setGameResult] = useState<string | null>(null);
+  const [showBoom, setShowBoom] = useState(false);
 
   const handleGameEnd = (result: string) => {
     setGameResult(result);
+    setShowBoom(true);
+    setTimeout(() => setShowBoom(false), 500);
   };
 
   const handleReset = () => {
     window.location.reload();
   };
 
+  const previousPage = "/play";
+
   return (
     <PageContainer>
       <ContentContainer>
         <MainContent>
-          <h1>{t("play_with_friend")}</h1>
+          <PageTitle title={t("play_with_friend")} />
+          <BackButtonWrap>
+            <BackButtonImage linkToPage={previousPage} />
+          </BackButtonWrap>
           <PersonsChessBoard onGameEnd={handleGameEnd} />
           {gameResult && (
             <>
@@ -33,6 +45,11 @@ function PlayWithPerson() {
               <ResetButton onClick={handleReset}>{t("play_again")}</ResetButton>
             </>
           )}
+          {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
+          {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
+          <ResetButton onClick={() => window.location.reload()}>
+            {t("reset")}
+          </ResetButton>
         </MainContent>
       </ContentContainer>
     </PageContainer>

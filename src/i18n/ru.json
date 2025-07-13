@@ -24,6 +24,7 @@
   "learn_how_pieces_move": "Узнайте, как ходят шахматные фигуры:",
   "chess_map": "Карта",
   "how_to_play": "Как играть",
+  "play_chess": "Играть",
   "play_game_c": "Игра (компьютер)",
   "play_game_p": "Игра (человек)",
   "palm_leaves_alt": "Пальмовые листья",
@@ -134,5 +135,12 @@
   "layout_exit": "Выход",
   "layout_account_settings": "Аккаунт",
   "layout_settings_button": "Настройки",
-  "layout_logo_text": "Шахматы для всех"
+  "layout_logo_text": "Шахматы для всех",
+  "choose_with_whom_to_play": "Выберите с кем хотите играть",
+  "computer": "Компьютер",
+  "person": "Человек",
+  "choose_rival": "Выберите соперника",
+  "easy": "Легко",
+  "medium": "Средне",
+  "hard": "Сложно"
 }

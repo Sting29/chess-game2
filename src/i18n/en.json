@@ -24,6 +24,7 @@
   "learn_how_pieces_move": "Learn how chess pieces move:",
   "chess_map": "Chess Map",
   "how_to_play": "How to Play",
+  "play_chess": "Play Chess",
   "play_game_c": "Play Game (C)",
   "play_game_p": "Play Game (P)",
   "palm_leaves_alt": "Palm Leaves",
@@ -134,5 +135,12 @@
   "layout_exit": "Exit",
   "layout_account_settings": "Account",
   "layout_settings_button": "Settings",
-  "layout_logo_text": "Chess for Everyone"
+  "layout_logo_text": "Chess for Everyone",
+  "choose_with_whom_to_play": "Choose with whom to play",
+  "computer": "Computer",
+  "person": "Person",
+  "choose_rival": "Choose rival",
+  "easy": "Easy",
+  "medium": "Medium",
+  "hard": "Hard"
 }

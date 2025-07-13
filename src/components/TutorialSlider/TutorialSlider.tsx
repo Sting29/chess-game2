@@ -19,6 +19,9 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState(0);
 
+  // Проверяем, нужна ли прокрутка
+  const needsScrolling = children.length > visibleCount;
+
   // Последний возможный стартовый индекс, чтобы не выйти за пределы массива
   const lastSliceStart =
     children.length <= visibleCount
@@ -43,19 +46,23 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
 
   return (
     <SliderWrapper>
-      <ArrowButtonLeft
-        onClick={handlePrev}
-        disabled={startIndex === 0}
-        aria-label={t("previous")}
-      />
+      {needsScrolling && (
+        <ArrowButtonLeft
+          onClick={handlePrev}
+          disabled={startIndex === 0}
+          aria-label={t("previous")}
+        />
+      )}
       <SlidesContainer>
         {children.slice(startIndex, startIndex + visibleCount)}
       </SlidesContainer>
-      <ArrowButtonRight
-        onClick={handleNext}
-        disabled={isLastSlice}
-        aria-label={t("next")}
-      />
+      {needsScrolling && (
+        <ArrowButtonRight
+          onClick={handleNext}
+          disabled={isLastSlice}
+          aria-label={t("next")}
+        />
+      )}
     </SliderWrapper>
   );
 };

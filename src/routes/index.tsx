@@ -10,12 +10,14 @@ import HowToPlay from "src/pages/HowToPlay/HowToPlay";
 import ChessMoves from "src/pages/ChessMoves/ChessMoves";
 import PuzzleList from "src/pages/PuzzleList/PuzzleList";
 import { PuzzleSolver } from "src/pages/PuzzleSolver/PuzzleSolver";
-import PlayWithComputer from "src/pages/PlayWithComputer";
+import PlayWithComputer from "src/pages/PlayWithComputer/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/Layout/Layout";
 import Account from "src/pages/Account/Account";
 import ChessBattle from "src/pages/ChessBattle/ChessBattle";
 import SettingsPage from "src/pages/SettingsPage/SettingsPage";
+import Play from "src/pages/Play/Play";
+import PlayWithComputerSelectLevel from "src/pages/PlayWithComputerSelectLevel/PlayWithComputerSelectLevel";
 // Получаем базовый путь из окружения или используем корневой путь
 const basename = process.env.PUBLIC_URL || "/";
 
@@ -71,12 +73,20 @@ const router = createBrowserRouter(
       element: protectedElement(<ChessBattle />),
     },
     {
-      path: "/play-with-computer",
-      element: protectedElement(<PlayWithComputer />),
+      path: "/play",
+      element: protectedElement(<Play />),
     },
     {
-      path: "/play-with-person",
+      path: "/play/person",
       element: protectedElement(<PlayWithPerson />),
+    },
+    {
+      path: "/play/computer",
+      element: protectedElement(<PlayWithComputerSelectLevel />),
+    },
+    {
+      path: "/play/computer/:level",
+      element: protectedElement(<PlayWithComputer />),
     },
     {
       path: "/account",

@@ -17,6 +17,7 @@ import LogoImg from "src/assets/logo/logo_en_new.png";
 import LogoImgHe from "src/assets/logo/logo_he_new.png";
 import Image from "../components/Image/Image";
 import { t } from "i18next";
+import { Link } from "react-router-dom";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -36,11 +37,14 @@ export function Layout({ children }: LayoutProps) {
   return (
     <LayoutContainer>
       <LogoContainer>
-        <Image
-          src={i18n.language === "he" ? LogoImgHe : LogoImg}
-          height={124}
-          style={{ padding: "8px 0" }}
-        />
+        <Link to="/">
+          <Image
+            src={i18n.language === "he" ? LogoImgHe : LogoImg}
+            height={124}
+            style={{ padding: "8px 0" }}
+          />
+        </Link>
+
         {/* Показываем текст только на больших экранах */}
         {breakpoint !== "mobile" && breakpoint !== "tablet" && (
           <LogoText>{t("layout_logo_text")}</LogoText>

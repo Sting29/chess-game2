@@ -16,13 +16,12 @@ i18n
       he: { translation: he },
       ar: { translation: ar },
     },
-    fallbackLng: "he",
+    fallbackLng: "en",
     interpolation: { escapeValue: false },
     detection: {
       order: ["localStorage", "navigator"],
       caches: ["localStorage"],
     },
-    lng: "he",
   });
 
 export default i18n;

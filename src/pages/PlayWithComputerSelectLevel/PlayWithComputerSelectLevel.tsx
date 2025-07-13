@@ -7,35 +7,58 @@ import ChessTutorialButton from "src/components/ChessTutorialButton/ChessTutoria
 import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
-import { HOW_TO_MOVE } from "src/data/how-to-move";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+import ChessPawn from "src/assets/images/slides/slide_pawn.png";
+import ChessKnight from "src/assets/images/slides/slide_knight.png";
+import ChessQueen from "src/assets/images/slides/slide_queen.png";
 
 const visibleCountMap = {
   mobile: 1,
   tablet: 2,
-  laptop: 3,
-  desktop: 4,
-  fullHD: 4,
+  laptop: 2,
+  desktop: 3,
+  fullHD: 3,
 };
 
-function HowToMove() {
+const PLAY_WITH_COMPUTER = [
+  {
+    id: `easy`,
+    titleKey: "easy",
+    image: ChessPawn,
+    widgetSize: "large",
+  },
+  {
+    id: `medium`,
+    titleKey: "medium",
+    image: ChessKnight,
+    widgetSize: "large",
+  },
+  {
+    id: `hard`,
+    titleKey: "hard",
+    image: ChessQueen,
+    widgetSize: "large",
+  },
+];
+
+function PlayWithComputerSelectLevel() {
   const { t } = useTranslation();
-  const previousPage = "/";
+  const previousPage = "/play";
   const { breakpoint } = useBreakpoint();
 
-  const visibleCount = visibleCountMap[breakpoint] ?? 4;
+  const visibleCount = visibleCountMap[breakpoint] ?? 3;
 
   const buttons = useMemo(
     () =>
-      HOW_TO_MOVE.map((link) => (
+      PLAY_WITH_COMPUTER.map((link) => (
         <ChessTutorialButton
           key={link.id}
-          title={t(link.pageTitleKey)}
+          title={t(link.titleKey)}
           image={link.image}
-          href={`/how-to-move/${link.id}`}
+          href={`/play/computer/${link.id}`}
         />
       )),
     [t]
@@ -43,8 +66,8 @@ function HowToMove() {
 
   return (
     <TutorialPageContainer>
-      <PageTitle title={t("how_to_move")} />
-      <TutorialDescription>{t("learn_how_pieces_move")}</TutorialDescription>
+      <PageTitle title={t("play_with_computer")} />
+      <TutorialDescription>{t("choose_rival")}</TutorialDescription>
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
@@ -56,4 +79,4 @@ function HowToMove() {
   );
 }
 
-export default HowToMove;
+export default PlayWithComputerSelectLevel;

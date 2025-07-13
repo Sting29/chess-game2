@@ -54,15 +54,6 @@
   background-color: #f0f0f0;
 }
 
-.tutorial-page {
-  max-width: 800px;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 2rem;
-}
-
 .back-button {
   margin-bottom: 20px;
   padding: 8px 16px;
@@ -116,12 +107,6 @@
     transform: scale(0);
     opacity: 0;
   }
-}
-
-.tutorial-page h1 {
-  color: #333;
-  margin-bottom: 2rem;
-  text-align: center;
 }
 
 .puzzle-categories {
