@@ -28,13 +28,13 @@ export const SettingsTitle = styled.h2`
   font-weight: 600;
 `;
 
-export const SettingsLanguage = styled.div`
+export const SettingsButtonsGroup = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 12px;
 `;
 
-export const SettingsLanguageButton = styled.button<{ $current: boolean }>`
+export const SettingsButton = styled.button<{ $current: boolean }>`
   display: flex;
   flex-direction: column;
   width: 150px;
@@ -51,7 +51,7 @@ export const SettingsLanguageButton = styled.button<{ $current: boolean }>`
   }
 `;
 
-export const SettingsLanguageButtonText = styled.span<{ $current: boolean }>`
+export const SettingsButtonText = styled.span<{ $current: boolean }>`
   display: flex;
   align-items: center;
   justify-content: center;

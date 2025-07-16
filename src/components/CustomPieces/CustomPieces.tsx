@@ -1,11 +1,18 @@
 import { useMemo } from "react";
 import type { ReactElement } from "react";
+import { useSelector } from "react-redux";
+
+import { FIGURES_SETS } from "src/data/figures-sets";
+import { RootState } from "src/store";
 
 // import { chessSet4 } from "./chessSet4";
-import { chessSet1 } from "./chessSet1";
+// import { chessSet1 } from "./chessSet1";
 
 export function useCustomPieces() {
-  const pieceImages = chessSet1;
+  const currentChessSet = useSelector(
+    (state: RootState) => state.settings.chessSet
+  );
+  const pieceImages = FIGURES_SETS[Number(currentChessSet) - 1].chessSet;
 
   return useMemo(() => {
     const pieces = Object.keys(pieceImages);

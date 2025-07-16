@@ -3,9 +3,9 @@ import {
   PageContainer,
   SettingsContainer,
   SettingsTitle,
-  SettingsLanguage,
-  SettingsLanguageButton,
-  SettingsLanguageButtonText,
+  SettingsButtonsGroup,
+  SettingsButton,
+  SettingsButtonText,
 } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
@@ -48,83 +48,81 @@ function SettingsPage() {
       </BackButtonWrap>
       <SettingsContainer>
         <SettingsTitle>{t("select_language")}</SettingsTitle>
-        <SettingsLanguage>
-          <SettingsLanguageButton
+        <SettingsButtonsGroup>
+          <SettingsButton
             $current={language === "he"}
             onClick={() => handleLanguageChange("he")}
           >
-            <SettingsLanguageButtonText $current={language === "he"}>
+            <SettingsButtonText $current={language === "he"}>
               עברית
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          <SettingsLanguageButton
+            </SettingsButtonText>
+          </SettingsButton>
+          <SettingsButton
             $current={language === "en"}
             onClick={() => handleLanguageChange("en")}
           >
-            <SettingsLanguageButtonText $current={language === "en"}>
+            <SettingsButtonText $current={language === "en"}>
               English
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          <SettingsLanguageButton
+            </SettingsButtonText>
+          </SettingsButton>
+          <SettingsButton
             $current={language === "ar"}
             onClick={() => handleLanguageChange("ar")}
           >
-            <SettingsLanguageButtonText $current={language === "ar"}>
+            <SettingsButtonText $current={language === "ar"}>
               العربية
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          <SettingsLanguageButton
+            </SettingsButtonText>
+          </SettingsButton>
+          <SettingsButton
             $current={language === "ru"}
             onClick={() => handleLanguageChange("ru")}
           >
-            <SettingsLanguageButtonText $current={language === "ru"}>
+            <SettingsButtonText $current={language === "ru"}>
               Русский
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-        </SettingsLanguage>
+            </SettingsButtonText>
+          </SettingsButton>
+        </SettingsButtonsGroup>
       </SettingsContainer>
 
       <SettingsContainer>
         <SettingsTitle>{t("select_chess_set")}</SettingsTitle>
-        <SettingsLanguage>
-          <SettingsLanguageButton
+        <SettingsButtonsGroup>
+          <SettingsButton
             $current={chessSet === "1"}
             onClick={() => handleChessSetChange("1")}
           >
-            <SettingsLanguageButtonText $current={chessSet === "1"}>
+            <SettingsButtonText $current={chessSet === "1"}>
               {t("chess_set_1")}
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          <SettingsLanguageButton
+            </SettingsButtonText>
+          </SettingsButton>
+          <SettingsButton
             $current={chessSet === "2"}
             onClick={() => handleChessSetChange("2")}
           >
-            <SettingsLanguageButtonText $current={chessSet === "2"}>
+            <SettingsButtonText $current={chessSet === "2"}>
               {t("chess_set_2")}
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          {/* <SettingsLanguageButton
+            </SettingsButtonText>
+          </SettingsButton>
+          <SettingsButton
             $current={chessSet === "3"}
             onClick={() => handleChessSetChange("3")}
           >
-            <SettingsLanguageButtonText $current={chessSet === "3"}>
+            <SettingsButtonText $current={chessSet === "3"}>
               {t("chess_set_3")}
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton>
-          <SettingsLanguageButton
+            </SettingsButtonText>
+          </SettingsButton>
+          {/* <SettingsButton
             $current={chessSet === "4"}
             onClick={() => handleChessSetChange("4")}
           >
-            <SettingsLanguageButtonText $current={chessSet === "4"}>
+              <SettingsButtonText $current={chessSet === "4"}>
               {t("chess_set_4")}
-            </SettingsLanguageButtonText>
-          </SettingsLanguageButton> */}
-        </SettingsLanguage>
+            </SettingsButtonText>
+          </SettingsButton> */}
+        </SettingsButtonsGroup>
       </SettingsContainer>
       <SettingsContainer style={{ marginTop: 16 }}>
-        <SettingsTitle>
-          {chessSet === "1" ? t("chess_set_1") : t("chess_set_2")}
-        </SettingsTitle>
+        <SettingsTitle>{t(`chess_set_${chessSet}`)}</SettingsTitle>
         <table>
           <tbody>
             <tr>
