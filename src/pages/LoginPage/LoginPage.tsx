@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import {
   LoginContainer,
   LoginBox,
@@ -13,6 +14,8 @@ import {
   LogoContainer,
   CatContainer,
   BoyContainer,
+  ErrorMessage,
+  LoadingSpinner,
   // Title,
 } from "./styles";
 
@@ -25,26 +28,62 @@ import Image from "src/components/Image/Image";
 // import { useIsMobile } from "src/hooks/useIsMobile";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useTranslation } from "react-i18next";
+import { RootState, AppDispatch } from "src/store";
+import { loginUser } from "src/store/settingsSlice";
 
 export function LoginPage() {
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
+  const dispatch = useDispatch<AppDispatch>();
   const { breakpoint } = useBreakpoint();
+
+  // Local form state
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+  });
+
+  // Redux state
+  const { isAuthenticated, loading, error } = useSelector(
+    (state: RootState) => state.settings
+  );
 
   useEffect(() => {
     // Если пользователь уже авторизован, перенаправляем на главную
-    if (localStorage.getItem("isAuthenticated") === "true") {
+    if (isAuthenticated) {
       navigate("/");
     }
-  }, [navigate]);
+  }, [isAuthenticated, navigate]);
 
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  // Handle form submission
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!formData.username.trim() || !formData.password.trim()) {
+      return;
+    }
+
     try {
-      // Устанавливаем флаг аутентификации
-      localStorage.setItem("isAuthenticated", "true");
-      // Принудительно обновляем страницу для применения изменений
-      window.location.href = "/";
+      const result = await dispatch(
+        loginUser({
+          username: formData.username.trim(),
+          password: formData.password,
+        })
+      );
+
+      if (loginUser.fulfilled.match(result)) {
+        // Login successful - navigation will happen via useEffect
+        console.log("Login successful");
+      }
     } catch (error) {
       console.error("Login failed:", error);
     }
@@ -75,32 +114,51 @@ export function LoginPage() {
         </BoyContainer>
 
         <LoginForm onSubmit={handleLogin} aria-label={t("login_and_play")}>
+          {error && <ErrorMessage>{t(error) || error}</ErrorMessage>}
+
           <FormGroup>
-            <SrOnly htmlFor="login">Login</SrOnly>
+            <SrOnly htmlFor="username">{t("username")}</SrOnly>
             <Input
-              id="login"
-              name="login"
+              id="username"
+              name="username"
               type="text"
-              autoComplete="login"
+              autoComplete="username"
               required
-              placeholder="Login"
-              disabled={true}
+              placeholder={t("username")}
+              value={formData.username}
+              onChange={handleInputChange}
+              disabled={loading}
             />
           </FormGroup>
 
           <FormGroup>
-            <SrOnly htmlFor="password">Password</SrOnly>
+            <SrOnly htmlFor="password">{t("password")}</SrOnly>
             <Input
               id="password"
               name="password"
               type="password"
               autoComplete="current-password"
               required
-              placeholder="Password"
-              disabled={true}
+              placeholder={t("password")}
+              value={formData.password}
+              onChange={handleInputChange}
+              disabled={loading}
             />
           </FormGroup>
-          <PlayButton type="submit" aria-label={t("login_and_play")} />
+
+          {loading ? (
+            <LoadingSpinner />
+          ) : (
+            <PlayButton
+              type="submit"
+              aria-label={t("login_and_play")}
+              disabled={
+                loading ||
+                !formData.username.trim() ||
+                !formData.password.trim()
+              }
+            />
+          )}
         </LoginForm>
       </LoginBox>
     </LoginContainer>

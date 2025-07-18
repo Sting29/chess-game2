@@ -1,4 +1,5 @@
 import React, { useCallback } from "react";
+import { useDispatch } from "react-redux";
 import {
   LayoutContainer,
   Header,
@@ -12,6 +13,8 @@ import {
 } from "./styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useTranslation } from "react-i18next";
+import { AppDispatch } from "src/store";
+import { logoutUser } from "src/store/settingsSlice";
 
 import LogoImg from "src/assets/logo/logo_en_new.png";
 import LogoImgHe from "src/assets/logo/logo_he_new.png";
@@ -26,13 +29,20 @@ interface LayoutProps {
 export function Layout({ children }: LayoutProps) {
   const { breakpoint } = useBreakpoint();
   const { i18n } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
 
-  // Мемоизированный обработчик выхода
-  const handleLogout = useCallback(() => {
-    localStorage.removeItem("isAuthenticated");
-    // Принудительно обновляем страницу и перенаправляем на логин
-    window.location.href = "/login";
-  }, []);
+  // Redux logout handler
+  const handleLogout = useCallback(async () => {
+    try {
+      // Call Redux action for logout
+      await dispatch(logoutUser()).unwrap();
+      // Navigation will happen automatically through routing
+    } catch (error) {
+      console.error("Logout failed:", error);
+      // Even if API call failed, clear local state
+      // Navigation will still happen through routing
+    }
+  }, [dispatch]);
 
   return (
     <LayoutContainer>

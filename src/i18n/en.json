@@ -142,5 +142,17 @@
   "choose_rival": "Choose rival",
   "easy": "Easy",
   "medium": "Medium",
-  "hard": "Hard"
+  "hard": "Hard",
+  "username": "Username",
+  "password": "Password",
+  "auth.invalid_credentials": "Invalid username or password",
+  "auth.rate_limited": "Too many login attempts. Please try again later",
+  "network.connection_error": "Connection error. Please check your internet connection",
+  "network.request_error": "Request error. Please try again",
+  "api.validation_error": "Invalid input data",
+  "api.not_found": "Resource not found",
+  "api.conflict_error": "Data conflict error",
+  "api.server_error": "Server error. Please try again later",
+  "api.service_unavailable": "Service temporarily unavailable",
+  "api.unknown_error": "Unknown error occurred"
 }

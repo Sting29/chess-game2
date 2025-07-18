@@ -1,6 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
 import settingsReducer, {
   settingsLocalStorageMiddleware,
+  profileSyncMiddleware,
 } from "./settingsSlice";
 
 export const store = configureStore({
@@ -8,7 +9,10 @@ export const store = configureStore({
     settings: settingsReducer,
   },
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(settingsLocalStorageMiddleware as any),
+    getDefaultMiddleware().concat(
+      settingsLocalStorageMiddleware as any,
+      profileSyncMiddleware as any
+    ),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

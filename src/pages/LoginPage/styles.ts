@@ -17,7 +17,7 @@ export const LoginBox = styled.div`
   align-items: center;
   width: 400px;
   max-width: 400px;
-  margin: 100px auto 0;
+  margin: 60px auto 0;
 `;
 
 export const LoginHeader = styled.div`
@@ -56,10 +56,10 @@ export const Input = styled.input`
   padding: 0.75rem 20px;
   border: 2px solid black;
   border-radius: 24px;
-  font-size: 0.875rem;
-  transition: border-color 0.2s;
   font-size: 40px;
   font-family: Roboto;
+  transition: border-color 0.2s;
+  line-height: normal;
 
   &:focus {
     outline: none;
@@ -76,9 +76,6 @@ export const Input = styled.input`
     font-size: 40px;
     color: #bdbdbd;
     font-family: Roboto;
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
     line-height: normal;
   }
 `;
@@ -128,6 +125,37 @@ export const BoyContainer = styled.div<{ $isMobile: boolean }>`
   bottom: 15%;
   right: 17%;
   display: ${(props) => (props.$isMobile ? "none" : "block")};
+`;
+
+export const ErrorMessage = styled.div`
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  text-align: center;
+  width: 100%;
+  margin-bottom: 1rem;
+`;
+
+export const LoadingSpinner = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #006acd;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
 `;
 
 // export const Title = styled.p`

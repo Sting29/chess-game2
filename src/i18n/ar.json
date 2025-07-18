@@ -140,5 +140,17 @@
   "choose_rival": "اختر المنافس",
   "easy": "سهل",
   "medium": "متوسط",
-  "hard": "صعب"
+  "hard": "صعب",
+  "username": "اسم المستخدم",
+  "password": "كلمة المرور",
+  "auth.invalid_credentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
+  "auth.rate_limited": "محاولات تسجيل دخول كثيرة جداً. حاول مرة أخرى لاحقاً",
+  "network.connection_error": "خطأ في الاتصال. تحقق من اتصال الإنترنت",
+  "network.request_error": "خطأ في الطلب. حاول مرة أخرى",
+  "api.validation_error": "بيانات غير صحيحة",
+  "api.not_found": "المورد غير موجود",
+  "api.conflict_error": "خطأ في تضارب البيانات",
+  "api.server_error": "خطأ في الخادم. حاول مرة أخرى لاحقاً",
+  "api.service_unavailable": "الخدمة غير متاحة مؤقتاً",
+  "api.unknown_error": "حدث خطأ غير معروف"
 }

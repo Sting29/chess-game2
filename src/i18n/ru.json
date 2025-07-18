@@ -142,5 +142,17 @@
   "choose_rival": "Выберите соперника",
   "easy": "Легко",
   "medium": "Средне",
-  "hard": "Сложно"
+  "hard": "Сложно",
+  "username": "Имя пользователя",
+  "password": "Пароль",
+  "auth.invalid_credentials": "Неверное имя пользователя или пароль",
+  "auth.rate_limited": "Слишком много попыток входа. Попробуйте позже",
+  "network.connection_error": "Ошибка соединения. Проверьте интернет-подключение",
+  "network.request_error": "Ошибка запроса. Попробуйте еще раз",
+  "api.validation_error": "Неверные данные",
+  "api.not_found": "Ресурс не найден",
+  "api.conflict_error": "Конфликт данных",
+  "api.server_error": "Ошибка сервера. Попробуйте позже",
+  "api.service_unavailable": "Сервис временно недоступен",
+  "api.unknown_error": "Произошла неизвестная ошибка"
 }

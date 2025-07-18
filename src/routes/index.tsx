@@ -3,6 +3,8 @@ import {
   RouterProvider,
   Navigate,
 } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "src/store";
 import { LoginPage } from "src/pages/LoginPage/LoginPage";
 import HowToMove from "src/pages/HowToMove/HowToMove";
 import ChessTutorial from "src/pages/ChessTutorial/ChessTutorial";
@@ -21,80 +23,157 @@ import PlayWithComputerSelectLevel from "src/pages/PlayWithComputerSelectLevel/P
 // Получаем базовый путь из окружения или используем корневой путь
 const basename = process.env.PUBLIC_URL || "/";
 
-function protectedElement(element: React.ReactElement) {
-  const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+function ProtectedRoute({ children }: { children: React.ReactElement }) {
+  const { isAuthenticated, loading } = useSelector(
+    (state: RootState) => state.settings
+  );
+
+  // Показываем загрузку пока проверяем аутентификацию
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-  return <Layout>{element}</Layout>;
+
+  return <Layout>{children}</Layout>;
+}
+
+function LoginRoute() {
+  const { isAuthenticated, loading } = useSelector(
+    (state: RootState) => state.settings
+  );
+
+  // Показываем загрузку пока проверяем аутентификацию
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isAuthenticated) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <LoginPage />;
 }
 
 const router = createBrowserRouter(
   [
     {
       path: "/login",
-      element:
-        localStorage.getItem("isAuthenticated") === "true" ? (
-          <Navigate to="/" replace />
-        ) : (
-          <LoginPage />
-        ),
+      element: <LoginRoute />,
     },
     {
       path: "/",
-      element: protectedElement(<ChessTutorial />),
+      element: (
+        <ProtectedRoute>
+          <ChessTutorial />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/how-to-move",
-      element: protectedElement(<HowToMove />),
+      element: (
+        <ProtectedRoute>
+          <HowToMove />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/how-to-play",
-      element: protectedElement(<HowToPlay />),
+      element: (
+        <ProtectedRoute>
+          <HowToPlay />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/puzzles",
-      element: protectedElement(<PuzzleList />),
+      element: (
+        <ProtectedRoute>
+          <PuzzleList />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/puzzles/:categoryId",
-      element: protectedElement(<PuzzleList />),
+      element: (
+        <ProtectedRoute>
+          <PuzzleList />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/puzzles/:categoryId/:puzzleId",
-      element: protectedElement(<PuzzleSolver />),
+      element: (
+        <ProtectedRoute>
+          <PuzzleSolver />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/how-to-move/:pieceId",
-      element: protectedElement(<ChessMoves />),
+      element: (
+        <ProtectedRoute>
+          <ChessMoves />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/how-to-play/:battleId",
-      element: protectedElement(<ChessBattle />),
+      element: (
+        <ProtectedRoute>
+          <ChessBattle />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/play",
-      element: protectedElement(<Play />),
+      element: (
+        <ProtectedRoute>
+          <Play />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/play/person",
-      element: protectedElement(<PlayWithPerson />),
+      element: (
+        <ProtectedRoute>
+          <PlayWithPerson />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/play/computer",
-      element: protectedElement(<PlayWithComputerSelectLevel />),
+      element: (
+        <ProtectedRoute>
+          <PlayWithComputerSelectLevel />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/play/computer/:level",
-      element: protectedElement(<PlayWithComputer />),
+      element: (
+        <ProtectedRoute>
+          <PlayWithComputer />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/account",
-      element: protectedElement(<Account />),
+      element: (
+        <ProtectedRoute>
+          <Account />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "/settings",
-      element: protectedElement(<SettingsPage />),
+      element: (
+        <ProtectedRoute>
+          <SettingsPage />
+        </ProtectedRoute>
+      ),
     },
     {
       path: "*",

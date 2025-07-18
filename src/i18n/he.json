@@ -142,5 +142,17 @@
   "choose_rival": "בחרו נגד",
   "easy": "קל",
   "medium": "בינוני",
-  "hard": "קשה"
+  "hard": "קשה",
+  "username": "שם משתמש",
+  "password": "סיסמה",
+  "auth.invalid_credentials": "שם משתמש או סיסמה שגויים",
+  "auth.rate_limited": "יותר מדי ניסיונות התחברות. נסה שוב מאוחר יותר",
+  "network.connection_error": "שגיאת חיבור. בדוק את החיבור לאינטרנט",
+  "network.request_error": "שגיאת בקשה. נסה שוב",
+  "api.validation_error": "נתונים לא תקינים",
+  "api.not_found": "המשאב לא נמצא",
+  "api.conflict_error": "שגיאת התנגשות נתונים",
+  "api.server_error": "שגיאת שרת. נסה שוב מאוחר יותר",
+  "api.service_unavailable": "השירות זמנית לא זמין",
+  "api.unknown_error": "אירעה שגיאה לא ידועה"
 }
