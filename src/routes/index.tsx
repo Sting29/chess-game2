@@ -41,15 +41,9 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
 }
 
 function LoginRoute() {
-  const { isAuthenticated, loading } = useSelector(
-    (state: RootState) => state.settings
-  );
+  const { isAuthenticated } = useSelector((state: RootState) => state.settings);
 
-  // Показываем загрузку пока проверяем аутентификацию
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
+  // Убираем проверку loading - пусть LoginPage сама управляет состоянием загрузки
   if (isAuthenticated) {
     return <Navigate to="/" replace />;
   }

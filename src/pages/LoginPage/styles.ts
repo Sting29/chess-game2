@@ -25,7 +25,9 @@ export const LoginHeader = styled.div`
 `;
 
 export const LoginForm = styled.form`
-  width: 398px;
+  position: relative;
+  width: 400px;
+  min-height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -159,30 +161,3 @@ export const ErrorMessage = styled.div`
   width: 100%;
   margin-bottom: 1rem;
 `;
-
-export const LoadingSpinner = styled.div`
-  width: 40px;
-  height: 40px;
-  border: 4px solid #f3f3f3;
-  border-top: 4px solid #006acd;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
-
-  @keyframes spin {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-`;
-
-// export const Title = styled.p`
-//   font-family: "WendyOne", sans-serif;
-//   font-size: 44px;
-//   color: #fff7db;
-//   line-height: 46px;
-//   font-weight: 700;
-// `;
