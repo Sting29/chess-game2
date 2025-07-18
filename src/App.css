@@ -243,3 +243,7 @@
   margin-top: 1rem;
   width: 100%;
 }
+
+input:-webkit-autofill::first-line {
+  font-size: 40px;
+}

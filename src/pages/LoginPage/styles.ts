@@ -78,6 +78,27 @@ export const Input = styled.input`
     font-family: Roboto;
     line-height: normal;
   }
+
+  /* Force override autofill styles */
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus,
+  &:-webkit-autofill:active {
+    font-size: 40px !important;
+    font-family: Roboto, sans-serif !important;
+    -webkit-text-fill-color: #000 !important;
+    transition: font-size 5000s ease-in-out 0s !important;
+    -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  }
+
+  &:-moz-autofill {
+    font-size: 40px !important;
+    font-family: Roboto, sans-serif !important;
+  }
+
+  &:-webkit-autofill::first-line {
+    font-size: 40px !important;
+  }
 `;
 
 export const BlueLine = styled.div`
