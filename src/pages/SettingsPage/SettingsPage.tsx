@@ -91,14 +91,14 @@ function SettingsPage() {
               {t("chess_set_3")}
             </SettingsButtonText>
           </SettingsButton>
-          {/* <SettingsButton
+          <SettingsButton
             $current={chessSet === "4"}
             onClick={() => handleChessSetChange("4")}
           >
-              <SettingsButtonText $current={chessSet === "4"}>
+            <SettingsButtonText $current={chessSet === "4"}>
               {t("chess_set_4")}
             </SettingsButtonText>
-          </SettingsButton> */}
+          </SettingsButton>
         </SettingsButtonsGroup>
       </SettingsContainer>
       <SettingsContainer style={{ marginTop: 16 }}>
@@ -115,7 +115,13 @@ function SettingsPage() {
                     key={fig + "_w"}
                     style={{ textAlign: "center", padding: 4 }}
                   >
-                    <img src={item?.image} alt={fig + " white"} height={48} />
+                    {typeof item?.image === "string" ? (
+                      <img src={item.image} alt={fig + " white"} height={48} />
+                    ) : typeof item?.image === "function" ? (
+                      <div style={{ width: 48, height: 48 }}>
+                        {item.image({ fill: "#ffffff" })}
+                      </div>
+                    ) : null}
                   </td>
                 );
               })}
@@ -130,7 +136,13 @@ function SettingsPage() {
                     key={fig + "_b"}
                     style={{ textAlign: "center", padding: 4 }}
                   >
-                    <img src={item?.image} alt={fig + " black"} height={48} />
+                    {typeof item?.image === "string" ? (
+                      <img src={item.image} alt={fig + " black"} height={48} />
+                    ) : typeof item?.image === "function" ? (
+                      <div style={{ width: 48, height: 48 }}>
+                        {item.image({ fill: "#000000" })}
+                      </div>
+                    ) : null}
                   </td>
                 );
               })}

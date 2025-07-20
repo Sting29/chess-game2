@@ -22,11 +22,12 @@ import QueenWhiteHeroes from "src/assets/figures/queen_white.png";
 import QueenBlackHeroes from "src/assets/figures/queen_dark.png";
 import KingWhiteHeroes from "src/assets/figures/king_white.png";
 import KingBlackHeroes from "src/assets/figures/king_dark.png";
+import { defaultPieces } from "./pieces";
 
 export const FIGURES_SETS = [
   {
     id: "1",
-    name: "classic",
+    name: "chessSet1",
     white: [
       { figure: "pawn", image: PawnWhiteClassic },
       { figure: "rook", image: RookWhiteClassic },
@@ -60,7 +61,7 @@ export const FIGURES_SETS = [
   },
   {
     id: "2",
-    name: "heroes",
+    name: "chessSet2",
     white: [
       { figure: "pawn", image: PawnWhiteHeroes },
       { figure: "rook", image: RookWhiteHeroes },
@@ -94,7 +95,7 @@ export const FIGURES_SETS = [
   },
   {
     id: "3",
-    name: "classic_heroes_kink_and_queen",
+    name: "chessSet3",
     white: [
       { figure: "pawn", image: PawnWhiteClassic },
       { figure: "rook", image: RookWhiteClassic },
@@ -124,6 +125,40 @@ export const FIGURES_SETS = [
       bR: RookBlackClassic,
       bQ: QueenBlackHeroes,
       bK: KingBlackHeroes,
+    },
+  },
+  {
+    id: "4",
+    name: "chessSet4",
+    white: [
+      { figure: "pawn", image: defaultPieces.wP },
+      { figure: "rook", image: defaultPieces.wR },
+      { figure: "knight", image: defaultPieces.wN },
+      { figure: "bishop", image: defaultPieces.wB },
+      { figure: "queen", image: defaultPieces.wQ },
+      { figure: "king", image: defaultPieces.wK },
+    ],
+    black: [
+      { figure: "pawn", image: defaultPieces.bP },
+      { figure: "rook", image: defaultPieces.bR },
+      { figure: "knight", image: defaultPieces.bN },
+      { figure: "bishop", image: defaultPieces.bB },
+      { figure: "queen", image: defaultPieces.bQ },
+      { figure: "king", image: defaultPieces.bK },
+    ],
+    chessSet: {
+      wP: defaultPieces.wP,
+      wN: defaultPieces.wN,
+      wB: defaultPieces.wB,
+      wR: defaultPieces.wR,
+      wQ: defaultPieces.wQ,
+      wK: defaultPieces.wK,
+      bP: defaultPieces.bP,
+      bN: defaultPieces.bN,
+      bB: defaultPieces.bB,
+      bR: defaultPieces.bR,
+      bQ: defaultPieces.bQ,
+      bK: defaultPieces.bK,
     },
   },
 ];
