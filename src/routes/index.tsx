@@ -24,14 +24,7 @@ import PlayWithComputerSelectLevel from "src/pages/PlayWithComputerSelectLevel/P
 const basename = process.env.PUBLIC_URL || "/";
 
 function ProtectedRoute({ children }: { children: React.ReactElement }) {
-  const { isAuthenticated, loading } = useSelector(
-    (state: RootState) => state.settings
-  );
-
-  // Показываем загрузку пока проверяем аутентификацию
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const { isAuthenticated } = useSelector((state: RootState) => state.settings);
 
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;

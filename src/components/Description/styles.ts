@@ -1,17 +1,22 @@
 import styled from "styled-components";
+import hint from "src/assets/images/hint.png";
 
 export const DescriptionContainer = styled.div`
-  background-color: rgba(255, 255, 255, 0.9);
-  padding: 1.5rem;
+  padding: 24px 44px 60px 34px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 1rem 0;
+  background-image: url(${hint});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 314px;
+  height: 386px;
 `;
 
 export const Title = styled.h3`
   color: #333;
-  margin-bottom: 1rem;
-  font-size: 1.2rem;
+  margin-bottom: 4px;
+  margin-left: 10px;
 `;
 
 export const HintsList = styled.ul`

@@ -44,6 +44,19 @@ const getInitialSettings = (): SettingsState => {
 
 const initialState: SettingsState = getInitialSettings();
 
+// TODO: remove or update this function after adding in API sets
+// Helper function to convert API chess set to local format
+const convertApiChessSetToLocal = (apiChessSet: string): string => {
+  switch (apiChessSet) {
+    case "chessSet1":
+      return "1";
+    case "chessSet2":
+      return "2";
+    default:
+      return "1"; // fallback to first set
+  }
+};
+
 // Async thunks for API operations
 export const loginUser = createAsyncThunk(
   "settings/loginUser",
@@ -158,7 +171,9 @@ const settingsSlice = createSlice({
           state.language = action.payload.profile.language;
         }
         if (action.payload.profile?.chessSet) {
-          state.chessSet = action.payload.profile.chessSet;
+          state.chessSet = convertApiChessSetToLocal(
+            action.payload.profile.chessSet
+          );
         }
       }
     },
@@ -180,7 +195,9 @@ const settingsSlice = createSlice({
           state.language = action.payload.user.profile.language;
         }
         if (action.payload.user.profile?.chessSet) {
-          state.chessSet = action.payload.user.profile.chessSet;
+          state.chessSet = convertApiChessSetToLocal(
+            action.payload.user.profile.chessSet
+          );
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -225,7 +242,9 @@ const settingsSlice = createSlice({
           state.language = action.payload.profile.language;
         }
         if (action.payload.profile?.chessSet) {
-          state.chessSet = action.payload.profile.chessSet;
+          state.chessSet = convertApiChessSetToLocal(
+            action.payload.profile.chessSet
+          );
         }
       })
       .addCase(loadUserProfile.rejected, (state, action) => {
@@ -248,7 +267,9 @@ const settingsSlice = createSlice({
           state.language = action.payload.profile.language;
         }
         if (action.payload.profile?.chessSet) {
-          state.chessSet = action.payload.profile.chessSet;
+          state.chessSet = convertApiChessSetToLocal(
+            action.payload.profile.chessSet
+          );
         }
       })
       .addCase(updateUserProfileAsync.rejected, (state, action) => {
@@ -288,7 +309,9 @@ const settingsSlice = createSlice({
         state.error = undefined;
         // Update chess set immediately
         if (action.payload.profile?.chessSet) {
-          state.chessSet = action.payload.profile.chessSet;
+          state.chessSet = convertApiChessSetToLocal(
+            action.payload.profile.chessSet
+          );
         }
       })
       .addCase(updateChessSetAsync.rejected, (state, action) => {

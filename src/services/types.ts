@@ -37,7 +37,7 @@ export interface UserProfile {
   avatarWear?: "avatarWear1" | "avatarWear2" | "avatarWear3";
   age?: number;
   language?: "he" | "en" | "ar" | "ru";
-  chessSet?: "chessSet1" | "chessSet2";
+  chessSet?: "chessSet1" | "chessSet2" | "chessSet3" | "chessSet4";
   created_at: string;
   updated_at: string;
 }

@@ -12,16 +12,22 @@ import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useTranslation } from "react-i18next";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "src/store";
-import { setLanguage, setChessSet } from "src/store/settingsSlice";
+import { RootState, AppDispatch } from "src/store";
+import {
+  setLanguage,
+  setChessSet,
+  updateLanguageAsync,
+  updateChessSetAsync,
+} from "src/store/settingsSlice";
 import { FIGURES_SETS } from "src/data/figures-sets";
 import { languageConfig } from "src/data/languageConfig";
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
-  const dispatch = useDispatch();
-  const language = useSelector((state: RootState) => state.settings.language);
-  const chessSet = useSelector((state: RootState) => state.settings.chessSet);
+  const dispatch = useDispatch<AppDispatch>();
+  const { language, chessSet, isAuthenticated } = useSelector(
+    (state: RootState) => state.settings
+  );
 
   // Синхронизируем язык redux <-> i18next
   useEffect(() => {
@@ -30,13 +36,41 @@ function SettingsPage() {
     }
   }, [language, i18n]);
 
-  const handleLanguageChange = (lang: string) => {
-    dispatch(setLanguage(lang));
+  const handleLanguageChange = async (lang: string) => {
+    // Immediately update UI for instant feedback
     i18n.changeLanguage(lang);
+    dispatch(setLanguage(lang));
+
+    // If authenticated, also save to API
+    if (isAuthenticated) {
+      try {
+        await dispatch(
+          updateLanguageAsync(lang as "he" | "en" | "ar" | "ru")
+        ).unwrap();
+        console.log("Language saved to API successfully");
+      } catch (error) {
+        console.error("Failed to save language to API:", error);
+        // UI is already updated, so no need to revert
+      }
+    }
   };
 
-  const handleChessSetChange = (set: string) => {
+  const handleChessSetChange = async (set: string) => {
+    // Immediately update UI for instant feedback
     dispatch(setChessSet(set));
+
+    // If authenticated, also save to API
+    if (isAuthenticated) {
+      try {
+        // Convert local chess set ID to API format
+        const apiChessSet = set === "1" ? "chessSet1" : "chessSet2";
+        await dispatch(updateChessSetAsync(apiChessSet)).unwrap();
+        console.log("Chess set saved to API successfully");
+      } catch (error) {
+        console.error("Failed to save chess set to API:", error);
+        // UI is already updated, so no need to revert
+      }
+    }
   };
 
   const figureOrder = ["pawn", "rook", "knight", "bishop", "queen", "king"];

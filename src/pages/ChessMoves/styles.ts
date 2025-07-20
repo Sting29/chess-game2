@@ -28,7 +28,6 @@ export const SideContent = styled.div`
   position: absolute;
   top: 120px;
   right: 0;
-  width: 300px;
 `;
 
 export const ResetButton = styled.button`
