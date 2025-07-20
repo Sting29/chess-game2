@@ -15,6 +15,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "src/store";
 import { setLanguage, setChessSet } from "src/store/settingsSlice";
 import { FIGURES_SETS } from "src/data/figures-sets";
+import { languageConfig } from "src/data/languageConfig";
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
@@ -49,38 +50,17 @@ function SettingsPage() {
       <SettingsContainer>
         <SettingsTitle>{t("select_language")}</SettingsTitle>
         <SettingsButtonsGroup>
-          <SettingsButton
-            $current={language === "he"}
-            onClick={() => handleLanguageChange("he")}
-          >
-            <SettingsButtonText $current={language === "he"}>
-              עברית
-            </SettingsButtonText>
-          </SettingsButton>
-          <SettingsButton
-            $current={language === "en"}
-            onClick={() => handleLanguageChange("en")}
-          >
-            <SettingsButtonText $current={language === "en"}>
-              English
-            </SettingsButtonText>
-          </SettingsButton>
-          <SettingsButton
-            $current={language === "ar"}
-            onClick={() => handleLanguageChange("ar")}
-          >
-            <SettingsButtonText $current={language === "ar"}>
-              العربية
-            </SettingsButtonText>
-          </SettingsButton>
-          <SettingsButton
-            $current={language === "ru"}
-            onClick={() => handleLanguageChange("ru")}
-          >
-            <SettingsButtonText $current={language === "ru"}>
-              Русский
-            </SettingsButtonText>
-          </SettingsButton>
+          {languageConfig.map((lang) => (
+            <SettingsButton
+              $current={language === lang.code}
+              onClick={() => handleLanguageChange(lang.code)}
+              key={lang.code}
+            >
+              <SettingsButtonText $current={language === lang.code}>
+                {lang.title}
+              </SettingsButtonText>
+            </SettingsButton>
+          ))}
         </SettingsButtonsGroup>
       </SettingsContainer>
 
