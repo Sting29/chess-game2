@@ -21,6 +21,7 @@ import {
 } from "src/store/settingsSlice";
 import { FIGURES_SETS } from "src/data/figures-sets";
 import { languageConfig } from "src/data/languageConfig";
+import { ChessSet } from "src/services/types";
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
@@ -58,12 +59,12 @@ function SettingsPage() {
   const handleChessSetChange = async (set: string) => {
     // Immediately update UI for instant feedback
     dispatch(setChessSet(set));
-
+    console.log("Chess set changed to:", set);
     // If authenticated, also save to API
     if (isAuthenticated) {
       try {
         // Convert local chess set ID to API format
-        const apiChessSet = set === "1" ? "chessSet1" : "chessSet2";
+        const apiChessSet = `chessSet${set}` as ChessSet;
         await dispatch(updateChessSetAsync(apiChessSet)).unwrap();
         console.log("Chess set saved to API successfully");
       } catch (error) {

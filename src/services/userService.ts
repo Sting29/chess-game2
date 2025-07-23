@@ -1,6 +1,6 @@
 import httpClient from "./httpClient";
 import errorHandler from "./errorHandler";
-import { User, UpdateProfileRequest, UserSession } from "./types";
+import { User, UpdateProfileRequest, UserSession, ChessSet } from "./types";
 import { AxiosError } from "axios";
 
 class UserService {
@@ -66,9 +66,7 @@ class UserService {
   }
 
   // Update chess set preference
-  public async updateChessSet(
-    chessSet: "chessSet1" | "chessSet2"
-  ): Promise<User> {
+  public async updateChessSet(chessSet: ChessSet): Promise<User> {
     try {
       const profileData: UpdateProfileRequest = {
         profile: {

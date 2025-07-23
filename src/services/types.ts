@@ -17,6 +17,14 @@ export interface AuthResponse {
   user: User;
 }
 
+// Chess types
+export enum ChessSet {
+  Set1 = "chessSet1",
+  Set2 = "chessSet2",
+  Set3 = "chessSet3",
+  Set4 = "chessSet4",
+}
+
 // User types
 export interface User {
   id: string;
@@ -37,7 +45,7 @@ export interface UserProfile {
   avatarWear?: "avatarWear1" | "avatarWear2" | "avatarWear3";
   age?: number;
   language?: "he" | "en" | "ar" | "ru";
-  chessSet?: "chessSet1" | "chessSet2" | "chessSet3" | "chessSet4";
+  chessSet?: ChessSet;
   created_at: string;
   updated_at: string;
 }

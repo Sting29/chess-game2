@@ -4,7 +4,12 @@ import {
   Middleware,
   createAsyncThunk,
 } from "@reduxjs/toolkit";
-import { User, LoginRequest, UpdateProfileRequest } from "../services/types";
+import {
+  User,
+  LoginRequest,
+  UpdateProfileRequest,
+  ChessSet,
+} from "../services/types";
 import { authService, userService } from "../services";
 
 export type SettingsState = {
@@ -44,14 +49,17 @@ const getInitialSettings = (): SettingsState => {
 
 const initialState: SettingsState = getInitialSettings();
 
-// TODO: remove or update this function after adding in API sets
 // Helper function to convert API chess set to local format
-const convertApiChessSetToLocal = (apiChessSet: string): string => {
+const convertApiChessSetToLocal = (apiChessSet: ChessSet): string => {
   switch (apiChessSet) {
-    case "chessSet1":
+    case ChessSet.Set1:
       return "1";
-    case "chessSet2":
+    case ChessSet.Set2:
       return "2";
+    case ChessSet.Set3:
+      return "3";
+    case ChessSet.Set4:
+      return "4";
     default:
       return "1"; // fallback to first set
   }
@@ -119,7 +127,7 @@ export const updateLanguageAsync = createAsyncThunk(
 
 export const updateChessSetAsync = createAsyncThunk(
   "settings/updateChessSet",
-  async (chessSet: "chessSet1" | "chessSet2", { rejectWithValue }) => {
+  async (chessSet: ChessSet, { rejectWithValue }) => {
     try {
       const user = await userService.updateChessSet(chessSet);
       return user;
