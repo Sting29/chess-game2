@@ -7,7 +7,7 @@ import ChessKing from "src/assets/images/slides/slide_king.png";
 
 export const HOW_TO_MOVE = [
   {
-    id: "1",
+    id: 1,
     link: "pawn-move",
     pageTitleKey: "how_to_move_pawn",
     descriptionTitleKey: "how_to_move_pawn_title",
@@ -17,7 +17,7 @@ export const HOW_TO_MOVE = [
     isCompleted: false,
   },
   {
-    id: "2",
+    id: 2,
     link: "rook-move",
     pageTitleKey: "how_to_move_rook",
     descriptionTitleKey: "how_to_move_rook_title",
@@ -27,7 +27,7 @@ export const HOW_TO_MOVE = [
     isCompleted: false,
   },
   {
-    id: "3",
+    id: 3,
     link: "knight-move",
     pageTitleKey: "how_to_move_knight",
     descriptionTitleKey: "how_to_move_knight_title",
@@ -37,7 +37,7 @@ export const HOW_TO_MOVE = [
     isCompleted: false,
   },
   {
-    id: "4",
+    id: 4,
     link: "bishop-move",
     pageTitleKey: "how_to_move_bishop",
     descriptionTitleKey: "how_to_move_bishop_title",
@@ -47,7 +47,7 @@ export const HOW_TO_MOVE = [
     isCompleted: false,
   },
   {
-    id: "5",
+    id: 5,
     link: "queen-move",
     pageTitleKey: "how_to_move_queen",
     descriptionTitleKey: "how_to_move_queen_title",
@@ -57,7 +57,7 @@ export const HOW_TO_MOVE = [
     isCompleted: false,
   },
   {
-    id: "6",
+    id: 6,
     link: "king-move",
     pageTitleKey: "how_to_move_king",
     descriptionTitleKey: "how_to_move_king_title",

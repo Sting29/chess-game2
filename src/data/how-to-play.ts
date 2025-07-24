@@ -3,7 +3,8 @@ import ChessKnight from "src/assets/images/slides/slide_knight.png";
 
 export const HOW_TO_PLAY = [
   {
-    id: `pawn-battle`,
+    id: 1,
+    link: "pawn-battle",
     titleKey: "how_to_play_pawn_battle",
     image: ChessPawn,
     widgetSize: "large",
@@ -14,7 +15,8 @@ export const HOW_TO_PLAY = [
     descriptionKey: "how_to_play_pawn_battle_desc",
   },
   {
-    id: `pawn-battle-1`,
+    id: 2,
+    link: "pawn-battle-1",
     titleKey: "how_to_play_pawn_battle_1",
     image: ChessPawn,
     widgetSize: "large",
@@ -25,7 +27,8 @@ export const HOW_TO_PLAY = [
     descriptionKey: "how_to_play_pawn_battle_1_desc",
   },
   {
-    id: `knight-battle`,
+    id: 3,
+    link: "knight-battle",
     titleKey: "how_to_play_knight_battle",
     image: ChessKnight,
     widgetSize: "large",

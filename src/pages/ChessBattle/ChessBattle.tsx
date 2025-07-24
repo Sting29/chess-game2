@@ -24,7 +24,7 @@ function ChessBattle() {
   const [showBoom, setShowBoom] = useState(false);
   const [showSideContent, setShowSideContent] = useState(true);
 
-  const gameData = HOW_TO_PLAY.find((battle) => battle.id === battleId);
+  const gameData = HOW_TO_PLAY.find((battle) => battle.id === Number(battleId));
   const location = useLocation();
 
   if (!gameData) {

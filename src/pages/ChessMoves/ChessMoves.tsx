@@ -30,7 +30,7 @@ function ChessMoves() {
   // >("playing");
   const [showSideContent, setShowSideContent] = useState(true);
 
-  const gameData = HOW_TO_MOVE.find((piece) => piece.id === pieceId);
+  const gameData = HOW_TO_MOVE.find((piece) => piece.id === Number(pieceId));
 
   if (!gameData) {
     return <div>{t("piece_not_found")}</div>;
