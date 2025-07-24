@@ -64,26 +64,6 @@ const ChessTutorial = memo(function ChessTutorial() {
         onClick: () => navigate("/play"),
         animationType: "bounce" as const,
       },
-      // {
-      //   nameKey: "play_game_c",
-      //   image: Island3Img,
-      //   position: { bottom: "23%", right: "27%" },
-      //   mobilePosition: { bottom: "30%", right: "15%" },
-      //   width: "15%",
-      //   mobileWidth: "22%",
-      //   onClick: () => navigate("/play-with-computer"),
-      //   animationType: "bounce" as const,
-      // },
-      // {
-      //   nameKey: "play_game_p",
-      //   image: Island3Img,
-      //   position: { top: "23%", right: "20%" },
-      //   mobilePosition: { bottom: "30%", right: "15%" },
-      //   width: "15%",
-      //   mobileWidth: "22%",
-      //   onClick: () => navigate("/play-with-person"),
-      //   animationType: "gentle" as const,
-      // },
     ],
     [navigate]
   );
