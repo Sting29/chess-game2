@@ -4,7 +4,7 @@ import { Square } from "../../types/types";
 import { PuzzleChessEngine } from "../../utils/PuzzleChessEngine";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
-import { BoardContainer, GameStatus } from "./styles";
+import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 
 interface ChessPuzzleBoardProps {
   initialPosition: string;

@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { Square, PromotionPiece } from "src/types/types";
 import { BattleChessEngine } from "src/utils/BattleChessEngine";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
+import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 
 interface ChessBattleBoardProps {
   initialPosition: string;
@@ -201,18 +202,10 @@ export function ChessBattleBoard({
   // If comment useEffect and makeComputerMove it will be a play for 2 players
 
   return (
-    <div style={{ width: "400px", margin: "0 auto" }}>
-      <div
-        className="move-message"
-        style={{
-          textAlign: "center",
-          marginBottom: "10px",
-          fontWeight: "bold",
-          color: errorMessage ? "red" : "black",
-        }}
-      >
+    <BoardContainer>
+      <GameStatus>
         {errorMessage ? `${turnMessage} - ${errorMessage}` : turnMessage}
-      </div>
+      </GameStatus>
 
       <Chessboard
         position={game.fen()}
@@ -242,6 +235,6 @@ export function ChessBattleBoard({
         }}
         customPieces={customPieces}
       />
-    </div>
+    </BoardContainer>
   );
 }

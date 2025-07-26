@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ComputerChessBoard } from "src/components/ComputerChessBoard";
+import { ComputerChessBoard } from "src/components/ComputerChessBoard/ComputerChessBoard";
 import { useTranslation } from "react-i18next";
 import {
   PageContainer,

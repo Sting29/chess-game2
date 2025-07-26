@@ -1,10 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
-import { Square } from "../types/playTypes";
-import { StockfishEngine } from "../utils/StockfishEngine";
-import { useCustomPieces } from "./CustomPieces/CustomPieces";
+import { Square } from "src/types/playTypes";
+import { StockfishEngine } from "src/utils/StockfishEngine";
+import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
+import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 interface ComputerChessBoardProps {
   settings: {
     depth: number;
@@ -155,17 +156,8 @@ export function ComputerChessBoard({
   const customPieces = useCustomPieces();
 
   return (
-    <div style={{ width: "550px", margin: "0 auto" }}>
-      <div
-        className="move-message"
-        style={{
-          textAlign: "center",
-          marginBottom: "10px",
-          fontWeight: "bold",
-        }}
-      >
-        {moveMessage}
-      </div>
+    <BoardContainer>
+      <GameStatus>{moveMessage}</GameStatus>
 
       <Chessboard
         position={game.fen()}
@@ -179,6 +171,6 @@ export function ComputerChessBoard({
         }}
         customPieces={customPieces}
       />
-    </div>
+    </BoardContainer>
   );
 }

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Chessboard } from "react-chessboard";
 import { Square } from "chess.js";
 import { PersonsChessEngine } from "../../utils/PersonsChessEngine";
-import { BoardContainer, GameStatus } from "./styles";
+import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 interface PersonsChessBoardProps {

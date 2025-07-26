@@ -5,6 +5,7 @@ import { Square } from "../../types/playTypes";
 import { SimplifiedChessEngine } from "../../utils/SimplifiedChessEngine";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
+import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 
 interface ChessTutorialBoardProps {
   initialPosition: string;
@@ -211,18 +212,10 @@ export function ChessTutorialBoard({
   const customPieces = useCustomPieces();
 
   return (
-    <div style={{ width: "550px", margin: "0 auto" }}>
-      <div
-        className="move-message"
-        style={{
-          textAlign: "center",
-          marginBottom: "10px",
-          fontWeight: "bold",
-          color: errorMessage ? "red" : "black",
-        }}
-      >
+    <BoardContainer style={{ width: "550px", margin: "0 auto" }}>
+      <GameStatus>
         {errorMessage ? `${turnMessage} - ${errorMessage}` : turnMessage}
-      </div>
+      </GameStatus>
 
       <Chessboard
         position={game.fen()}
@@ -252,6 +245,6 @@ export function ChessTutorialBoard({
         }}
         customPieces={customPieces}
       />
-    </div>
+    </BoardContainer>
   );
 }

@@ -5,6 +5,7 @@ import { BattleChessEngine } from "src/utils/BattleChessEngine";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { useTranslation } from "react-i18next";
 import { boardStyles } from "src/data/boardSettings";
+import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 
 interface ChessBattleBoardProps {
   initialPosition: string;
@@ -287,22 +288,14 @@ export function ChessBattleBoard({
   }, [game, gameStatus]);
 
   return (
-    <div style={{ width: "550px", margin: "0 auto" }}>
-      <div
-        className="move-message"
-        style={{
-          textAlign: "center",
-          marginBottom: "10px",
-          fontWeight: "bold",
-          color: errorMessage ? "red" : "black",
-        }}
-      >
+    <BoardContainer>
+      <GameStatus>
         {gameStatus === "playing"
           ? errorMessage
             ? `${turnMessage} - ${errorMessage}`
             : turnMessage
           : turnMessage}
-      </div>
+      </GameStatus>
 
       <Chessboard
         position={game.fen()}
@@ -331,6 +324,6 @@ export function ChessBattleBoard({
         }}
         customPieces={customPieces}
       />
-    </div>
+    </BoardContainer>
   );
 }
