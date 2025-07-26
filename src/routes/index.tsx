@@ -67,6 +67,14 @@ const router = createBrowserRouter(
       ),
     },
     {
+      path: "/how-to-move/:pieceId",
+      element: (
+        <ProtectedRoute>
+          <ChessMoves />
+        </ProtectedRoute>
+      ),
+    },
+    {
       path: "/how-to-play",
       element: (
         <ProtectedRoute>
@@ -98,14 +106,7 @@ const router = createBrowserRouter(
         </ProtectedRoute>
       ),
     },
-    {
-      path: "/how-to-move/:pieceId",
-      element: (
-        <ProtectedRoute>
-          <ChessMoves />
-        </ProtectedRoute>
-      ),
-    },
+
     {
       path: "/how-to-play/:battleId",
       element: (
