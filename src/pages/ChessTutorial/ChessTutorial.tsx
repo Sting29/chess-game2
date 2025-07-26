@@ -25,27 +25,33 @@ const ChessTutorial = memo(function ChessTutorial() {
   const islands = useMemo(
     () => [
       {
-        nameKey: "how_to_move",
-        image: Island0Img,
+        id: "how_to_play",
+        image: Island1Img,
+        // nameKey: "how_to_move",
+        // image: Island0Img,
         position: { bottom: "25%", left: "30%" },
         mobilePosition: { bottom: "30%", left: "15%" },
         width: "15%",
         mobileWidth: "22%",
-        onClick: () => navigate("/how-to-move"),
+        onClick: () => navigate("/how-to-play"),
+        // onClick: () => navigate("/how-to-move"),
         animationType: "default" as const,
       },
       {
-        nameKey: "how_to_play",
-        image: Island1Img,
+        id: "how_to_move",
+        image: Island0Img,
+        // nameKey: "how_to_play",
+        // image: Island1Img,
         position: { top: "28%", left: "20%" },
         mobilePosition: { top: "25%", left: "10%" },
         width: "15%",
         mobileWidth: "22%",
-        onClick: () => navigate("/how-to-play"),
+        onClick: () => navigate("/how-to-move"),
+        // onClick: () => navigate("/how-to-play"),
         animationType: "gentle" as const,
       },
       {
-        nameKey: "chess_puzzles",
+        id: "chess_puzzles",
         image: Island2Img,
         position: { top: "28%", right: "40%" },
         mobilePosition: { top: "25%", right: "10%" },
@@ -55,7 +61,7 @@ const ChessTutorial = memo(function ChessTutorial() {
         animationType: "swing" as const,
       },
       {
-        nameKey: "play_chess",
+        id: "play_chess",
         image: Island3Img,
         position: { bottom: "23%", right: "27%" },
         mobilePosition: { bottom: "30%", right: "15%" },
@@ -98,7 +104,7 @@ const ChessTutorial = memo(function ChessTutorial() {
 
       {islands.map((island) => (
         <IslandButton
-          key={island.nameKey}
+          key={island.id}
           imageSrc={island.image}
           position={island.position}
           mobilePosition={island.mobilePosition}
@@ -106,8 +112,8 @@ const ChessTutorial = memo(function ChessTutorial() {
           mobileWidth={island.mobileWidth}
           onClick={island.onClick}
           animationType={island.animationType}
-          onMouseEnter={() => setCurrentTextKey(island.nameKey)}
-          onFocus={() => setCurrentTextKey(island.nameKey)}
+          onMouseEnter={() => setCurrentTextKey(island.id)}
+          onFocus={() => setCurrentTextKey(island.id)}
           onMouseLeave={() => setCurrentTextKey("chess_map")}
         />
       ))}
