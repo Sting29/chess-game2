@@ -1,9 +1,10 @@
 import { Chessboard } from "react-chessboard";
 import { useState } from "react";
-import { Square } from "../types/types";
-import { PuzzleChessEngine } from "../utils/PuzzleChessEngine";
-import { useCustomPieces } from "./CustomPieces/CustomPieces";
+import { Square } from "../../types/types";
+import { PuzzleChessEngine } from "../../utils/PuzzleChessEngine";
+import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
+import { BoardContainer, GameStatus } from "./styles";
 
 interface ChessPuzzleBoardProps {
   initialPosition: string;
@@ -89,18 +90,8 @@ export function ChessPuzzleBoard({
   const customPieces = useCustomPieces();
 
   return (
-    <div style={{ width: "550px", margin: "0 auto" }}>
-      <div
-        className="move-message"
-        style={{
-          textAlign: "center",
-          marginBottom: "10px",
-          fontWeight: "bold",
-          color: errorMessage ? "red" : "black",
-        }}
-      >
-        {errorMessage || turnMessage}
-      </div>
+    <BoardContainer>
+      <GameStatus>{errorMessage || turnMessage}</GameStatus>
 
       <Chessboard
         position={game.fen()}
@@ -125,6 +116,6 @@ export function ChessPuzzleBoard({
         }}
         customPieces={customPieces}
       />
-    </div>
+    </BoardContainer>
   );
 }

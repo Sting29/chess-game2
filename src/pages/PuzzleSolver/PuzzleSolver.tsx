@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { ChessPuzzleBoard } from "../../components/ChessPuzzleBoard";
-import { CHESS_PUZZLES } from "../../data/puzzles";
+import { ChessPuzzleBoard } from "src/components/ChessPuzzleBoard/ChessPuzzleBoard";
+import { CHESS_PUZZLES } from "src/data/puzzles";
 import {
   SolverPage,
   PuzzleDescription,
