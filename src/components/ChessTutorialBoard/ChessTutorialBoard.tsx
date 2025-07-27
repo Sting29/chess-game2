@@ -6,6 +6,7 @@ import { SimplifiedChessEngine } from "../../utils/SimplifiedChessEngine";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
+import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
 
 interface ChessTutorialBoardProps {
   initialPosition: string;
@@ -229,83 +230,11 @@ export function ChessTutorialBoard({
         }}
       />
 
-      {/* Custom Promotion Dialog */}
-      {promotionData && (
-        <div
-          style={{
-            position: "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-            backgroundColor: "white",
-            border: "2px solid #333",
-            borderRadius: "8px",
-            padding: "20px",
-            zIndex: 1000,
-            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-          }}
-        >
-          <h3 style={{ margin: "0 0 15px 0", textAlign: "center" }}>
-            Choose promotion piece:
-          </h3>
-          <div
-            style={{ display: "flex", gap: "10px", justifyContent: "center" }}
-          >
-            <button
-              onClick={() => handlePromotionSelection("q")}
-              style={{
-                padding: "10px 15px",
-                fontSize: "24px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                cursor: "pointer",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              ♕
-            </button>
-            <button
-              onClick={() => handlePromotionSelection("r")}
-              style={{
-                padding: "10px 15px",
-                fontSize: "24px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                cursor: "pointer",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              ♖
-            </button>
-            <button
-              onClick={() => handlePromotionSelection("b")}
-              style={{
-                padding: "10px 15px",
-                fontSize: "24px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                cursor: "pointer",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              ♗
-            </button>
-            <button
-              onClick={() => handlePromotionSelection("n")}
-              style={{
-                padding: "10px 15px",
-                fontSize: "24px",
-                border: "1px solid #ccc",
-                borderRadius: "4px",
-                cursor: "pointer",
-                backgroundColor: "#f9f9f9",
-              }}
-            >
-              ♘
-            </button>
-          </div>
-        </div>
-      )}
+      <PromotionDialog
+        isOpen={!!promotionData}
+        onSelect={handlePromotionSelection}
+        onClose={() => setPromotionData(null)}
+      />
     </BoardContainer>
   );
 }

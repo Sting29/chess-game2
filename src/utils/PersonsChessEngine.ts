@@ -1,4 +1,5 @@
 import { Chess, Square } from "chess.js";
+import { PromotionPiece } from "../types/types";
 
 export class PersonsChessEngine {
   private game: Chess;
@@ -9,13 +10,14 @@ export class PersonsChessEngine {
 
   move(
     from: Square,
-    to: Square
+    to: Square,
+    promotion?: PromotionPiece
   ): { valid: boolean; captured?: boolean; gameOver?: boolean } {
     try {
       const move = this.game.move({
         from,
         to,
-        promotion: "q", // Автоматически превращаем в ферзя
+        promotion: promotion || "q", // Use provided promotion or default to queen
       });
 
       if (move) {
@@ -100,5 +102,16 @@ export class PersonsChessEngine {
   getPiece(square: Square): string | null {
     const piece = this.game.get(square);
     return piece ? piece.type : null;
+  }
+
+  isPromotionMove(from: Square, to: Square): boolean {
+    const piece = this.game.get(from);
+    if (!piece || piece.type !== "p") return false;
+
+    const [, toRank] = to.split("");
+    return (
+      (piece.color === "w" && toRank === "8") ||
+      (piece.color === "b" && toRank === "1")
+    );
   }
 }

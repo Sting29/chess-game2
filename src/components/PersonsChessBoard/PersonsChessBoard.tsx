@@ -5,6 +5,8 @@ import { PersonsChessEngine } from "../../utils/PersonsChessEngine";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
+import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
+import { PromotionPiece } from "../../types/types";
 interface PersonsChessBoardProps {
   onGameEnd?: (result: string) => void;
 }
@@ -15,6 +17,28 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
   );
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
+  const [promotionData, setPromotionData] = useState<{
+    sourceSquare: Square;
+    targetSquare: Square;
+  } | null>(null);
+
+  function handlePromotionSelection(promotionPiece: PromotionPiece) {
+    if (!promotionData) return;
+
+    const { sourceSquare, targetSquare } = promotionData;
+    const result = game.move(sourceSquare, targetSquare, promotionPiece);
+
+    if (result.valid) {
+      setGame(new PersonsChessEngine(game.fen()));
+      if (result.gameOver) {
+        onGameEnd?.(game.getGameStatus());
+      }
+    }
+
+    setPromotionData(null);
+    setSelectedSquare(null);
+    setHighlightSquares([]);
+  }
 
   function onSquareClick(square: Square) {
     if (!selectedSquare) {
@@ -30,6 +54,16 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
     }
 
     if (highlightSquares.includes(square)) {
+      // Check if this is a promotion move
+      if (game.isPromotionMove(selectedSquare, square)) {
+        setPromotionData({
+          sourceSquare: selectedSquare,
+          targetSquare: square,
+        });
+        return;
+      }
+
+      // Make normal move
       const result = game.move(selectedSquare, square);
       if (result.valid) {
         setGame(new PersonsChessEngine(game.fen()));
@@ -45,6 +79,12 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
   }
 
   function onPieceDrop(sourceSquare: Square, targetSquare: Square) {
+    // Check if this is a promotion move
+    if (game.isPromotionMove(sourceSquare, targetSquare)) {
+      setPromotionData({ sourceSquare, targetSquare });
+      return true;
+    }
+
     const result = game.move(sourceSquare, targetSquare);
 
     if (result.valid) {
@@ -93,6 +133,12 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
           showAnimations: true,
           animationDurationInMs: 300,
         }}
+      />
+
+      <PromotionDialog
+        isOpen={!!promotionData}
+        onSelect={handlePromotionSelection}
+        onClose={() => setPromotionData(null)}
       />
     </BoardContainer>
   );

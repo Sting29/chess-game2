@@ -1,10 +1,11 @@
 import { Chessboard } from "react-chessboard";
 import { useState } from "react";
-import { Square } from "../../types/types";
+import { Square, PromotionPiece } from "../../types/types";
 import { PuzzleChessEngine } from "../../utils/PuzzleChessEngine";
 import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
+import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
 
 interface ChessPuzzleBoardProps {
   initialPosition: string;
@@ -29,6 +30,10 @@ export function ChessPuzzleBoard({
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [hoveredSquare, setHoveredSquare] = useState<Square | null>(null);
+  const [promotionData, setPromotionData] = useState<{
+    sourceSquare: Square;
+    targetSquare: Square;
+  } | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
   let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
@@ -39,7 +44,63 @@ export function ChessPuzzleBoard({
     turnMessage = "Wrong solution. Try again!";
   }
 
+  function isPromotionMove(
+    sourceSquare: Square,
+    targetSquare: Square
+  ): boolean {
+    // Simple check: if moving to 8th rank (promotion rank for white pawns)
+    const [, toRank] = targetSquare.split("");
+    return toRank === "8";
+  }
+
+  function handlePromotionSelection(promotionPiece: PromotionPiece) {
+    if (!promotionData) return;
+
+    const { sourceSquare, targetSquare } = promotionData;
+    const result = game.makeMove(sourceSquare, targetSquare, promotionPiece);
+
+    if (result.success) {
+      const newGame = new PuzzleChessEngine(
+        game.fen(),
+        correctMoves,
+        game.getCurrentMoveIndex()
+      );
+      setGame(newGame);
+      setHighlightSquares([]);
+      setSelectedSquare(null);
+      setPromotionData(null);
+
+      if (result.puzzleComplete) {
+        onComplete?.("success");
+      } else if (result.computerMove) {
+        // Make computer move after a short delay
+        setTimeout(() => {
+          const computerResult = newGame.makeComputerMove();
+          if (computerResult.success) {
+            setGame(
+              new PuzzleChessEngine(
+                newGame.fen(),
+                correctMoves,
+                newGame.getCurrentMoveIndex()
+              )
+            );
+          }
+        }, 500);
+      }
+    } else {
+      setPromotionData(null);
+      setErrorMessage("Invalid promotion move");
+      setTimeout(() => setErrorMessage(null), 2000);
+    }
+  }
+
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
+    // Check if this is a promotion move
+    if (isPromotionMove(sourceSquare, targetSquare)) {
+      setPromotionData({ sourceSquare, targetSquare });
+      return true;
+    }
+
     const result = game.makeMove(sourceSquare, targetSquare);
 
     if (result.success) {
@@ -78,13 +139,77 @@ export function ChessPuzzleBoard({
   }
 
   function onSquareClick(square: Square) {
-    const legalMoves = game.getLegalMoves(square);
-    if (legalMoves.length > 0) {
-      setSelectedSquare(square);
-      setHighlightSquares(legalMoves);
-    } else {
+    // If no square is selected, select this square and show legal moves
+    if (!selectedSquare) {
+      const legalMoves = game.getLegalMoves(square);
+      if (legalMoves.length > 0) {
+        setSelectedSquare(square);
+        setHighlightSquares(legalMoves);
+      }
+      return;
+    }
+
+    // If clicking the same square, deselect
+    if (square === selectedSquare) {
       setSelectedSquare(null);
       setHighlightSquares([]);
+      return;
+    }
+
+    // If clicking a highlighted square, make the move
+    if (highlightSquares.includes(square)) {
+      // Check if this is a promotion move
+      if (isPromotionMove(selectedSquare, square)) {
+        setPromotionData({
+          sourceSquare: selectedSquare,
+          targetSquare: square,
+        });
+        return;
+      }
+
+      // Make normal move
+      const result = game.makeMove(selectedSquare, square);
+      if (result.success) {
+        const newGame = new PuzzleChessEngine(
+          game.fen(),
+          correctMoves,
+          game.getCurrentMoveIndex()
+        );
+        setGame(newGame);
+        setHighlightSquares([]);
+        setSelectedSquare(null);
+
+        if (result.puzzleComplete) {
+          onComplete?.("success");
+        } else if (result.computerMove) {
+          // Make computer move after a short delay
+          setTimeout(() => {
+            const computerResult = newGame.makeComputerMove();
+            if (computerResult.success) {
+              setGame(
+                new PuzzleChessEngine(
+                  newGame.fen(),
+                  correctMoves,
+                  newGame.getCurrentMoveIndex()
+                )
+              );
+            }
+          }, 500);
+        }
+      } else {
+        setErrorMessage("Invalid move");
+        setTimeout(() => setErrorMessage(null), 2000);
+      }
+    } else {
+      // If clicking a different square, select it if it has legal moves
+      const legalMoves = game.getLegalMoves(square);
+      if (legalMoves.length > 0) {
+        setSelectedSquare(square);
+        setHighlightSquares(legalMoves);
+      } else {
+        setSelectedSquare(null);
+        setHighlightSquares([]);
+      }
     }
   }
 
@@ -133,6 +258,12 @@ export function ChessPuzzleBoard({
           },
           pieces: customPieces,
         }}
+      />
+
+      <PromotionDialog
+        isOpen={!!promotionData}
+        onSelect={handlePromotionSelection}
+        onClose={() => setPromotionData(null)}
       />
     </BoardContainer>
   );

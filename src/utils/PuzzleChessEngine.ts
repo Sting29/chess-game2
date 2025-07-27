@@ -1,4 +1,4 @@
-import { Square } from "../types/types";
+import { Square, PromotionPiece } from "../types/types";
 
 export class PuzzleChessEngine {
   private position: Map<Square, string>;
@@ -52,7 +52,8 @@ export class PuzzleChessEngine {
 
   makeMove(
     from: Square,
-    to: Square
+    to: Square,
+    promotion?: PromotionPiece
   ): { success: boolean; puzzleComplete?: boolean; computerMove?: boolean } {
     const expectedMove = this.correctMoves[this.currentMoveIndex];
 
@@ -60,14 +61,25 @@ export class PuzzleChessEngine {
       return { success: false };
     }
 
+    // Check if move matches expected move
     if (
       from === expectedMove.from &&
       to === expectedMove.to &&
       this.position.get(from) === expectedMove.piece
     ) {
-      // Ход правильный
+      // Handle promotion moves
+      let finalPiece = expectedMove.piece;
+      if (promotion && this.isPromotionMove(from, to, expectedMove.piece)) {
+        // Convert promotion piece to correct color
+        const isWhite = expectedMove.piece === expectedMove.piece.toUpperCase();
+        finalPiece = isWhite
+          ? promotion.toUpperCase()
+          : promotion.toLowerCase();
+      }
+
+      // Execute the move
       this.position.delete(from);
-      this.position.set(to, expectedMove.piece);
+      this.position.set(to, finalPiece);
       this.currentMoveIndex++;
       this.turn = this.turn === "w" ? "b" : "w";
 
@@ -79,7 +91,7 @@ export class PuzzleChessEngine {
       };
     }
 
-    // Ход неправильный
+    // Move is incorrect
     this.puzzleFailed = true;
     return { success: false };
   }
@@ -90,6 +102,8 @@ export class PuzzleChessEngine {
       return { success: false };
     }
 
+    // For computer moves, use the piece specified in correctMoves
+    // (which should already include promotion if needed)
     this.position.delete(computerMove.from);
     this.position.set(computerMove.to, computerMove.piece);
     this.currentMoveIndex++;
@@ -153,6 +167,15 @@ export class PuzzleChessEngine {
     }
 
     return `${fen} ${this.turn} - - 0 1`;
+  }
+
+  private isPromotionMove(from: Square, to: Square, piece: string): boolean {
+    // Check if piece is a pawn
+    if (!piece.toLowerCase().endsWith("p")) return false;
+
+    // Check if pawn reaches promotion rank
+    const [, toRank] = to.split("");
+    return toRank === "8" || toRank === "1";
   }
 
   private algebraic(file: number, rank: number): Square {

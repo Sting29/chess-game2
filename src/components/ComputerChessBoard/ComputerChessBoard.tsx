@@ -6,6 +6,8 @@ import { StockfishEngine } from "src/utils/StockfishEngine";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
+import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
+import { PromotionPiece } from "src/types/types";
 interface ComputerChessBoardProps {
   settings: {
     depth: number;
@@ -28,6 +30,10 @@ export function ComputerChessBoard({
     startSquare: string;
     endSquare: string;
     color: string;
+  } | null>(null);
+  const [promotionData, setPromotionData] = useState<{
+    sourceSquare: Square;
+    targetSquare: Square;
   } | null>(null);
 
   useEffect(() => {
@@ -131,11 +137,17 @@ export function ComputerChessBoard({
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
     if (isThinking) return false;
 
+    // Проверяем, является ли ход promotion
+    if (isPromotionMove(sourceSquare, targetSquare)) {
+      setPromotionData({ sourceSquare, targetSquare });
+      return true;
+    }
+
     try {
       const move = game.move({
         from: sourceSquare,
         to: targetSquare,
-        promotion: "q", // всегда превращаем в ферзя для простоты
+        promotion: "q", // автоматически превращаем в ферзя для обычных ходов
       });
 
       if (move === null) return false;
@@ -213,6 +225,57 @@ export function ComputerChessBoard({
     return "Game over!";
   }
 
+  // Функция для проверки promotion
+  function isPromotionMove(
+    sourceSquare: Square,
+    targetSquare: Square
+  ): boolean {
+    const piece = game.get(sourceSquare);
+    if (!piece || piece.type !== "p") return false;
+    const [, toRank] = targetSquare.split("");
+    return toRank === "8";
+  }
+
+  // Функция для обработки выбора фигуры promotion
+  function handlePromotionSelection(promotionPiece: PromotionPiece) {
+    if (!promotionData) return;
+
+    const { sourceSquare, targetSquare } = promotionData;
+
+    try {
+      const move = game.move({
+        from: sourceSquare,
+        to: targetSquare,
+        promotion: promotionPiece,
+      });
+
+      if (move) {
+        setGame(new Chess(game.fen()));
+        setSelectedSquare(null);
+        setHighlightSquares([]);
+        setPromotionData(null);
+
+        // Показываем стрелку хода игрока
+        setLastMoveArrow({
+          startSquare: sourceSquare,
+          endSquare: targetSquare,
+          color: "green",
+        });
+
+        if (!game.isGameOver()) {
+          makeComputerMove();
+        } else {
+          const gameResult = getGameOverMessage();
+          setMoveMessage(gameResult);
+          onGameEnd?.(gameResult);
+        }
+      }
+    } catch (error) {
+      console.error("Promotion move failed:", error);
+      setPromotionData(null);
+    }
+  }
+
   const customPieces = useCustomPieces();
 
   return (
@@ -248,6 +311,12 @@ export function ComputerChessBoard({
           allowDrawingArrows: true,
           arrows: lastMoveArrow ? [lastMoveArrow] : [],
         }}
+      />
+
+      <PromotionDialog
+        isOpen={!!promotionData}
+        onSelect={handlePromotionSelection}
+        onClose={() => setPromotionData(null)}
       />
     </BoardContainer>
   );
