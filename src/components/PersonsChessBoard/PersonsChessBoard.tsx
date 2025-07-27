@@ -32,7 +32,6 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
     if (highlightSquares.includes(square)) {
       const result = game.move(selectedSquare, square);
       if (result.valid) {
-        game.move(selectedSquare, square);
         setGame(new PersonsChessEngine(game.fen()));
 
         if (result.gameOver) {
@@ -66,26 +65,34 @@ export function PersonsChessBoard({ onGameEnd }: PersonsChessBoardProps) {
     <BoardContainer>
       <GameStatus>{game.getGameStatus()}</GameStatus>
       <Chessboard
-        position={game.fen()}
-        onPieceDrop={onPieceDrop}
-        onSquareClick={onSquareClick}
-        {...boardStyles}
-        customSquareStyles={{
-          ...(selectedSquare && {
-            [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
-          }),
-          ...Object.fromEntries(
-            highlightSquares.map((square) => [
-              square,
-              {
-                background:
-                  "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
-                borderRadius: "50%",
-              },
-            ])
-          ),
+        options={{
+          position: game.fen(),
+          onPieceDrop: ({ sourceSquare, targetSquare }) =>
+            targetSquare
+              ? onPieceDrop(sourceSquare as Square, targetSquare as Square)
+              : false,
+          onSquareClick: ({ square }) => onSquareClick(square as Square),
+          ...boardStyles,
+          squareStyles: {
+            ...(selectedSquare && {
+              [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
+            }),
+            ...Object.fromEntries(
+              highlightSquares.map((square) => [
+                square,
+                {
+                  background: game.getPiece(square)
+                    ? "radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)"
+                    : "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
+                  borderRadius: "50%",
+                },
+              ])
+            ),
+          },
+          pieces: customPieces,
+          showAnimations: true,
+          animationDurationInMs: 300,
         }}
-        customPieces={customPieces}
       />
     </BoardContainer>
   );

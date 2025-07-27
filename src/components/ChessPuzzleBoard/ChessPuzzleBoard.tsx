@@ -28,6 +28,7 @@ export function ChessPuzzleBoard({
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [hoveredSquare, setHoveredSquare] = useState<Square | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
   let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
@@ -76,16 +77,24 @@ export function ChessPuzzleBoard({
     return false;
   }
 
-  // function onSquareClick(square: Square) {
-  //   const legalMoves = game.getLegalMoves(square);
-  //   if (legalMoves.length > 0) {
-  //     setSelectedSquare(square);
-  //     setHighlightSquares(legalMoves);
-  //   } else {
-  //     setSelectedSquare(null);
-  //     setHighlightSquares([]);
-  //   }
-  // }
+  function onSquareClick(square: Square) {
+    const legalMoves = game.getLegalMoves(square);
+    if (legalMoves.length > 0) {
+      setSelectedSquare(square);
+      setHighlightSquares(legalMoves);
+    } else {
+      setSelectedSquare(null);
+      setHighlightSquares([]);
+    }
+  }
+
+  function onMouseOverSquare({ square }: { square: string }) {
+    setHoveredSquare(square as Square);
+  }
+
+  function onMouseOutSquare() {
+    setHoveredSquare(null);
+  }
 
   const customPieces = useCustomPieces();
 
@@ -94,27 +103,36 @@ export function ChessPuzzleBoard({
       <GameStatus>{errorMessage || turnMessage}</GameStatus>
 
       <Chessboard
-        position={game.fen()}
-        onPieceDrop={onDrop}
-        // onSquareClick={onSquareClick}
-        {...boardStyles}
-        customSquareStyles={{
-          ...(selectedSquare && {
-            [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
-          }),
-          ...Object.fromEntries(
-            highlightSquares.map((square) => [
-              square,
-              {
-                background: game.hasPiece(square)
-                  ? "radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)"
-                  : "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
-                borderRadius: "50%",
-              },
-            ])
-          ),
+        options={{
+          position: game.fen(),
+          onPieceDrop: ({ sourceSquare, targetSquare }) =>
+            targetSquare ? onDrop(sourceSquare, targetSquare) : false,
+          onSquareClick: ({ square }) => onSquareClick(square as Square),
+          onMouseOverSquare: onMouseOverSquare,
+          onMouseOutSquare: onMouseOutSquare,
+          ...boardStyles,
+          squareStyles: {
+            ...(selectedSquare && {
+              [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
+            }),
+            ...(hoveredSquare &&
+              hoveredSquare !== selectedSquare && {
+                [hoveredSquare]: { background: "rgba(200, 200, 200, 0.3)" },
+              }),
+            ...Object.fromEntries(
+              highlightSquares.map((square) => [
+                square,
+                {
+                  background: game.hasPiece(square)
+                    ? "radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)"
+                    : "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
+                  borderRadius: "50%",
+                },
+              ])
+            ),
+          },
+          pieces: customPieces,
         }}
-        customPieces={customPieces}
       />
     </BoardContainer>
   );

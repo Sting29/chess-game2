@@ -1,5 +1,4 @@
 import { useMemo } from "react";
-import type { ReactElement } from "react";
 import { useSelector } from "react-redux";
 
 import { FIGURES_SETS } from "src/data/figures-sets";
@@ -14,43 +13,47 @@ export function useCustomPieces() {
   return useMemo(() => {
     const pieces = Object.keys(pieceImages);
     const pieceComponents: {
-      [key: string]: ({
-        squareWidth,
-      }: {
-        squareWidth: number;
-      }) => ReactElement | null;
+      [key: string]: (props?: {
+        fill?: string;
+        svgStyle?: React.CSSProperties;
+      }) => React.JSX.Element;
     } = {};
 
     pieces.forEach((piece) => {
-      pieceComponents[piece] = ({ squareWidth }) => {
+      pieceComponents[piece] = (props) => {
         const pieceImage = pieceImages[piece as keyof typeof pieceImages];
 
-        // Check if it's a string (PNG image) or function (SVG component)
+        // Check if it's a string (PNG image)
         if (typeof pieceImage === "string") {
           return (
             <img
               src={pieceImage}
               alt={piece}
               style={{
-                width: squareWidth,
-                height: squareWidth,
+                width: "100%",
+                height: "100%",
                 backgroundSize: "100%",
+                ...props?.svgStyle,
               }}
             />
           );
-        } else if (typeof pieceImage === "function") {
+        }
+
+        // Check if it's a function (SVG component)
+        if (typeof pieceImage === "function") {
           // Determine piece color for SVG fill
           const isWhite = piece.startsWith("w");
-          const fill = isWhite ? "#ffffff" : "#000000";
+          const fill = props?.fill || (isWhite ? "#ffffff" : "#000000");
 
           return (
             <div
               style={{
-                width: squareWidth,
-                height: squareWidth,
+                width: "100%",
+                height: "100%",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
+                ...props?.svgStyle,
               }}
             >
               {pieceImage({
@@ -68,13 +71,14 @@ export function useCustomPieces() {
         return (
           <div
             style={{
-              width: squareWidth,
-              height: squareWidth,
+              width: "100%",
+              height: "100%",
               backgroundColor: "#ccc",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
               fontSize: "12px",
+              ...props?.svgStyle,
             }}
           >
             ?

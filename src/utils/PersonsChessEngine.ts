@@ -96,4 +96,9 @@ export class PersonsChessEngine {
     const piece = this.game.get(square);
     return piece ? piece.color : null;
   }
+
+  getPiece(square: Square): string | null {
+    const piece = this.game.get(square);
+    return piece ? piece.type : null;
+  }
 }

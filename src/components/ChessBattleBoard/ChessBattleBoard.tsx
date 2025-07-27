@@ -31,9 +31,10 @@ export function ChessBattleBoard({
   const [gameStatus, setGameStatus] = useState<
     "playing" | "white_wins" | "black_wins" | "draw"
   >("playing");
-  const [promotionSquare, setPromotionSquare] = useState<Square | null>(null);
-  const [, setLastMoveType] = useState<"drop" | "click" | null>(null);
-  const [lastSourceSquare, setLastSourceSquare] = useState<Square | null>(null);
+  const [promotionData, setPromotionData] = useState<{
+    sourceSquare: Square;
+    targetSquare: Square;
+  } | null>(null);
 
   const { t } = useTranslation();
 
@@ -48,7 +49,7 @@ export function ChessBattleBoard({
     turnMessage = t("draw");
   }
 
-  function onPromotionCheck(
+  function isPromotionMove(
     sourceSquare: Square,
     targetSquare: Square,
     piece: string
@@ -58,17 +59,12 @@ export function ChessBattleBoard({
     return toRank === "8";
   }
 
-  function onPromotionPieceSelect(
-    promotionPiece?: string,
-    sourceSquare?: Square,
-    targetSquare?: Square
-  ): boolean {
-    if (!promotionPiece || !targetSquare) return false;
-    // Если sourceSquare не передан, используем сохранённый
-    const actualSourceSquare = sourceSquare ?? lastSourceSquare;
-    if (!actualSourceSquare) return false;
-    const piece = promotionPiece.charAt(1).toLowerCase() as PromotionPiece;
-    const result = game.move(actualSourceSquare, targetSquare, piece);
+  function handlePromotionSelection(promotionPiece: PromotionPiece) {
+    if (!promotionData) return;
+
+    const { sourceSquare, targetSquare } = promotionData;
+    const result = game.move(sourceSquare, targetSquare, promotionPiece);
+
     if (result) {
       setGame(
         Object.create(
@@ -78,33 +74,30 @@ export function ChessBattleBoard({
       );
       setHighlightSquares([]);
       setSelectedSquare(null);
-      setPromotionSquare(null);
-      setLastMoveType(null);
-      setLastSourceSquare(null);
+      setPromotionData(null);
+
       if (result.captured) {
         onCapture?.(targetSquare);
       }
+
       const newGameStatus = game.getGameStatus();
       setGameStatus(newGameStatus);
       if (newGameStatus !== "playing") {
         onComplete?.(newGameStatus);
       }
-      return true;
     }
-    return false;
   }
 
   function onDrop(sourceSquare: Square, targetSquare: Square): boolean {
     const piece = game.getPiece(sourceSquare);
     if (!piece) return false;
-    // Проверяем, является ли ход промоушеном
-    const isPromotion = onPromotionCheck(sourceSquare, targetSquare, piece);
-    if (isPromotion) {
-      setLastMoveType("drop");
-      setLastSourceSquare(sourceSquare);
-      setPromotionSquare(targetSquare);
+
+    // Check if this is a promotion move
+    if (isPromotionMove(sourceSquare, targetSquare, piece)) {
+      setPromotionData({ sourceSquare, targetSquare });
       return true;
     }
+
     const result = game.move(sourceSquare, targetSquare);
     if (result) {
       setGame(
@@ -115,12 +108,12 @@ export function ChessBattleBoard({
       );
       setHighlightSquares([]);
       setSelectedSquare(null);
-      setPromotionSquare(null);
-      setLastMoveType(null);
-      setLastSourceSquare(null);
+      setPromotionData(null);
+
       if (result.captured) {
         onCapture?.(targetSquare);
       }
+
       const newGameStatus = game.getGameStatus();
       setGameStatus(newGameStatus);
       if (newGameStatus !== "playing") {
@@ -151,19 +144,21 @@ export function ChessBattleBoard({
       setHighlightSquares([]);
       return;
     }
-    // Если кликнули на подсвеченную клетку, делаем ход
+    // If clicked on a highlighted square, make the move
     if (highlightSquares.includes(square)) {
       const piece = game.getPiece(selectedSquare);
       if (!piece) return;
-      // Проверяем, является ли ход промоушеном
-      const isPromotion = onPromotionCheck(selectedSquare, square, piece);
-      if (isPromotion) {
-        setLastMoveType("click");
-        setLastSourceSquare(selectedSquare);
-        setPromotionSquare(square);
+
+      // Check if this is a promotion move
+      if (isPromotionMove(selectedSquare, square, piece)) {
+        setPromotionData({
+          sourceSquare: selectedSquare,
+          targetSquare: square,
+        });
         return;
       }
-      // Если это обычный ход
+
+      // Make normal move
       const result = game.move(selectedSquare, square);
       if (result) {
         setGame(
@@ -174,12 +169,12 @@ export function ChessBattleBoard({
         );
         setHighlightSquares([]);
         setSelectedSquare(null);
-        setPromotionSquare(null);
-        setLastMoveType(null);
-        setLastSourceSquare(null);
+        setPromotionData(null);
+
         if (result.captured) {
           onCapture?.(square);
         }
+
         const newGameStatus = game.getGameStatus();
         setGameStatus(newGameStatus);
         if (newGameStatus !== "playing") {
@@ -288,7 +283,7 @@ export function ChessBattleBoard({
   }, [game, gameStatus]);
 
   return (
-    <BoardContainer>
+    <BoardContainer style={{ position: "relative" }}>
       <GameStatus>
         {gameStatus === "playing"
           ? errorMessage
@@ -298,32 +293,109 @@ export function ChessBattleBoard({
       </GameStatus>
 
       <Chessboard
-        position={game.fen()}
-        onPieceDrop={onDrop}
-        onSquareClick={onSquareClick}
-        onPromotionCheck={onPromotionCheck}
-        onPromotionPieceSelect={onPromotionPieceSelect}
-        promotionToSquare={promotionSquare as any}
-        showPromotionDialog={!!promotionSquare}
-        {...boardStyles}
-        customSquareStyles={{
-          ...(selectedSquare && {
-            [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
-          }),
-          ...Object.fromEntries(
-            highlightSquares.map((square) => [
-              square,
-              {
-                background: game.hasPiece(square)
-                  ? "radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)"
-                  : "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
-                borderRadius: "50%",
-              },
-            ])
-          ),
+        options={{
+          position: game.fen(),
+          onPieceDrop: ({ sourceSquare, targetSquare }) =>
+            targetSquare ? onDrop(sourceSquare, targetSquare) : false,
+          onSquareClick: ({ square }) => onSquareClick(square),
+          ...boardStyles,
+          squareStyles: {
+            ...(selectedSquare && {
+              [selectedSquare]: { background: "rgba(255, 255, 0, 0.4)" },
+            }),
+            ...Object.fromEntries(
+              highlightSquares.map((square) => [
+                square,
+                {
+                  background: game.hasPiece(square)
+                    ? "radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)"
+                    : "radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)",
+                  borderRadius: "50%",
+                },
+              ])
+            ),
+          },
+          pieces: customPieces,
         }}
-        customPieces={customPieces}
       />
+
+      {/* Custom Promotion Dialog */}
+      {promotionData && (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            backgroundColor: "white",
+            border: "2px solid #333",
+            borderRadius: "8px",
+            padding: "20px",
+            zIndex: 1000,
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+          }}
+        >
+          <h3 style={{ margin: "0 0 15px 0", textAlign: "center" }}>
+            {t("choose_promotion_piece")}:
+          </h3>
+          <div
+            style={{ display: "flex", gap: "10px", justifyContent: "center" }}
+          >
+            <button
+              onClick={() => handlePromotionSelection("q")}
+              style={{
+                padding: "10px 15px",
+                fontSize: "24px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                cursor: "pointer",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              ♕
+            </button>
+            <button
+              onClick={() => handlePromotionSelection("r")}
+              style={{
+                padding: "10px 15px",
+                fontSize: "24px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                cursor: "pointer",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              ♖
+            </button>
+            <button
+              onClick={() => handlePromotionSelection("b")}
+              style={{
+                padding: "10px 15px",
+                fontSize: "24px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                cursor: "pointer",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              ♗
+            </button>
+            <button
+              onClick={() => handlePromotionSelection("n")}
+              style={{
+                padding: "10px 15px",
+                fontSize: "24px",
+                border: "1px solid #ccc",
+                borderRadius: "4px",
+                cursor: "pointer",
+                backgroundColor: "#f9f9f9",
+              }}
+            >
+              ♘
+            </button>
+          </div>
+        </div>
+      )}
     </BoardContainer>
   );
 }
