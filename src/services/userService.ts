@@ -2,6 +2,7 @@ import httpClient from "./httpClient";
 import errorHandler from "./errorHandler";
 import { User, UpdateProfileRequest, UserSession, ChessSet } from "./types";
 import { AxiosError } from "axios";
+import { Gender, Avatar } from "../utils/avatarUtils";
 
 class UserService {
   // Get current user profile
@@ -35,6 +36,32 @@ class UserService {
 
       // Log the error
       errorHandler.logError(axiosError, "update-profile");
+
+      // Re-throw with processed error
+      throw apiError;
+    }
+  }
+
+  // Update avatar and gender
+  public async updateAvatarAndGender(
+    gender: Gender,
+    avatar: Avatar
+  ): Promise<User> {
+    try {
+      const profileData: UpdateProfileRequest = {
+        profile: {
+          gender,
+          avatar,
+        },
+      };
+
+      return await this.updateProfile(profileData);
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      const apiError = errorHandler.processError(axiosError);
+
+      // Log the error
+      errorHandler.logError(axiosError, "update-avatar-and-gender");
 
       // Re-throw with processed error
       throw apiError;

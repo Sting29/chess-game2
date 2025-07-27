@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   AvatarSliderContainer,
   AvatarDisplay,
@@ -7,58 +7,81 @@ import {
   ArrowButtonLeft,
   ArrowButtonRight,
 } from "./styles";
-import barrelImage from "../../assets/images/barrel.png";
-// Import images
-import boySet1 from "../../assets/avatars/boy_set_1.png";
-import boySet2 from "../../assets/avatars/boy_set_2.png";
-import boySet3 from "../../assets/avatars/boy_set_3.png";
-import girlSet1 from "../../assets/avatars/girl_set_1.png";
-import girlSet2 from "../../assets/avatars/girl_set_2.png";
-import girlSet3 from "../../assets/avatars/girl_set_3.png";
-import { useTranslation } from "react-i18next";
 
-const avatars = [boySet1, boySet2, boySet3, girlSet1, girlSet2, girlSet3];
+// Import images and utilities
+import barrelImage from "src/assets/images/barrel.png";
+import {
+  avatars,
+  Gender,
+  Avatar,
+  indexToAvatarSelection,
+  avatarSelectionToIndex,
+  getDefaultAvatarSelection,
+} from "src/utils/avatarUtils";
 
 interface AvatarSliderProps {
-  initialAvatarIndex?: number;
-  onAvatarChange?: (avatarIndex: number) => void;
+  initialGender?: Gender;
+  initialAvatar?: Avatar;
+  onAvatarChange?: (gender: Gender, avatar: Avatar) => void;
 }
 
 function AvatarSlider({
-  initialAvatarIndex = 0,
+  initialGender,
+  initialAvatar,
   onAvatarChange,
 }: AvatarSliderProps) {
-  const [currentAvatarIndex, setCurrentAvatarIndex] =
-    useState(initialAvatarIndex);
-  const { t } = useTranslation();
+  // Initialize with provided gender/avatar or defaults
+  const getInitialIndex = (): number => {
+    if (initialGender && initialAvatar) {
+      return avatarSelectionToIndex(initialGender, initialAvatar);
+    }
+    const defaultSelection = getDefaultAvatarSelection();
+    return avatarSelectionToIndex(
+      defaultSelection.gender,
+      defaultSelection.avatar
+    );
+  };
+
+  const [currentAvatarIndex, setCurrentAvatarIndex] = useState(
+    getInitialIndex()
+  );
+
+  // Update index when props change
+  useEffect(() => {
+    if (initialGender && initialAvatar) {
+      const newIndex = avatarSelectionToIndex(initialGender, initialAvatar);
+      setCurrentAvatarIndex(newIndex);
+    }
+  }, [initialGender, initialAvatar]);
+
+  const handleAvatarChange = (newIndex: number) => {
+    setCurrentAvatarIndex(newIndex);
+    const selection = indexToAvatarSelection(newIndex);
+    onAvatarChange?.(selection.gender, selection.avatar);
+  };
 
   const handlePreviousAvatar = () => {
     const newIndex =
       currentAvatarIndex === 0 ? avatars.length - 1 : currentAvatarIndex - 1;
-    setCurrentAvatarIndex(newIndex);
-    onAvatarChange?.(newIndex);
+    handleAvatarChange(newIndex);
   };
 
   const handleNextAvatar = () => {
     const newIndex =
       currentAvatarIndex === avatars.length - 1 ? 0 : currentAvatarIndex + 1;
-    setCurrentAvatarIndex(newIndex);
-    onAvatarChange?.(newIndex);
+    handleAvatarChange(newIndex);
   };
 
   return (
     <AvatarSliderContainer>
-      <ArrowButtonLeft
-        onClick={handlePreviousAvatar}
-        aria-label={t("previous")}
-      />
+      <ArrowButtonLeft onClick={handlePreviousAvatar} />
 
       <AvatarDisplay>
-        <AvatarImage src={avatars[currentAvatarIndex]} alt="Character Avatar" />
         <BarrelImage src={barrelImage} alt="Barrel" />
+        <AvatarImage src={avatars[currentAvatarIndex]} alt="Character Avatar" />
       </AvatarDisplay>
 
-      <ArrowButtonRight onClick={handleNextAvatar} aria-label={t("next")} />
+      <ArrowButtonRight onClick={handleNextAvatar} />
     </AvatarSliderContainer>
   );
 }
