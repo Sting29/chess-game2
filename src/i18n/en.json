@@ -144,6 +144,9 @@
   "medium": "Medium",
   "hard": "Hard",
   "username": "Username",
+  "name": "Name",
+  "age": "Age",
+  "level": "Level",
   "password": "Password",
   "auth.invalid_credentials": "Invalid username or password",
   "auth.rate_limited": "Too many login attempts. Please try again later",
@@ -154,5 +157,6 @@
   "api.conflict_error": "Data conflict error",
   "api.server_error": "Server error. Please try again later",
   "api.service_unavailable": "Service temporarily unavailable",
-  "api.unknown_error": "Unknown error occurred"
+  "api.unknown_error": "Unknown error occurred",
+  "edit_button": "Edit Account"
 }

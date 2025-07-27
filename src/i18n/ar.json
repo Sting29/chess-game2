@@ -142,6 +142,9 @@
   "medium": "متوسط",
   "hard": "صعب",
   "username": "اسم المستخدم",
+  "name": "الاسم",
+  "age": "العمر",
+  "level": "المستوى",
   "password": "كلمة المرور",
   "auth.invalid_credentials": "اسم المستخدم أو كلمة المرور غير صحيحة",
   "auth.rate_limited": "محاولات تسجيل دخول كثيرة جداً. حاول مرة أخرى لاحقاً",
@@ -152,5 +155,6 @@
   "api.conflict_error": "خطأ في تضارب البيانات",
   "api.server_error": "خطأ في الخادم. حاول مرة أخرى لاحقاً",
   "api.service_unavailable": "الخدمة غير متاحة مؤقتاً",
-  "api.unknown_error": "حدث خطأ غير معروف"
+  "api.unknown_error": "حدث خطأ غير معروف",
+  "edit_button": "تعديل الحساب"
 }
