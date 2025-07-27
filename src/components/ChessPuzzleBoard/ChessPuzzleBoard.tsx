@@ -16,12 +16,14 @@ interface ChessPuzzleBoardProps {
     isComputerMove?: boolean;
   }>;
   onComplete?: (result: "success" | "failure") => void;
+  playerColor: "w" | "b";
 }
 
 export function ChessPuzzleBoard({
   initialPosition,
   correctMoves,
   onComplete,
+  playerColor,
 }: ChessPuzzleBoardProps) {
   const [game, setGame] = useState<PuzzleChessEngine>(
     new PuzzleChessEngine(initialPosition, correctMoves)
@@ -257,6 +259,7 @@ export function ChessPuzzleBoard({
             ),
           },
           pieces: customPieces,
+          boardOrientation: playerColor === "w" ? "white" : "black",
         }}
       />
 

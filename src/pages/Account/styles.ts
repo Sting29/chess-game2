@@ -1,12 +1,17 @@
 import styled from "styled-components";
+import backgroundCheckLesson from "../../assets/background/background_account.png";
 
-export const AccountContainer = styled.div`
+export const PageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 40px;
-  min-height: 100vh;
-  position: relative;
+  height: calc(100vh - 96px);
+  padding: 0 40px;
+  background-image: url(${backgroundCheckLesson});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 `;
 
 export const Title = styled.h1`

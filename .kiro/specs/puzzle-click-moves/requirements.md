@@ -52,11 +52,22 @@ This feature enhances the chess puzzle solving experience by adding click-based 
 
 ### Requirement 5
 
-**User Story:** As a puzzle solver, I want the enhanced interaction to respect puzzle-specific constraints, so that I can only make moves that are part of the correct puzzle solution.
+**User Story:** As a puzzle solver, I want to see all possible legal moves for a piece when I click on it, so that I can explore different options and understand the chess position better.
 
 #### Acceptance Criteria
 
-1. WHEN showing legal moves for a piece THEN the system SHALL only highlight moves that are valid for the current puzzle step
-2. WHEN the puzzle has a specific sequence of moves THEN the system SHALL only allow the correct move for the current step
-3. WHEN a user clicks on an incorrect move THEN the system SHALL treat it as an invalid move and show appropriate feedback
+1. WHEN showing legal moves for a piece THEN the system SHALL highlight ALL legally possible moves according to chess rules, not just the correct puzzle move
+2. WHEN a user clicks on a piece THEN the system SHALL calculate and display all valid moves for that piece based on current board position
+3. WHEN a user attempts an incorrect move (not part of puzzle solution) THEN the system SHALL execute the move validation and show puzzle failure feedback
+4. WHEN a user makes the correct puzzle move THEN the system SHALL proceed with the puzzle sequence as normal
+
+### Requirement 6
+
+**User Story:** As a puzzle solver, I want the system to validate my move choice against the puzzle solution after I make a move, so that I receive appropriate feedback about whether my move was correct.
+
+#### Acceptance Criteria
+
+1. WHEN a user makes a move via clicking THEN the system SHALL validate the move against the expected puzzle sequence
+2. WHEN the move matches the expected puzzle move THEN the system SHALL proceed to the next puzzle step
+3. WHEN the move does not match the expected puzzle move THEN the system SHALL mark the puzzle as failed and show appropriate feedback
 4. WHEN the puzzle is completed successfully THEN the system SHALL trigger the same completion logic as drag-and-drop moves

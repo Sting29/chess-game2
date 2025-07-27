@@ -1,14 +1,18 @@
-import { AccountContainer, Title } from "./styles";
-import BackButton from "src/components/BackButton/BackButton";
+import { BackButtonWrap } from "src/components/BackButtonImage/styles";
+import { PageContainer } from "./styles";
 import { useTranslation } from "react-i18next";
+import { PageTitle } from "src/components/PageTitle/PageTitle";
+import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 
 function Account() {
   const { t } = useTranslation();
   return (
-    <AccountContainer>
-      <BackButton linkToPage="-1" />
-      <Title>{t("account_settings")}</Title>
-    </AccountContainer>
+    <PageContainer>
+      <PageTitle title={t("account_settings")} />
+      <BackButtonWrap>
+        <BackButtonImage linkToPage="-1" />
+      </BackButtonWrap>
+    </PageContainer>
   );
 }
 

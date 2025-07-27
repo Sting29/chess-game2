@@ -86,6 +86,7 @@ export function PuzzleSolver() {
         initialPosition={puzzle.initialPosition}
         correctMoves={puzzle.correctMoves}
         onComplete={handleComplete}
+        playerColor={puzzle.playerColor}
       />
       <PuzzleControls>
         <HintButton onClick={() => setShowHint(!showHint)}>
