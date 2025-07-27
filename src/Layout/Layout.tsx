@@ -5,7 +5,6 @@ import {
   Header,
   MainContent,
   LogoutButton,
-  AccountButton,
   LogoContainer,
   LogoText,
   SettingsButton,
@@ -21,6 +20,7 @@ import LogoImgHe from "src/assets/logo/logo_he_new.png";
 import Image from "../components/Image/Image";
 import { t } from "i18next";
 import { Link } from "react-router-dom";
+import AccountButton from "src/components/AccountButton/AccountButton";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -66,9 +66,7 @@ export function Layout({ children }: LayoutProps) {
           aria-label={t("layout_settings_button")}
           $isHebrew={i18n.language === "he"}
         />
-        <AccountButton to="/account" $isHebrew={i18n.language === "he"}>
-          {t("layout_account_settings")}
-        </AccountButton>
+        <AccountButton />
         <LogoutButton onClick={handleLogout}>{t("layout_exit")}</LogoutButton>
         {/* <RedButton /> */}
       </Header>
