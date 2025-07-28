@@ -11,6 +11,7 @@ import {
   ChessSet,
 } from "../services/types";
 import { authService, userService } from "../services";
+import { Gender, Avatar } from "../utils/avatarUtils";
 
 export type SettingsState = {
   language: string;
@@ -70,8 +71,17 @@ export const loginUser = createAsyncThunk(
   "settings/loginUser",
   async (credentials: LoginRequest, { rejectWithValue }) => {
     try {
-      const response = await authService.login(credentials);
-      return response;
+      // Step 1: Authenticate user and get tokens
+      const authResponse = await authService.login(credentials);
+
+      // Step 2: Load full user profile after successful authentication
+      const userProfile = await userService.getProfile();
+
+      // Return both auth response and full profile
+      return {
+        authResponse,
+        user: userProfile,
+      };
     } catch (error: any) {
       return rejectWithValue(error.message || "Login failed");
     }
@@ -121,6 +131,23 @@ export const updateLanguageAsync = createAsyncThunk(
       return user;
     } catch (error: any) {
       return rejectWithValue(error.message || "Failed to update language");
+    }
+  }
+);
+
+export const updateAvatarAndGenderAsync = createAsyncThunk(
+  "settings/updateAvatarAndGender",
+  async (
+    { gender, avatar }: { gender: Gender; avatar: Avatar },
+    { rejectWithValue }
+  ) => {
+    try {
+      const user = await userService.updateAvatarAndGender(gender, avatar);
+      return user;
+    } catch (error: any) {
+      return rejectWithValue(
+        error.message || "Failed to update avatar and gender"
+      );
     }
   }
 );
@@ -301,6 +328,29 @@ const settingsSlice = createSlice({
         }
       })
       .addCase(updateLanguageAsync.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
+
+    // Update avatar and gender
+    builder
+      .addCase(updateAvatarAndGenderAsync.pending, (state) => {
+        state.loading = true;
+        state.error = undefined;
+      })
+      .addCase(updateAvatarAndGenderAsync.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.error = undefined;
+        // Update avatar and gender immediately
+        if (action.payload.profile?.gender) {
+          state.user!.profile!.gender = action.payload.profile.gender;
+        }
+        if (action.payload.profile?.avatar) {
+          state.user!.profile!.avatar = action.payload.profile.avatar;
+        }
+      })
+      .addCase(updateAvatarAndGenderAsync.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
       });

@@ -1,9 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import buttonYellow from "src/assets/elements/button_yellow.png";
-import userX from "src/assets/avatars/user_x.png";
 
-export const StyledAccountButton = styled(Link)<{ $isHebrew: boolean }>`
+export const StyledAccountButton = styled(Link)<{
+  $isHebrew: boolean;
+  $avatarSrc: string;
+}>`
   display: block;
   position: relative;
   height: 56px;
@@ -31,7 +33,7 @@ export const StyledAccountButton = styled(Link)<{ $isHebrew: boolean }>`
     transform: translateY(-50%);
     width: 80px;
     height: 80px;
-    background: url(${userX}) no-repeat center;
+    background: url(${({ $avatarSrc }) => $avatarSrc}) no-repeat center;
     background-size: contain;
   }
 

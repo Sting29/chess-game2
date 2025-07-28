@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import {
   AccountSettingsContainer,
@@ -17,8 +18,12 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import ButtonEdit from "src/components/ButtonEdit/ButtonEdit";
 import { EditButtonWrap } from "src/components/ButtonEdit/styles";
 import AvatarSlider from "src/components/AvatarSlider/AvatarSlider";
-import userService from "src/services/userService";
-import { User } from "src/services/types";
+import { RootState, AppDispatch } from "src/store";
+import {
+  loadUserProfile,
+  updateAvatarAndGenderAsync,
+  updateUserProfileAsync,
+} from "src/store/settingsSlice";
 import {
   Gender,
   Avatar,
@@ -27,15 +32,11 @@ import {
 
 function Account() {
   const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
 
-  // State for user data
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
-  // Avatar state
-  const [selectedGender, setSelectedGender] = useState<Gender>("male");
-  const [selectedAvatar, setSelectedAvatar] = useState<Avatar>("avatar1");
+  // Get user data from Redux store
+  const user = useSelector((state: RootState) => state.settings.user);
+  const loading = useSelector((state: RootState) => state.settings.loading);
 
   // Form fields state
   const [name, setName] = useState("");
@@ -44,54 +45,35 @@ function Account() {
 
   // Load user profile on component mount
   useEffect(() => {
-    loadUserProfile();
-  }, []);
-
-  const loadUserProfile = async () => {
-    try {
-      setLoading(true);
-      const userData = await userService.getProfile();
-      setUser(userData);
-
-      // Set avatar data from profile or defaults
-      const profile = userData.profile;
-      if (profile?.gender && profile?.avatar) {
-        setSelectedGender(profile.gender as Gender);
-        setSelectedAvatar(profile.avatar);
-      } else {
-        // Set defaults
-        const defaultSelection = getDefaultAvatarSelection();
-        setSelectedGender(defaultSelection.gender);
-        setSelectedAvatar(defaultSelection.avatar);
-      }
-
-      // Set form fields
-      setName(userData.name || "");
-      setAge(profile?.age?.toString() || "");
-    } catch (error) {
-      console.error("Failed to load user profile:", error);
-    } finally {
-      setLoading(false);
+    if (!user) {
+      dispatch(loadUserProfile());
     }
+  }, [dispatch, user]);
+
+  // Sync form fields with user data when user changes
+  useEffect(() => {
+    if (user) {
+      setName(user.name || "");
+      setAge(user.profile?.age?.toString() || "");
+    }
+  }, [user]);
+
+  // Get current avatar selection from user profile or defaults
+  const getCurrentAvatarSelection = (): { gender: Gender; avatar: Avatar } => {
+    if (user?.profile?.gender && user?.profile?.avatar) {
+      return {
+        gender: user.profile.gender as Gender,
+        avatar: user.profile.avatar,
+      };
+    }
+    return getDefaultAvatarSelection();
   };
 
   const handleAvatarChange = async (gender: Gender, avatar: Avatar) => {
     try {
-      setSaving(true);
-      setSelectedGender(gender);
-      setSelectedAvatar(avatar);
-
-      // Save to API
-      await userService.updateAvatarAndGender(gender, avatar);
+      await dispatch(updateAvatarAndGenderAsync({ gender, avatar })).unwrap();
     } catch (error) {
       console.error("Failed to update avatar:", error);
-      // Revert on error
-      if (user?.profile?.gender && user?.profile?.avatar) {
-        setSelectedGender(user.profile.gender as Gender);
-        setSelectedAvatar(user.profile.avatar);
-      }
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -106,16 +88,11 @@ function Account() {
   const handleNameBlur = async () => {
     if (name !== (user?.name || "")) {
       try {
-        setSaving(true);
-        await userService.updateBasicInfo({ name });
-        // Reload profile to get updated data
-        await loadUserProfile();
+        await dispatch(updateUserProfileAsync({ name })).unwrap();
       } catch (error) {
         console.error("Failed to update name:", error);
         // Revert on error
         setName(user?.name || "");
-      } finally {
-        setSaving(false);
       }
     }
   };
@@ -126,21 +103,20 @@ function Account() {
 
     if (!isNaN(ageNumber) && ageNumber !== currentAge) {
       try {
-        setSaving(true);
-        await userService.updatePersonalInfo({ age: ageNumber });
-        // Reload profile to get updated data
-        await loadUserProfile();
+        await dispatch(
+          updateUserProfileAsync({
+            profile: { age: ageNumber },
+          })
+        ).unwrap();
       } catch (error) {
         console.error("Failed to update age:", error);
         // Revert on error
         setAge(currentAge?.toString() || "");
-      } finally {
-        setSaving(false);
       }
     }
   };
 
-  if (loading) {
+  if (loading && !user) {
     return (
       <PageContainer>
         <PageTitle title={t("account_settings")} />
@@ -148,6 +124,8 @@ function Account() {
       </PageContainer>
     );
   }
+
+  const { gender, avatar } = getCurrentAvatarSelection();
 
   return (
     <PageContainer>
@@ -162,8 +140,8 @@ function Account() {
       <AccountSettingsContainer>
         <AvatarSection>
           <AvatarSlider
-            initialGender={selectedGender}
-            initialAvatar={selectedAvatar}
+            initialGender={gender}
+            initialAvatar={avatar}
             onAvatarChange={handleAvatarChange}
           />
         </AvatarSection>
@@ -177,7 +155,7 @@ function Account() {
               onChange={handleNameChange}
               onBlur={handleNameBlur}
               placeholder={t("name")}
-              disabled={saving}
+              disabled={loading}
             />
           </InputField>
 
@@ -191,7 +169,7 @@ function Account() {
               placeholder={t("age")}
               min="1"
               max="100"
-              disabled={saving}
+              disabled={loading}
             />
           </InputField>
 
