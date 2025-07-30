@@ -9,6 +9,24 @@ import {
   GameCompleteMessage,
   ResetButton,
   BoomAnimation,
+  GameControls,
+  SettingsButton,
+  SettingsModal,
+  SettingsContent,
+  SettingsTitle,
+  LevelInfo,
+  LevelTitle,
+  LevelDescription,
+  SettingItem,
+  SettingLabel,
+  SettingDescription,
+  SettingSlider,
+  KidsInfoBlock,
+  KidsInfoText,
+  CurrentSettingsBlock,
+  CurrentSettingsTitle,
+  ButtonContainer,
+  CloseButton,
 } from "./styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
@@ -66,66 +84,18 @@ function PlayWithComputer() {
         <MainContent>
           <PageTitle title={t("play_with_computer")} />
 
-          {/* Показываем информацию о выбранном уровне */}
-          <div
-            style={{
-              textAlign: "center",
-              margin: "20px 0",
-              padding: "15px",
-              borderRadius: "15px",
-              background:
-                difficultyConfig.id === "easy"
-                  ? "#E8F5E8"
-                  : difficultyConfig.id === "medium"
-                  ? "#FFF3E0"
-                  : "#FFEBEE",
-              border: `2px solid ${
-                difficultyConfig.id === "easy"
-                  ? "#4CAF50"
-                  : difficultyConfig.id === "medium"
-                  ? "#FF9800"
-                  : "#F44336"
-              }`,
-            }}
-          >
-            <div
-              style={{
-                fontSize: "18px",
-                fontWeight: "bold",
-                marginBottom: "5px",
-              }}
-            >
-              {difficultyConfig.ageGroup}
-            </div>
-            <div style={{ fontSize: "14px", color: "#666" }}>
-              {difficultyConfig.features}
-            </div>
-          </div>
-
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
-          </BackButtonWrap>
 
-          <div className="game-controls">
-            <button
-              className="settings-button"
-              onClick={() => setIsSettingsOpen(true)}
-              style={{
-                padding: "10px 20px",
-                borderRadius: "25px",
-                border: "none",
-                background: difficultyConfig.engineSettings.kidsMode
-                  ? "#FF6B6B"
-                  : "#4CAF50",
-                color: "white",
-                cursor: "pointer",
-                fontSize: "16px",
-                fontWeight: "bold",
-              }}
-            >
-              ⚙️ {t("settings")}
-            </button>
-          </div>
+            <GameControls>
+              <SettingsButton
+                kidsMode={difficultyConfig.engineSettings.kidsMode}
+                onClick={() => setIsSettingsOpen(true)}
+              >
+                ⚙️ {t("settings")}
+              </SettingsButton>
+            </GameControls>
+          </BackButtonWrap>
 
           <ComputerChessBoard
             settings={difficultyConfig.engineSettings}
@@ -134,88 +104,30 @@ function PlayWithComputer() {
           />
 
           {isSettingsOpen && (
-            <div
-              className="settings-modal"
-              style={{
-                position: "fixed",
-                top: "0",
-                left: "0",
-                right: "0",
-                bottom: "0",
-                background: "rgba(0,0,0,0.7)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                zIndex: 1000,
-              }}
-            >
-              <div
-                className="settings-content"
-                style={{
-                  background: "white",
-                  padding: "30px",
-                  borderRadius: "20px",
-                  minWidth: "400px",
-                  maxWidth: "500px",
-                  maxHeight: "80vh",
-                  overflowY: "auto",
-                }}
-              >
-                <h2 style={{ textAlign: "center", marginBottom: "20px" }}>
-                  {t("game_settings")}
-                </h2>
+            <SettingsModal>
+              <SettingsContent>
+                <SettingsTitle>{t("game_settings")}</SettingsTitle>
 
                 {/* Информация о текущем уровне */}
-                <div
-                  style={{
-                    marginBottom: "25px",
-                    padding: "15px",
-                    background: "#f8f9fa",
-                    borderRadius: "10px",
-                    textAlign: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: "bold",
-                      marginBottom: "5px",
-                    }}
-                  >
-                    {difficultyConfig.ageGroup}
-                  </div>
-                  <div style={{ fontSize: "14px", color: "#666" }}>
+                <LevelInfo>
+                  <LevelTitle>{difficultyConfig.ageGroup}</LevelTitle>
+                  <LevelDescription>
                     {difficultyConfig.features}
-                  </div>
-                </div>
+                  </LevelDescription>
+                </LevelInfo>
 
                 {/* Дополнительные настройки (только для hard режима) */}
                 {difficultyConfig.id === "hard" && (
                   <>
-                    <div
-                      className="setting-item"
-                      style={{ marginBottom: "20px" }}
-                    >
-                      <label
-                        style={{
-                          display: "block",
-                          marginBottom: "5px",
-                          fontWeight: "bold",
-                        }}
-                      >
+                    <SettingItem>
+                      <SettingLabel>
                         {SETTING_DESCRIPTIONS.skill.name}:{" "}
                         {difficultyConfig.engineSettings.skill}
-                      </label>
-                      <div
-                        style={{
-                          fontSize: "12px",
-                          color: "#666",
-                          marginBottom: "10px",
-                        }}
-                      >
+                      </SettingLabel>
+                      <SettingDescription>
                         {SETTING_DESCRIPTIONS.skill.description}
-                      </div>
-                      <input
+                      </SettingDescription>
+                      <SettingSlider
                         type="range"
                         min="0"
                         max="20"
@@ -225,34 +137,18 @@ function PlayWithComputer() {
                             skill: Number(e.target.value),
                           })
                         }
-                        style={{ width: "100%" }}
                       />
-                    </div>
+                    </SettingItem>
 
-                    <div
-                      className="setting-item"
-                      style={{ marginBottom: "20px" }}
-                    >
-                      <label
-                        style={{
-                          display: "block",
-                          marginBottom: "5px",
-                          fontWeight: "bold",
-                        }}
-                      >
+                    <SettingItem>
+                      <SettingLabel>
                         {SETTING_DESCRIPTIONS.depth.name}:{" "}
                         {difficultyConfig.engineSettings.depth}
-                      </label>
-                      <div
-                        style={{
-                          fontSize: "12px",
-                          color: "#666",
-                          marginBottom: "10px",
-                        }}
-                      >
+                      </SettingLabel>
+                      <SettingDescription>
                         {SETTING_DESCRIPTIONS.depth.description}
-                      </div>
-                      <input
+                      </SettingDescription>
+                      <SettingSlider
                         type="range"
                         min="1"
                         max="20"
@@ -262,34 +158,18 @@ function PlayWithComputer() {
                             depth: Number(e.target.value),
                           })
                         }
-                        style={{ width: "100%" }}
                       />
-                    </div>
+                    </SettingItem>
 
-                    <div
-                      className="setting-item"
-                      style={{ marginBottom: "20px" }}
-                    >
-                      <label
-                        style={{
-                          display: "block",
-                          marginBottom: "5px",
-                          fontWeight: "bold",
-                        }}
-                      >
+                    <SettingItem>
+                      <SettingLabel>
                         {SETTING_DESCRIPTIONS.time.name}:{" "}
                         {difficultyConfig.engineSettings.time}ms
-                      </label>
-                      <div
-                        style={{
-                          fontSize: "12px",
-                          color: "#666",
-                          marginBottom: "10px",
-                        }}
-                      >
+                      </SettingLabel>
+                      <SettingDescription>
                         {SETTING_DESCRIPTIONS.time.description}
-                      </div>
-                      <input
+                      </SettingDescription>
+                      <SettingSlider
                         type="range"
                         min="100"
                         max="5000"
@@ -298,50 +178,28 @@ function PlayWithComputer() {
                         onChange={(e) =>
                           handleSettingsChange({ time: Number(e.target.value) })
                         }
-                        style={{ width: "100%" }}
                       />
-                    </div>
+                    </SettingItem>
                   </>
                 )}
 
                 {/* Информация для детских режимов */}
                 {(difficultyConfig.id === "easy" ||
                   difficultyConfig.id === "medium") && (
-                  <div
-                    style={{
-                      padding: "15px",
-                      background: "#fff3e0",
-                      borderRadius: "10px",
-                      marginBottom: "20px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: "14px",
-                        color: "#e65100",
-                        textAlign: "center",
-                      }}
-                    >
+                  <KidsInfoBlock>
+                    <KidsInfoText>
                       ℹ️ В детском режиме настройки оптимизированы для обучения.
                       <br />
                       Для изменения сложности вернитесь к выбору уровня.
-                    </div>
-                  </div>
+                    </KidsInfoText>
+                  </KidsInfoBlock>
                 )}
 
                 {/* Показать текущие настройки движка */}
-                <div
-                  style={{
-                    padding: "15px",
-                    background: "#f8f9fa",
-                    borderRadius: "10px",
-                    marginBottom: "20px",
-                    fontSize: "12px",
-                  }}
-                >
-                  <h4 style={{ margin: "0 0 10px 0" }}>
+                <CurrentSettingsBlock>
+                  <CurrentSettingsTitle>
                     Текущие настройки движка:
-                  </h4>
+                  </CurrentSettingsTitle>
                   <div>• Навык: {difficultyConfig.engineSettings.skill}/20</div>
                   <div>• Глубина: {difficultyConfig.engineSettings.depth}</div>
                   <div>• Время: {difficultyConfig.engineSettings.time}ms</div>
@@ -356,33 +214,15 @@ function PlayWithComputer() {
                       ? "Да"
                       : "Нет"}
                   </div>
-                </div>
+                </CurrentSettingsBlock>
 
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "10px",
-                    justifyContent: "center",
-                    marginTop: "25px",
-                  }}
-                >
-                  <button
-                    onClick={() => setIsSettingsOpen(false)}
-                    style={{
-                      padding: "10px 20px",
-                      borderRadius: "20px",
-                      border: "none",
-                      background: "#4CAF50",
-                      color: "white",
-                      cursor: "pointer",
-                      fontSize: "16px",
-                    }}
-                  >
+                <ButtonContainer>
+                  <CloseButton onClick={() => setIsSettingsOpen(false)}>
                     ✅ Готово
-                  </button>
-                </div>
-              </div>
-            </div>
+                  </CloseButton>
+                </ButtonContainer>
+              </SettingsContent>
+            </SettingsModal>
           )}
           {gameResult && (
             <>
