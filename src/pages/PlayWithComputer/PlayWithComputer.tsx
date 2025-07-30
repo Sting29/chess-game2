@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { ComputerChessBoard } from "src/components/ComputerChessBoard/ComputerChessBoard";
 import { useTranslation } from "react-i18next";
 import {
@@ -8,33 +9,62 @@ import {
   GameCompleteMessage,
   ResetButton,
   BoomAnimation,
+  GameControls,
+  SettingsButton,
+  SettingsModal,
+  SettingsContent,
+  SettingsTitle,
+  LevelInfo,
+  LevelTitle,
+  LevelDescription,
+  SettingItem,
+  SettingLabel,
+  SettingDescription,
+  SettingSlider,
+  KidsInfoBlock,
+  KidsInfoText,
+  CurrentSettingsBlock,
+  CurrentSettingsTitle,
+  ButtonContainer,
+  CloseButton,
 } from "./styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
-
-interface GameSettings {
-  depth: number; // глубина расчета (1-20)
-  skill: number; // уровень сложности (0-20)
-}
+import {
+  getDifficultySettings,
+  DifficultyLevel,
+  SETTING_DESCRIPTIONS,
+} from "src/config/gameSettings";
 
 function PlayWithComputer() {
   const [gameResult, setGameResult] = useState<string | null>(null);
   const [showBoom, setShowBoom] = useState(false);
   const { t } = useTranslation();
+  const { level } = useParams<{ level: "easy" | "medium" | "hard" }>();
 
   const previousPage = "/play/computer";
 
-  const [settings, setSettings] = useState<GameSettings>({
-    depth: 10,
-    skill: 10,
-  });
+  // Получаем настройки из конфигурации
+  const [difficultyConfig, setDifficultyConfig] = useState<DifficultyLevel>(
+    getDifficultySettings(level)
+  );
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const handleSettingsChange = (newSettings: Partial<GameSettings>) => {
-    setSettings((prev) => ({
+  // Обновляем настройки при изменении уровня в URL
+  useEffect(() => {
+    setDifficultyConfig(getDifficultySettings(level));
+  }, [level]);
+
+  const handleSettingsChange = (
+    newEngineSettings: Partial<typeof difficultyConfig.engineSettings>
+  ) => {
+    setDifficultyConfig((prev) => ({
       ...prev,
-      ...newSettings,
+      engineSettings: {
+        ...prev.engineSettings,
+        ...newEngineSettings,
+      },
     }));
   };
 
@@ -53,64 +83,146 @@ function PlayWithComputer() {
       <ContentContainer>
         <MainContent>
           <PageTitle title={t("play_with_computer")} />
+
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
+
+            <GameControls>
+              <SettingsButton
+                kidsMode={difficultyConfig.engineSettings.kidsMode}
+                onClick={() => setIsSettingsOpen(true)}
+              >
+                ⚙️ {t("settings")}
+              </SettingsButton>
+            </GameControls>
           </BackButtonWrap>
 
-          <div className="game-controls">
-            <button
-              className="settings-button"
-              onClick={() => setIsSettingsOpen(true)}
-            >
-              {t("settings")}
-            </button>
-          </div>
-
-          <ComputerChessBoard settings={settings} onGameEnd={handleGameEnd} />
+          <ComputerChessBoard
+            settings={difficultyConfig.engineSettings}
+            uiSettings={difficultyConfig.uiSettings}
+            onGameEnd={handleGameEnd}
+          />
 
           {isSettingsOpen && (
-            <div className="settings-modal">
-              <div className="settings-content">
-                <h2>{t("game_settings")}</h2>
+            <SettingsModal>
+              <SettingsContent>
+                <SettingsTitle>{t("game_settings")}</SettingsTitle>
 
-                <div className="setting-item">
-                  <label>
-                    {t("calculation_depth")}: {settings.depth}
-                  </label>
-                  <input
-                    type="range"
-                    min="1"
-                    max="20"
-                    value={settings.depth}
-                    onChange={(e) =>
-                      handleSettingsChange({ depth: Number(e.target.value) })
-                    }
-                  />
-                </div>
+                {/* Информация о текущем уровне */}
+                <LevelInfo>
+                  <LevelTitle>{difficultyConfig.ageGroup}</LevelTitle>
+                  <LevelDescription>
+                    {difficultyConfig.features}
+                  </LevelDescription>
+                </LevelInfo>
 
-                <div className="setting-item">
-                  <label>
-                    {t("difficulty_level")}: {settings.skill}
-                  </label>
-                  <input
-                    type="range"
-                    min="0"
-                    max="20"
-                    value={settings.skill}
-                    onChange={(e) =>
-                      handleSettingsChange({ skill: Number(e.target.value) })
-                    }
-                  />
-                </div>
+                {/* Дополнительные настройки (только для hard режима) */}
+                {difficultyConfig.id === "hard" && (
+                  <>
+                    <SettingItem>
+                      <SettingLabel>
+                        {SETTING_DESCRIPTIONS.skill.name}:{" "}
+                        {difficultyConfig.engineSettings.skill}
+                      </SettingLabel>
+                      <SettingDescription>
+                        {SETTING_DESCRIPTIONS.skill.description}
+                      </SettingDescription>
+                      <SettingSlider
+                        type="range"
+                        min="0"
+                        max="20"
+                        value={difficultyConfig.engineSettings.skill}
+                        onChange={(e) =>
+                          handleSettingsChange({
+                            skill: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </SettingItem>
 
-                <button
-                  className="close-button"
-                  onClick={() => setIsSettingsOpen(false)}
-                >
-                  {t("close")}
-                </button>
-              </div>
-            </div>
+                    <SettingItem>
+                      <SettingLabel>
+                        {SETTING_DESCRIPTIONS.depth.name}:{" "}
+                        {difficultyConfig.engineSettings.depth}
+                      </SettingLabel>
+                      <SettingDescription>
+                        {SETTING_DESCRIPTIONS.depth.description}
+                      </SettingDescription>
+                      <SettingSlider
+                        type="range"
+                        min="1"
+                        max="20"
+                        value={difficultyConfig.engineSettings.depth}
+                        onChange={(e) =>
+                          handleSettingsChange({
+                            depth: Number(e.target.value),
+                          })
+                        }
+                      />
+                    </SettingItem>
+
+                    <SettingItem>
+                      <SettingLabel>
+                        {SETTING_DESCRIPTIONS.time.name}:{" "}
+                        {difficultyConfig.engineSettings.time}ms
+                      </SettingLabel>
+                      <SettingDescription>
+                        {SETTING_DESCRIPTIONS.time.description}
+                      </SettingDescription>
+                      <SettingSlider
+                        type="range"
+                        min="100"
+                        max="5000"
+                        step="100"
+                        value={difficultyConfig.engineSettings.time}
+                        onChange={(e) =>
+                          handleSettingsChange({ time: Number(e.target.value) })
+                        }
+                      />
+                    </SettingItem>
+                  </>
+                )}
+
+                {/* Информация для детских режимов */}
+                {(difficultyConfig.id === "easy" ||
+                  difficultyConfig.id === "medium") && (
+                  <KidsInfoBlock>
+                    <KidsInfoText>
+                      ℹ️ В детском режиме настройки оптимизированы для обучения.
+                      <br />
+                      Для изменения сложности вернитесь к выбору уровня.
+                    </KidsInfoText>
+                  </KidsInfoBlock>
+                )}
+
+                {/* Показать текущие настройки движка */}
+                <CurrentSettingsBlock>
+                  <CurrentSettingsTitle>
+                    Текущие настройки движка:
+                  </CurrentSettingsTitle>
+                  <div>• Навык: {difficultyConfig.engineSettings.skill}/20</div>
+                  <div>• Глубина: {difficultyConfig.engineSettings.depth}</div>
+                  <div>• Время: {difficultyConfig.engineSettings.time}ms</div>
+                  <div>• Потоки: {difficultyConfig.engineSettings.threads}</div>
+                  <div>
+                    • Детский режим:{" "}
+                    {difficultyConfig.engineSettings.kidsMode ? "Да" : "Нет"}
+                  </div>
+                  <div>
+                    • Стрелка хода:{" "}
+                    {difficultyConfig.uiSettings.showLastMoveArrow
+                      ? "Да"
+                      : "Нет"}
+                  </div>
+                </CurrentSettingsBlock>
+
+                <ButtonContainer>
+                  <CloseButton onClick={() => setIsSettingsOpen(false)}>
+                    ✅ Готово
+                  </CloseButton>
+                </ButtonContainer>
+              </SettingsContent>
+            </SettingsModal>
           )}
           {gameResult && (
             <>
@@ -119,7 +231,6 @@ function PlayWithComputer() {
             </>
           )}
           {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
-          {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
           <ResetButton onClick={() => window.location.reload()}>
             {t("reset")}
           </ResetButton>
