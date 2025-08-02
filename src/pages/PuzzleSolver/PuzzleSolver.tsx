@@ -49,7 +49,19 @@ export function PuzzleSolver() {
     : null;
 
   if (!puzzle) {
-    return <div>{t("task_not_found")}</div>;
+    console.error("Puzzle not found:", {
+      categoryId,
+      puzzleId,
+      availableCategories: CHESS_PUZZLES.map((c) => c.id),
+    });
+    return (
+      <div>
+        <h2>{t("task_not_found")}</h2>
+        <p>Category: {categoryId}</p>
+        <p>Puzzle: {puzzleId}</p>
+        <button onClick={() => navigate("/puzzles")}>Back to Puzzles</button>
+      </div>
+    );
   }
 
   const handleComplete = (result: "success" | "failure") => {

@@ -58,7 +58,7 @@ function PlayWithComputerSelectLevel() {
           key={link.id}
           title={t(link.titleKey)}
           image={link.image}
-          href={`/play/computer/${link.id}`}
+          to={`/play/computer/${link.id}`}
         />
       )),
     [t]

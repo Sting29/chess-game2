@@ -1,8 +1,17 @@
-Options -MultiViews
 RewriteEngine On
+
+# Handle specific SPA routes that are causing issues
+RewriteRule ^puzzles/[^/]+/[^/]+/?$ /index.html [L]
+RewriteRule ^how-to-move/[^/]+/?$ /index.html [L]
+RewriteRule ^how-to-play/[^/]+/?$ /index.html [L]
+RewriteRule ^play/computer/[^/]+/?$ /index.html [L]
+
+# Don't rewrite existing files and directories
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^ index.html [QSA,L]
+
+# Rewrite everything else to index.html
+RewriteRule ^(.*)$ /index.html [L]
 
 # Если сайт размещен в поддиректории, раскомментируйте и измените следующую строку
 # RewriteBase /subdirectory/ 

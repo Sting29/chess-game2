@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { PersonsChessBoard } from "../../components/PersonsChessBoard/PersonsChessBoard";
 import {
   PageContainer,
@@ -17,6 +17,7 @@ function PlayWithPerson() {
   const { t } = useTranslation();
   const [gameResult, setGameResult] = useState<string | null>(null);
   const [showBoom, setShowBoom] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
 
   const handleGameEnd = (result: string) => {
     setGameResult(result);
@@ -24,9 +25,11 @@ function PlayWithPerson() {
     setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleReset = () => {
-    window.location.reload();
-  };
+  const handleReset = useCallback(() => {
+    setResetKey((prev) => prev + 1);
+    setGameResult(null);
+    setShowBoom(false);
+  }, []);
 
   const previousPage = "/play";
 
@@ -38,7 +41,7 @@ function PlayWithPerson() {
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
           </BackButtonWrap>
-          <PersonsChessBoard onGameEnd={handleGameEnd} />
+          <PersonsChessBoard key={resetKey} onGameEnd={handleGameEnd} />
           {gameResult && (
             <>
               <GameCompleteMessage>{gameResult}</GameCompleteMessage>
@@ -47,9 +50,7 @@ function PlayWithPerson() {
           )}
           {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
           {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
-          <ResetButton onClick={() => window.location.reload()}>
-            {t("reset")}
-          </ResetButton>
+          <ResetButton onClick={handleReset}>{t("reset")}</ResetButton>
         </MainContent>
       </ContentContainer>
     </PageContainer>

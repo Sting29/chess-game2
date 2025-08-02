@@ -38,7 +38,7 @@ function HowToPlay() {
           key={link.id}
           title={t(link.titleKey)}
           image={link.image}
-          href={`/how-to-play/${link.link}`}
+          to={`/how-to-play/${link.link}`}
         />
       )),
     [t]

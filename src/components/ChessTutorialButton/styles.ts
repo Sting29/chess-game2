@@ -1,7 +1,8 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import { WidgetSize } from "./ChessTutorialButton";
 
-export const ChessTutorialButtonWrap = styled.a<{
+export const ChessTutorialButtonWrap = styled(Link)<{
   $image: string;
   $widgetSize: WidgetSize;
 }>(({ $image, $widgetSize }) => ({

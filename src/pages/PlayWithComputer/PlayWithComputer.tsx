@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { ComputerChessBoard } from "src/components/ComputerChessBoard/ComputerChessBoard";
 import { useTranslation } from "react-i18next";
@@ -40,6 +40,7 @@ import {
 function PlayWithComputer() {
   const [gameResult, setGameResult] = useState<string | null>(null);
   const [showBoom, setShowBoom] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
   const { level } = useParams<{ level: "easy" | "medium" | "hard" }>();
 
@@ -74,9 +75,11 @@ function PlayWithComputer() {
     setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleReset = () => {
-    window.location.reload();
-  };
+  const handleReset = useCallback(() => {
+    setResetKey((prev) => prev + 1);
+    setGameResult(null);
+    setShowBoom(false);
+  }, []);
 
   return (
     <PageContainer>
@@ -231,9 +234,8 @@ function PlayWithComputer() {
             </>
           )}
           {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
-          <ResetButton onClick={() => window.location.reload()}>
-            {t("reset")}
-          </ResetButton>
+          {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
+          <ResetButton onClick={handleReset}>{t("reset")}</ResetButton>
         </MainContent>
       </ContentContainer>
     </PageContainer>

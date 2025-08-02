@@ -1,6 +1,6 @@
 import { useLocation, useParams } from "react-router-dom";
 import { ChessBattleBoard } from "src/components/ChessBattleBoard/ChessBattleBoard";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Square } from "src/types/types";
 import { PageContainer } from "./styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
@@ -23,19 +23,26 @@ function ChessBattle() {
   const { battleId } = useParams<{ battleId: string }>();
   const [showBoom, setShowBoom] = useState(false);
   const [showSideContent, setShowSideContent] = useState(true);
+  const [resetKey, setResetKey] = useState(0);
 
-  const gameData = HOW_TO_PLAY.find((battle) => battle.link === battleId);
   const location = useLocation();
-
-  if (!gameData) {
-    return <div>{t("battle_not_found")}</div>;
-  }
-  const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
   const handleCapture = (square: Square) => {
     setShowBoom(true);
     setTimeout(() => setShowBoom(false), 500);
   };
+
+  const handleReset = useCallback(() => {
+    setResetKey((prev) => prev + 1);
+    setShowBoom(false);
+  }, []);
+
+  const gameData = HOW_TO_PLAY.find((battle) => battle.link === battleId);
+
+  if (!gameData) {
+    return <div>{t("battle_not_found")}</div>;
+  }
+  const previousPage = location.pathname.split("/").slice(0, -1).join("/");
 
   return (
     <PageContainer>
@@ -66,6 +73,7 @@ function ChessBattle() {
 
           {gameData.board === "ChessBattleBoard" && (
             <ChessBattleBoard
+              key={resetKey}
               initialPosition={gameData.initialPosition}
               onCapture={handleCapture}
               rulesOfWin={gameData.rulesOfWin as "promotion" | "noFiguresLeft"}
@@ -74,9 +82,7 @@ function ChessBattle() {
 
           {showBoom && <div className="boom-animation">{t("boom")}</div>}
 
-          <ResetButton onClick={() => window.location.reload()}>
-            {t("reset")}
-          </ResetButton>
+          <ResetButton onClick={handleReset}>{t("reset")}</ResetButton>
         </MainContent>
       </ContentContainer>
     </PageContainer>
