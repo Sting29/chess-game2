@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   LoginContainer,
@@ -33,7 +32,6 @@ import { loginUser } from "src/store/settingsSlice";
 
 export function LoginPage() {
   const { t, i18n } = useTranslation();
-  const navigate = useNavigate();
   const dispatch = useDispatch<AppDispatch>();
   const { breakpoint } = useBreakpoint();
 
@@ -44,16 +42,11 @@ export function LoginPage() {
   });
 
   // Redux state
-  const { isAuthenticated, loading, error } = useSelector(
-    (state: RootState) => state.settings
-  );
+  const { loading, error } = useSelector((state: RootState) => state.settings);
 
-  useEffect(() => {
-    // Если пользователь уже авторизован, перенаправляем на главную
-    if (isAuthenticated) {
-      navigate("/");
-    }
-  }, [isAuthenticated, navigate]);
+  // Note: Navigation is now handled by RootRoute component
+  // No need for useEffect navigation since RootRoute conditionally renders
+  // LoginPage or ChessTutorial based on authentication state
 
   // Handle form input changes
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -81,8 +74,8 @@ export function LoginPage() {
       );
 
       if (loginUser.fulfilled.match(result)) {
-        // Login successful - navigation will happen via useEffect
-        console.log("Login successful");
+        // Login successful - RootRoute will automatically render ChessTutorial
+        // console.log("Login successful");
       }
     } catch (error) {
       console.error("Login failed:", error);

@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { ChessTutorialBoard } from "../../components/ChessTutorialBoard/ChessTutorialBoard";
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Square } from "../../types/types";
 // import GameComplete from "src/components/GameComplete/GameComplete";
 import { Description } from "../../components/Description/Description";
@@ -24,11 +24,24 @@ function ChessMoves() {
   const { t } = useTranslation();
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
   // const [gameComplete, setGameComplete] = useState(false);
   // const [currentGameStatus, setCurrentGameStatus] = useState<
   //   "playing" | "white_wins" | "draw"
   // >("playing");
   const [showSideContent, setShowSideContent] = useState(true);
+
+  const handleCapture = (square: Square) => {
+    setShowBoom(true);
+    setTimeout(() => setShowBoom(false), 500);
+  };
+
+  const handleReset = useCallback(() => {
+    setResetKey((prev) => prev + 1);
+    setShowBoom(false);
+    // setGameComplete(false);
+    // setCurrentGameStatus("playing");
+  }, []);
 
   const gameData = HOW_TO_MOVE.find((piece) => piece.link === pieceId);
 
@@ -37,11 +50,6 @@ function ChessMoves() {
   }
 
   const previousPage = "/how-to-move";
-
-  const handleCapture = (square: Square) => {
-    setShowBoom(true);
-    setTimeout(() => setShowBoom(false), 500);
-  };
 
   // const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
   //   if (gameStatus === "white_wins" || gameStatus === "draw") {
@@ -76,15 +84,14 @@ function ChessMoves() {
             )}
           </QuestionButtonWrap>
           <ChessTutorialBoard
+            key={resetKey}
             initialPosition={gameData.initialPosition}
             onCapture={handleCapture}
             // onComplete={handleComplete}
           />
           {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
           {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
-          <ResetButton onClick={() => window.location.reload()}>
-            {t("reset")}
-          </ResetButton>
+          <ResetButton onClick={handleReset}>{t("reset")}</ResetButton>
         </MainContent>
       </ContentContainer>
     </PageContainer>

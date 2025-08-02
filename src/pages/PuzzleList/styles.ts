@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 import backgroundPuzzlesSelect from "src/assets/background/background_puzzles_select.png";
 import BoardPuzzle from "src/assets/images/board_puzzle.png";
 
@@ -45,7 +46,7 @@ export const PuzzleListWrap = styled.div`
   margin-top: 24px;
 `;
 
-export const PuzzleItem = styled.a`
+export const PuzzleItem = styled(Link)`
   background: #f7f7f7;
   border-radius: 8px;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.07);

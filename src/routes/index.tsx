@@ -5,9 +5,8 @@ import {
 } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "src/store";
-import { LoginPage } from "src/pages/LoginPage/LoginPage";
+import { RootRoute } from "src/components/RootRoute/RootRoute";
 import HowToMove from "src/pages/HowToMove/HowToMove";
-import ChessTutorial from "src/pages/ChessTutorial/ChessTutorial";
 import HowToPlay from "src/pages/HowToPlay/HowToPlay";
 import ChessMoves from "src/pages/ChessMoves/ChessMoves";
 import PuzzleList from "src/pages/PuzzleList/PuzzleList";
@@ -27,36 +26,17 @@ function ProtectedRoute({ children }: { children: React.ReactElement }) {
   const { isAuthenticated } = useSelector((state: RootState) => state.settings);
 
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return <Layout>{children}</Layout>;
 }
 
-function LoginRoute() {
-  const { isAuthenticated } = useSelector((state: RootState) => state.settings);
-
-  // Убираем проверку loading - пусть LoginPage сама управляет состоянием загрузки
-  if (isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <LoginPage />;
-}
-
 const router = createBrowserRouter(
   [
     {
-      path: "/login",
-      element: <LoginRoute />,
-    },
-    {
       path: "/",
-      element: (
-        <ProtectedRoute>
-          <ChessTutorial />
-        </ProtectedRoute>
-      ),
+      element: <RootRoute />,
     },
     {
       path: "/how-to-move",

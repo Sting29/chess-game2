@@ -7,7 +7,7 @@ interface ChessTutorialButtonProps {
   image: string;
   onClick?: () => void;
   widgetSize?: WidgetSize;
-  href?: string;
+  to?: string;
 }
 
 function ChessTutorialButton({
@@ -15,14 +15,14 @@ function ChessTutorialButton({
   image,
   onClick,
   widgetSize,
-  href,
+  to,
 }: ChessTutorialButtonProps) {
   return (
     <ChessTutorialButtonWrap
       onClick={onClick}
       $image={image}
       $widgetSize={widgetSize || "small"}
-      href={href}
+      to={to || "#"}
     >
       <LinkHeader $widgetSize={widgetSize || "small"}>{title}</LinkHeader>
     </ChessTutorialButtonWrap>

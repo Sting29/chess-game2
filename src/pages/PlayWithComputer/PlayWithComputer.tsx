@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { ComputerChessBoard } from "src/components/ComputerChessBoard/ComputerChessBoard";
 import { useTranslation } from "react-i18next";
 import {
@@ -21,6 +21,7 @@ interface GameSettings {
 function PlayWithComputer() {
   const [gameResult, setGameResult] = useState<string | null>(null);
   const [showBoom, setShowBoom] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
   const { t } = useTranslation();
 
   const previousPage = "/play/computer";
@@ -44,9 +45,11 @@ function PlayWithComputer() {
     setTimeout(() => setShowBoom(false), 500);
   };
 
-  const handleReset = () => {
-    window.location.reload();
-  };
+  const handleReset = useCallback(() => {
+    setResetKey((prev) => prev + 1);
+    setGameResult(null);
+    setShowBoom(false);
+  }, []);
 
   return (
     <PageContainer>
@@ -66,7 +69,11 @@ function PlayWithComputer() {
             </button>
           </div>
 
-          <ComputerChessBoard settings={settings} onGameEnd={handleGameEnd} />
+          <ComputerChessBoard
+            key={resetKey}
+            settings={settings}
+            onGameEnd={handleGameEnd}
+          />
 
           {isSettingsOpen && (
             <div className="settings-modal">
@@ -120,9 +127,7 @@ function PlayWithComputer() {
           )}
           {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
           {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}
-          <ResetButton onClick={() => window.location.reload()}>
-            {t("reset")}
-          </ResetButton>
+          <ResetButton onClick={handleReset}>{t("reset")}</ResetButton>
         </MainContent>
       </ContentContainer>
     </PageContainer>

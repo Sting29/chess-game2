@@ -56,7 +56,7 @@ function Play() {
           key={link.id}
           title={t(link.titleKey)}
           image={link.image}
-          href={`/play/${link.id}`}
+          to={`/play/${link.id}`}
         />
       )),
     [t]

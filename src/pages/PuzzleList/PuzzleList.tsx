@@ -100,7 +100,7 @@ function PuzzleList() {
           category.puzzles.map((puzzle) => (
             <PuzzleItem
               key={puzzle.id}
-              href={`/puzzles/${category.id}/${puzzle.id}`}
+              to={`/puzzles/${category.id}/${puzzle.id}`}
             >
               <h3>
                 {t(puzzle.titleKey)}

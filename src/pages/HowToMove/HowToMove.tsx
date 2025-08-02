@@ -35,7 +35,7 @@ function HowToMove() {
           key={link.id}
           title={t(link.pageTitleKey)}
           image={link.image}
-          href={`/how-to-move/${link.link}`}
+          to={`/how-to-move/${link.link}`}
         />
       )),
     [t]
