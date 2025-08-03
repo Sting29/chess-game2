@@ -129,7 +129,6 @@
   "black_move": "Black move",
   "white_wins": "White wins!",
   "black_wins": "Black wins!",
-  "draw": "Draw!",
   "previous": "Previous",
   "next": "Next",
   "layout_exit": "Exit",
@@ -221,6 +220,8 @@
   "medium_features": "⭐ Slightly harder, but still easy",
   "hard_age_group": "🔥 Experienced",
   "hard_features": "💪 Moderate difficulty for learning",
+  "master_age_group": "🏆 Masters",
+  "master_features": "🧠 High difficulty for advanced players",
 
   "setting_skill_name": "Skill Level",
   "setting_skill_description": "Engine strength from 0 (weakest) to 20 (strongest)",

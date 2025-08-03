@@ -17,7 +17,7 @@ export interface GameUISettings {
 }
 
 export interface DifficultyLevel {
-  id: "easy" | "medium" | "hard";
+  id: "easy" | "medium" | "hard" | "master";
   titleKey: string;
   description: string;
   ageGroupKey: string; // Translation key for age group
@@ -81,6 +81,27 @@ export const DIFFICULTY_LEVELS: Record<string, DifficultyLevel> = {
     engineSettings: {
       skill: 5, // Medium-low level
       depth: 5, // Moderate depth
+      time: 1000, // 1 second per move
+      MultiPV: 1, // Analyze best variation
+      threads: 1, // Single thread
+      kidsMode: false, // No kids mode
+    },
+    uiSettings: {
+      showLastMoveArrow: false, // Show arrow
+      showThreatHighlight: false, // Don't highlight threats
+      showMoveHints: false, // No hints
+      enableSoundEffects: false, // No sounds (serious game)
+    },
+  },
+  master: {
+    id: "master",
+    titleKey: "master",
+    description: "Challenging mode for experienced players",
+    ageGroupKey: "master_age_group",
+    featuresKey: "master_features",
+    engineSettings: {
+      skill: 10, // Medium-low level
+      depth: 10, // Moderate depth
       time: 1000, // 1 second per move
       MultiPV: 1, // Analyze best variation
       threads: 1, // Single thread
