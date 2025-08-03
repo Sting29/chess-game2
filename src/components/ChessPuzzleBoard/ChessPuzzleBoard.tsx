@@ -50,9 +50,37 @@ export function ChessPuzzleBoard({
     sourceSquare: Square,
     targetSquare: Square
   ): boolean {
-    // Simple check: if moving to 8th rank (promotion rank for white pawns)
+    // Get the piece from the source square
+    const fen = game.fen();
+    const position = fen.split(" ")[0];
+    
+    // Parse FEN to find the piece at source square
+    let piece = "";
+    let rank = 7;
+    let file = 0;
+
+    for (const char of position) {
+      if (char === "/") {
+        rank--;
+        file = 0;
+      } else if (/\d/.test(char)) {
+        file += parseInt(char);
+      } else {
+        const square = `${"abcdefgh"[file]}${rank + 1}`;
+        if (square === sourceSquare) {
+          piece = char;
+          break;
+        }
+        file++;
+      }
+    }
+
+    // Check if piece is a pawn
+    if (piece.toLowerCase() !== "p") return false;
+
+    // Check if pawn reaches promotion rank
     const [, toRank] = targetSquare.split("");
-    return toRank === "8";
+    return toRank === "8" || toRank === "1";
   }
 
   function handlePromotionSelection(promotionPiece: PromotionPiece) {
