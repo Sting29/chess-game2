@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
+import { useTranslation } from "react-i18next";
 import { Square } from "src/types/playTypes";
 import { StockfishEngine } from "src/utils/StockfishEngine";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
@@ -26,12 +27,13 @@ export function ComputerChessBoard({
   onThreatsChange,
   showHints: parentShowHints,
 }: ComputerChessBoardProps) {
+  const { t } = useTranslation();
   const [game, setGame] = useState(new Chess());
   const engineRef = useRef<StockfishEngine>(new StockfishEngine());
   const [isThinking, setIsThinking] = useState(false);
   const [selectedSquare, setSelectedSquare] = useState<Square | null>(null);
   const [highlightSquares, setHighlightSquares] = useState<Square[]>([]);
-  const [moveMessage, setMoveMessage] = useState("Your turn (white)");
+  const [moveMessage, setMoveMessage] = useState("");
   const [lastMoveArrow, setLastMoveArrow] = useState<{
     startSquare: string;
     endSquare: string;
@@ -45,6 +47,11 @@ export function ComputerChessBoard({
   const showHints =
     parentShowHints ?? (settings.kidsMode && uiSettings.showMoveHints);
   const [threatSquares, setThreatSquares] = useState<Square[]>([]);
+
+  // Initialize move message
+  useEffect(() => {
+    setMoveMessage(t("your_turn"));
+  }, [t]);
 
   useEffect(() => {
     const engine = engineRef.current;
@@ -170,19 +177,19 @@ export function ComputerChessBoard({
     try {
       if (game.isCheckmate()) {
         return game.turn() === "w"
-          ? "Checkmate! Black wins!"
-          : "Checkmate! White wins!";
+          ? t("checkmate_black_wins")
+          : t("checkmate_white_wins");
       } else if (game.isDraw()) {
-        return "Draw!";
+        return t("draw");
       } else if (game.isStalemate()) {
-        return "Stalemate!";
+        return t("stalemate");
       }
-      return "Game over!";
+      return t("game_over");
     } catch (error) {
       console.error("Error determining game over message:", error);
-      return "Game over!";
+      return t("game_over");
     }
-  }, [game]);
+  }, [game, t]);
 
   // Функция для проверки promotion
   const isPromotionMove = useCallback(
@@ -204,9 +211,7 @@ export function ComputerChessBoard({
     if (isThinking) return; // Prevent multiple simultaneous moves
 
     setIsThinking(true);
-    setMoveMessage(
-      settings.kidsMode ? "Компьютер думает... 🤔" : "Computer is thinking..."
-    );
+    setMoveMessage(t("computer_thinking"));
 
     try {
       // Получаем все легальные ходы для передачи в упрощенные режимы
@@ -270,15 +275,15 @@ export function ComputerChessBoard({
 
           // В детском режиме добавляем забавные сообщения
           if (settings.kidsMode) {
-            const funMessages = [
-              "Мой ход! 😊",
-              "Попробуй поймать меня! 😄",
-              "Интересно, что ты ответишь? 🤔",
-              "Твоя очередь! 👍",
+            const funMessageKeys = [
+              "fun_message_1",
+              "fun_message_2",
+              "fun_message_3",
+              "fun_message_4",
             ];
-            setMoveMessage(
-              funMessages[Math.floor(Math.random() * funMessages.length)]
-            );
+            const randomKey =
+              funMessageKeys[Math.floor(Math.random() * funMessageKeys.length)];
+            setMoveMessage(t(randomKey));
           }
         } else {
           // Если ход не найден, делаем случайный легальный ход
@@ -325,8 +330,8 @@ export function ComputerChessBoard({
         }
       } catch (fallbackError) {
         console.error("Critical error: Cannot make any move:", fallbackError);
-        setMoveMessage("Game error occurred");
-        onGameEnd?.("Game error");
+        setMoveMessage(t("game_error"));
+        onGameEnd?.(t("game_error"));
         return;
       }
     }
@@ -349,11 +354,7 @@ export function ComputerChessBoard({
       setMoveMessage(gameResult);
       onGameEnd?.(gameResult);
     } else {
-      setMoveMessage(
-        settings.kidsMode
-          ? "Твой ход! Думай хорошенько! 🧠"
-          : "Your turn (white)"
-      );
+      setMoveMessage(settings.kidsMode ? t("your_turn_kids") : t("your_turn"));
     }
   }, [
     game,
@@ -363,6 +364,7 @@ export function ComputerChessBoard({
     onGameEnd,
     updateThreatAnalysis,
     getGameOverMessage,
+    t,
   ]);
 
   const onDrop = useCallback(

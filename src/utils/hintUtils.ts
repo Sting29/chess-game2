@@ -3,14 +3,18 @@ import { ThreatInfo } from "../types/types";
 /**
  * Generates hint messages based on threat information
  * @param threatInfo - Information about current threats and display settings
- * @returns Array of hint strings to display in the Description component
+ * @param t - Translation function (from useTranslation hook)
+ * @returns Object with title and hints array to display in the Description component
  */
-export function generateHints(threatInfo: ThreatInfo): string[] {
+export function generateHints(
+  threatInfo: ThreatInfo,
+  t: (key: string, options?: any) => string
+): { title: string; hints: string[] } {
   try {
     // Validate input
     if (!threatInfo || typeof threatInfo !== "object") {
       console.warn("Invalid threatInfo provided to generateHints");
-      return [];
+      return { title: "", hints: [] };
     }
 
     // Don't show hints if not in kids mode, hints are disabled, or no threats exist
@@ -20,25 +24,22 @@ export function generateHints(threatInfo: ThreatInfo): string[] {
       !Array.isArray(threatInfo.threatSquares) ||
       threatInfo.threatSquares.length === 0
     ) {
-      return [];
+      return { title: "", hints: [] };
     }
 
     const hints: string[] = [];
     const threatCount = threatInfo.threatSquares.length;
+    const title = t("warning_attention");
 
     if (threatCount === 1) {
-      hints.push("⚠️ ОСТОРОЖНО!");
-      hints.push(
-        "Твоя фигура под атакой! Защити её или убери в безопасное место."
-      );
+      hints.push(t("single_threat_hint"));
     } else if (threatCount > 1) {
-      hints.push("⚠️ ОСТОРОЖНО!");
-      hints.push(`${threatCount} твоих фигур под атакой! Будь осторожен!`);
+      hints.push(t("multiple_threats_hint", { count: threatCount }));
     }
 
-    return hints;
+    return { title, hints };
   } catch (error) {
     console.error("Error generating hints:", error);
-    return [];
+    return { title: "", hints: [] };
   }
 }

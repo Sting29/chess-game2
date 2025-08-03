@@ -1,6 +1,19 @@
 import { generateHints } from "../hintUtils";
 import { ThreatInfo } from "../../types/types";
 
+// Mock translation function for tests
+const mockT = (key: string, options?: any): string => {
+  const translations: Record<string, string> = {
+    warning_attention: "⚠️ ATTENTION!",
+    single_threat_hint:
+      "Your piece is under attack! Defend it or move it to safety.",
+    multiple_threats_hint: `${
+      options?.count || 0
+    } of your pieces are under attack! Be careful!`,
+  };
+  return translations[key] || key;
+};
+
 describe("generateHints", () => {
   describe("when conditions are not met for showing hints", () => {
     test("should return empty array when not in kids mode", () => {
@@ -10,9 +23,9 @@ describe("generateHints", () => {
         kidsMode: false,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([]);
+      expect(result).toEqual({ title: "", hints: [] });
     });
 
     test("should return empty array when showHints is false", () => {
@@ -22,9 +35,9 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([]);
+      expect(result).toEqual({ title: "", hints: [] });
     });
 
     test("should return empty array when no threats exist", () => {
@@ -34,9 +47,9 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([]);
+      expect(result).toEqual({ title: "", hints: [] });
     });
 
     test("should return empty array when all conditions are false", () => {
@@ -46,9 +59,9 @@ describe("generateHints", () => {
         kidsMode: false,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([]);
+      expect(result).toEqual({ title: "", hints: [] });
     });
   });
 
@@ -60,12 +73,12 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([
-        "⚠️ ОСТОРОЖНО!",
-        "Твоя фигура под атакой! Защити её или убери в безопасное место.",
-      ]);
+      expect(result).toEqual({
+        title: "⚠️ ATTENTION!",
+        hints: ["Your piece is under attack! Defend it or move it to safety."],
+      });
     });
 
     test("should return multiple threat message when multiple pieces are threatened", () => {
@@ -75,12 +88,12 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([
-        "⚠️ ОСТОРОЖНО!",
-        "2 твоих фигур под атакой! Будь осторожен!",
-      ]);
+      expect(result).toEqual({
+        title: "⚠️ ATTENTION!",
+        hints: ["2 of your pieces are under attack! Be careful!"],
+      });
     });
 
     test("should return correct message for three threatened pieces", () => {
@@ -90,12 +103,12 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([
-        "⚠️ ОСТОРОЖНО!",
-        "3 твоих фигур под атакой! Будь осторожен!",
-      ]);
+      expect(result).toEqual({
+        title: "⚠️ ATTENTION!",
+        hints: ["3 of your pieces are under attack! Be careful!"],
+      });
     });
 
     test("should return correct message for many threatened pieces", () => {
@@ -105,12 +118,12 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([
-        "⚠️ ОСТОРОЖНО!",
-        "7 твоих фигур под атакой! Будь осторожен!",
-      ]);
+      expect(result).toEqual({
+        title: "⚠️ ATTENTION!",
+        hints: ["7 of your pieces are under attack! Be careful!"],
+      });
     });
   });
 
@@ -122,9 +135,9 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toEqual([]);
+      expect(result).toEqual({ title: "", hints: [] });
     });
 
     test("should handle single threat with all conditions true", () => {
@@ -134,13 +147,12 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toHaveLength(2);
-      expect(result[0]).toBe("⚠️ ОСТОРОЖНО!");
-      expect(result[1]).toBe(
-        "Твоя фигура под атакой! Защити её или убери в безопасное место."
-      );
+      expect(result.title).toBe("⚠️ ATTENTION!");
+      expect(result.hints).toEqual([
+        "Your piece is under attack! Defend it or move it to safety.",
+      ]);
     });
 
     test("should handle multiple threats with all conditions true", () => {
@@ -150,11 +162,12 @@ describe("generateHints", () => {
         kidsMode: true,
       };
 
-      const result = generateHints(threatInfo);
+      const result = generateHints(threatInfo, mockT);
 
-      expect(result).toHaveLength(2);
-      expect(result[0]).toBe("⚠️ ОСТОРОЖНО!");
-      expect(result[1]).toBe("2 твоих фигур под атакой! Будь осторожен!");
+      expect(result.title).toBe("⚠️ ATTENTION!");
+      expect(result.hints).toEqual([
+        "2 of your pieces are under attack! Be careful!",
+      ]);
     });
   });
 });

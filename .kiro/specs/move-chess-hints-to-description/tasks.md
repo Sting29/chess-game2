@@ -39,7 +39,7 @@
   - Add error handling for edge cases
   - _Requirements: 3.3, 3.4_
 
-- [ ] 6. Move hints toggle functionality to PlayWithComputer component
+- [x] 6. Move hints toggle functionality to PlayWithComputer component
 
   - Remove hints toggle button from ComputerChessBoard component
   - Add showHints prop to ComputerChessBoardProps interface
@@ -47,7 +47,7 @@
   - Update threat highlighting logic to use parent-controlled showHints value
   - _Requirements: 5.1, 5.2, 5.3_
 
-- [ ] 7. Integrate hints control with QuestionButton
+- [x] 7. Integrate hints control with QuestionButton
 
   - Modify QuestionButton click handler in PlayWithComputer
   - Add logic to control hints visibility when toggling side content in kids mode
@@ -55,7 +55,7 @@
   - Ensure hints state is preserved when side content is shown
   - _Requirements: 5.1, 5.2, 5.3, 5.4_
 
-- [ ] 8. Test integrated hints control functionality
+- [x] 8. Test integrated hints control functionality
   - Verify QuestionButton controls both side panel and hints in kids mode
   - Test that hints are disabled when side content is hidden
   - Test that hints are enabled when side content is shown

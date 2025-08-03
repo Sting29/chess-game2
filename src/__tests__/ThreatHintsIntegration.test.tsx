@@ -8,6 +8,19 @@ import { settingsSlice } from "../store/settingsSlice";
 import { generateHints } from "../utils/hintUtils";
 import { ThreatInfo } from "../types/types";
 
+// Mock translation function for tests
+const mockT = (key: string, options?: any): string => {
+  const translations: Record<string, string> = {
+    warning_attention: "⚠️ ATTENTION!",
+    single_threat_hint:
+      "Your piece is under attack! Defend it or move it to safety.",
+    multiple_threats_hint: `${
+      options?.count || 0
+    } of your pieces are under attack! Be careful!`,
+  };
+  return translations[key] || key;
+};
+
 // Mock the StockfishEngine
 jest.mock("../utils/StockfishEngine", () => ({
   StockfishEngine: jest.fn().mockImplementation(() => ({
@@ -85,12 +98,12 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(threatInfo);
+      const hintData = generateHints(threatInfo, mockT);
 
-      expect(hints).toEqual([
-        "⚠️ ОСТОРОЖНО!",
-        "Твоя фигура под атакой! Защити её или убери в безопасное место.",
-      ]);
+      expect(hintData).toEqual({
+        title: "⚠️ ATTENTION!",
+        hints: ["Your piece is under attack! Defend it or move it to safety."],
+      });
     });
 
     it("should generate correct hints for multiple threats in kids mode", () => {
@@ -100,12 +113,12 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(threatInfo);
+      const hintData = generateHints(threatInfo, mockT);
 
-      expect(hints).toEqual([
-        "⚠️ ОСТОРОЖНО!",
-        "3 твоих фигур под атакой! Будь осторожен!",
-      ]);
+      expect(hintData).toEqual({
+        title: "⚠️ ATTENTION!",
+        hints: ["3 of your pieces are under attack! Be careful!"],
+      });
     });
 
     it("should return empty hints when not in kids mode", () => {
@@ -115,9 +128,9 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: false,
       };
 
-      const hints = generateHints(threatInfo);
+      const hintData = generateHints(threatInfo, mockT);
 
-      expect(hints).toEqual([]);
+      expect(hintData).toEqual({ title: "", hints: [] });
     });
 
     it("should return empty hints when hints are disabled", () => {
@@ -127,9 +140,9 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(threatInfo);
+      const hintData = generateHints(threatInfo, mockT);
 
-      expect(hints).toEqual([]);
+      expect(hintData).toEqual({ title: "", hints: [] });
     });
 
     it("should return empty hints when no threats exist", () => {
@@ -139,9 +152,9 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(threatInfo);
+      const hintData = generateHints(threatInfo, mockT);
 
-      expect(hints).toEqual([]);
+      expect(hintData).toEqual({ title: "", hints: [] });
     });
   });
 
@@ -242,9 +255,11 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(multipleThreats);
+      const hintData = generateHints(multipleThreats, mockT);
 
-      expect(hints).toContain("3 твоих фигур под атакой! Будь осторожен!");
+      expect(hintData.hints).toContain(
+        "3 of your pieces are under attack! Be careful!"
+      );
     });
 
     it("should verify requirement 2.3: single threat messaging works correctly", () => {
@@ -254,10 +269,10 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(singleThreat);
+      const hintData = generateHints(singleThreat, mockT);
 
-      expect(hints).toContain(
-        "Твоя фигура под атакой! Защити её или убери в безопасное место."
+      expect(hintData.hints).toContain(
+        "Your piece is under attack! Defend it or move it to safety."
       );
     });
 
@@ -268,9 +283,9 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: false,
       };
 
-      const hints = generateHints(adultMode);
+      const hintData = generateHints(adultMode, mockT);
 
-      expect(hints).toEqual([]);
+      expect(hintData).toEqual({ title: "", hints: [] });
     });
 
     it("should verify requirement 4.1: hints toggle controls both visual and description hints", async () => {
@@ -307,11 +322,11 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hintsEnabled = generateHints(threatsWithHints);
-      const hintsDisabled = generateHints(threatsWithoutHints);
+      const hintsEnabled = generateHints(threatsWithHints, mockT);
+      const hintsDisabled = generateHints(threatsWithoutHints, mockT);
 
-      expect(hintsEnabled.length).toBeGreaterThan(0);
-      expect(hintsDisabled.length).toBe(0);
+      expect(hintsEnabled.hints.length).toBeGreaterThan(0);
+      expect(hintsDisabled.hints.length).toBe(0);
     });
 
     it("should verify requirement 4.3: consistent hint control", () => {
@@ -322,10 +337,10 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: true,
       };
 
-      const hints = generateHints(threatInfo);
+      const hintData = generateHints(threatInfo, mockT);
 
       // When showHints is false, no textual hints should be generated
-      expect(hints).toEqual([]);
+      expect(hintData).toEqual({ title: "", hints: [] });
     });
 
     it("should verify requirement 4.4: non-kids mode hint toggle behavior", () => {
@@ -336,9 +351,9 @@ describe("Complete Threat Hints Integration", () => {
         kidsMode: false,
       };
 
-      const hints = generateHints(adultModeWithHints);
+      const hintData = generateHints(adultModeWithHints, mockT);
 
-      expect(hints).toEqual([]);
+      expect(hintData).toEqual({ title: "", hints: [] });
     });
   });
 });

@@ -11,22 +11,6 @@ import {
   BoomAnimation,
   GameControls,
   SettingsButton,
-  SettingsModal,
-  SettingsContent,
-  SettingsTitle,
-  LevelInfo,
-  LevelTitle,
-  LevelDescription,
-  SettingItem,
-  SettingLabel,
-  SettingDescription,
-  SettingSlider,
-  KidsInfoBlock,
-  KidsInfoText,
-  CurrentSettingsBlock,
-  CurrentSettingsTitle,
-  ButtonContainer,
-  CloseButton,
   QuestionButtonWrap,
   SideContent,
 } from "./styles";
@@ -36,8 +20,8 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import {
   getDifficultySettings,
   DifficultyLevel,
-  SETTING_DESCRIPTIONS,
 } from "src/config/gameSettings";
+import GameSettingsModal from "src/components/GameSettingsModal";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { Description } from "src/components/Description/Description";
 import { ThreatInfo } from "src/types/types";
@@ -141,7 +125,15 @@ function PlayWithComputer() {
             <QuestionButton onClick={handleQuestionButtonClick} />
             {showSideContent && (
               <SideContent>
-                <Description title="" hints={generateHints(threatInfo)} />
+                {(() => {
+                  const hintData = generateHints(threatInfo, t);
+                  return (
+                    <Description
+                      title={hintData.title}
+                      hints={hintData.hints}
+                    />
+                  );
+                })()}
               </SideContent>
             )}
           </QuestionButtonWrap>
@@ -155,127 +147,14 @@ function PlayWithComputer() {
             showHints={threatInfo.showHints}
           />
 
-          {isSettingsOpen && (
-            <SettingsModal>
-              <SettingsContent>
-                <SettingsTitle>{t("game_settings")}</SettingsTitle>
+          {/* Game Settings Modal - выключаю из отображения времмено эта информация ненужна */}
+          <GameSettingsModal
+            isOpen={isSettingsOpen}
+            onClose={() => setIsSettingsOpen(false)}
+            difficultyConfig={difficultyConfig}
+            onSettingsChange={handleSettingsChange}
+          />
 
-                {/* Информация о текущем уровне */}
-                <LevelInfo>
-                  <LevelTitle>{difficultyConfig.ageGroup}</LevelTitle>
-                  <LevelDescription>
-                    {difficultyConfig.features}
-                  </LevelDescription>
-                </LevelInfo>
-
-                {/* Дополнительные настройки (только для hard режима) */}
-                {difficultyConfig.id === "hard" && (
-                  <>
-                    <SettingItem>
-                      <SettingLabel>
-                        {SETTING_DESCRIPTIONS.skill.name}:{" "}
-                        {difficultyConfig.engineSettings.skill}
-                      </SettingLabel>
-                      <SettingDescription>
-                        {SETTING_DESCRIPTIONS.skill.description}
-                      </SettingDescription>
-                      <SettingSlider
-                        type="range"
-                        min="0"
-                        max="20"
-                        value={difficultyConfig.engineSettings.skill}
-                        onChange={(e) =>
-                          handleSettingsChange({
-                            skill: Number(e.target.value),
-                          })
-                        }
-                      />
-                    </SettingItem>
-
-                    <SettingItem>
-                      <SettingLabel>
-                        {SETTING_DESCRIPTIONS.depth.name}:{" "}
-                        {difficultyConfig.engineSettings.depth}
-                      </SettingLabel>
-                      <SettingDescription>
-                        {SETTING_DESCRIPTIONS.depth.description}
-                      </SettingDescription>
-                      <SettingSlider
-                        type="range"
-                        min="1"
-                        max="20"
-                        value={difficultyConfig.engineSettings.depth}
-                        onChange={(e) =>
-                          handleSettingsChange({
-                            depth: Number(e.target.value),
-                          })
-                        }
-                      />
-                    </SettingItem>
-
-                    <SettingItem>
-                      <SettingLabel>
-                        {SETTING_DESCRIPTIONS.time.name}:{" "}
-                        {difficultyConfig.engineSettings.time}ms
-                      </SettingLabel>
-                      <SettingDescription>
-                        {SETTING_DESCRIPTIONS.time.description}
-                      </SettingDescription>
-                      <SettingSlider
-                        type="range"
-                        min="100"
-                        max="5000"
-                        step="100"
-                        value={difficultyConfig.engineSettings.time}
-                        onChange={(e) =>
-                          handleSettingsChange({ time: Number(e.target.value) })
-                        }
-                      />
-                    </SettingItem>
-                  </>
-                )}
-
-                {/* Информация для детских режимов */}
-                {(difficultyConfig.id === "easy" ||
-                  difficultyConfig.id === "medium") && (
-                  <KidsInfoBlock>
-                    <KidsInfoText>
-                      ℹ️ В детском режиме настройки оптимизированы для обучения.
-                      <br />
-                      Для изменения сложности вернитесь к выбору уровня.
-                    </KidsInfoText>
-                  </KidsInfoBlock>
-                )}
-
-                {/* Показать текущие настройки движка */}
-                <CurrentSettingsBlock>
-                  <CurrentSettingsTitle>
-                    Текущие настройки движка:
-                  </CurrentSettingsTitle>
-                  <div>• Навык: {difficultyConfig.engineSettings.skill}/20</div>
-                  <div>• Глубина: {difficultyConfig.engineSettings.depth}</div>
-                  <div>• Время: {difficultyConfig.engineSettings.time}ms</div>
-                  <div>• Потоки: {difficultyConfig.engineSettings.threads}</div>
-                  <div>
-                    • Детский режим:{" "}
-                    {difficultyConfig.engineSettings.kidsMode ? "Да" : "Нет"}
-                  </div>
-                  <div>
-                    • Стрелка хода:{" "}
-                    {difficultyConfig.uiSettings.showLastMoveArrow
-                      ? "Да"
-                      : "Нет"}
-                  </div>
-                </CurrentSettingsBlock>
-
-                <ButtonContainer>
-                  <CloseButton onClick={() => setIsSettingsOpen(false)}>
-                    ✅ Готово
-                  </CloseButton>
-                </ButtonContainer>
-              </SettingsContent>
-            </SettingsModal>
-          )}
           {gameResult && (
             <>
               <GameCompleteMessage>{gameResult}</GameCompleteMessage>

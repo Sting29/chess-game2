@@ -1,9 +1,30 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { ComputerChessBoard } from "../ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
 } from "../../../config/gameSettings";
+import {
+  TestContainer,
+  TestTitle,
+  TestSection,
+  TestCaseTitle,
+  TestCaseContainer,
+  ExpectedBehaviorTitle,
+  BehaviorList,
+  BehaviorItem,
+  ChessBoardContainer,
+  InstructionsContainer,
+  InstructionsTitle,
+  InstructionsList,
+  InstructionItem,
+  InstructionSubList,
+  InstructionSubItem,
+  SuccessCriteriaTitle,
+  SuccessCriteriaText,
+  StrongText,
+} from "./styles";
 
 /**
  * Manual Test Component for Kids Mode Functionality
@@ -18,6 +39,8 @@ import {
  */
 
 const KidsModeManualTest: React.FC = () => {
+  const { t } = useTranslation();
+
   // Kids mode settings with threat highlighting enabled
   const kidsEngineSettings: GameEngineSettings = {
     skill: 0,
@@ -48,94 +71,71 @@ const KidsModeManualTest: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "20px", fontFamily: "Arial, sans-serif" }}>
-      <h1>Kids Mode Manual Test</h1>
+    <TestContainer>
+      <TestTitle>{t("kids_mode_manual_test")}</TestTitle>
 
-      <div style={{ marginBottom: "40px" }}>
-        <h2>Test Case 1: Kids Mode (Should show only hints toggle button)</h2>
-        <div
-          style={{
-            border: "2px solid #4CAF50",
-            padding: "20px",
-            borderRadius: "10px",
-            backgroundColor: "#f9f9f9",
-          }}
-        >
-          <h3>Expected Behavior:</h3>
-          <ul>
-            <li>
-              ✅ Only one button should be visible: "👁️ Показать подсказки" or
-              "🙈 Скрыть подсказки"
-            </li>
-            <li>✅ NO "🔍 Проверить угрозы" button should be present</li>
-            <li>
-              ✅ Automatic threat highlighting should work when pieces are under
-              attack
-            </li>
-            <li>
-              ✅ Threat warning messages should appear when threats are detected
-            </li>
-          </ul>
+      <TestSection>
+        <TestCaseTitle>{t("test_case_1_title")}</TestCaseTitle>
+        <TestCaseContainer $borderColor="#4CAF50" $backgroundColor="#f9f9f9">
+          <ExpectedBehaviorTitle>
+            {t("expected_behavior")}
+          </ExpectedBehaviorTitle>
+          <BehaviorList>
+            <BehaviorItem>✅ {t("test_case_1_behavior_1")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_1_behavior_2")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_1_behavior_3")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_1_behavior_4")}</BehaviorItem>
+          </BehaviorList>
 
-          <div style={{ marginTop: "20px" }}>
+          <ChessBoardContainer>
             <ComputerChessBoard
               settings={kidsEngineSettings}
               uiSettings={kidsUISettings}
               onGameEnd={(result) =>
-                console.log("Kids mode game ended:", result)
+                console.log(t("kids_mode_game_ended"), result)
               }
             />
-          </div>
-        </div>
-      </div>
+          </ChessBoardContainer>
+        </TestCaseContainer>
+      </TestSection>
 
-      <div style={{ marginBottom: "40px" }}>
-        <h2>Test Case 2: Normal Mode (Should show no buttons)</h2>
-        <div
-          style={{
-            border: "2px solid #2196F3",
-            padding: "20px",
-            borderRadius: "10px",
-            backgroundColor: "#f0f8ff",
-          }}
-        >
-          <h3>Expected Behavior:</h3>
-          <ul>
-            <li>✅ No buttons should be visible above the chessboard</li>
-            <li>✅ No threat highlighting should occur</li>
-            <li>✅ No threat warning messages should appear</li>
-          </ul>
+      <TestSection>
+        <TestCaseTitle>{t("test_case_2_title")}</TestCaseTitle>
+        <TestCaseContainer $borderColor="#2196F3" $backgroundColor="#f0f8ff">
+          <ExpectedBehaviorTitle>
+            {t("expected_behavior")}
+          </ExpectedBehaviorTitle>
+          <BehaviorList>
+            <BehaviorItem>✅ {t("test_case_2_behavior_1")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_2_behavior_2")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_2_behavior_3")}</BehaviorItem>
+          </BehaviorList>
 
-          <div style={{ marginTop: "20px" }}>
+          <ChessBoardContainer>
             <ComputerChessBoard
               settings={normalEngineSettings}
               uiSettings={normalUISettings}
               onGameEnd={(result) =>
-                console.log("Normal mode game ended:", result)
+                console.log(t("normal_mode_game_ended"), result)
               }
             />
-          </div>
-        </div>
-      </div>
+          </ChessBoardContainer>
+        </TestCaseContainer>
+      </TestSection>
 
-      <div style={{ marginBottom: "40px" }}>
-        <h2>Test Case 3: Kids Mode with Threat Highlighting Disabled</h2>
-        <div
-          style={{
-            border: "2px solid #FF9800",
-            padding: "20px",
-            borderRadius: "10px",
-            backgroundColor: "#fff8e1",
-          }}
-        >
-          <h3>Expected Behavior:</h3>
-          <ul>
-            <li>✅ Only hints toggle button should be visible</li>
-            <li>✅ No threat highlighting should occur (even in kids mode)</li>
-            <li>✅ No threat warning messages should appear</li>
-          </ul>
+      <TestSection>
+        <TestCaseTitle>{t("test_case_3_title")}</TestCaseTitle>
+        <TestCaseContainer $borderColor="#FF9800" $backgroundColor="#fff8e1">
+          <ExpectedBehaviorTitle>
+            {t("expected_behavior")}
+          </ExpectedBehaviorTitle>
+          <BehaviorList>
+            <BehaviorItem>✅ {t("test_case_3_behavior_1")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_3_behavior_2")}</BehaviorItem>
+            <BehaviorItem>✅ {t("test_case_3_behavior_3")}</BehaviorItem>
+          </BehaviorList>
 
-          <div style={{ marginTop: "20px" }}>
+          <ChessBoardContainer>
             <ComputerChessBoard
               settings={kidsEngineSettings}
               uiSettings={{
@@ -143,66 +143,48 @@ const KidsModeManualTest: React.FC = () => {
                 showThreatHighlight: false,
               }}
               onGameEnd={(result) =>
-                console.log("Kids mode (no threats) game ended:", result)
+                console.log(t("kids_mode_no_threats_game_ended"), result)
               }
             />
-          </div>
-        </div>
-      </div>
+          </ChessBoardContainer>
+        </TestCaseContainer>
+      </TestSection>
 
-      <div
-        style={{
-          backgroundColor: "#e8f5e8",
-          padding: "20px",
-          borderRadius: "10px",
-          marginTop: "40px",
-        }}
-      >
-        <h2>Manual Testing Instructions:</h2>
-        <ol>
-          <li>
-            <strong>Kids Mode Test:</strong>
-            <ul>
-              <li>Verify only the hints toggle button is present</li>
-              <li>
-                Click the hints button to toggle between "Показать подсказки"
-                and "Скрыть подсказки"
-              </li>
-              <li>
-                Make moves that create threats and verify automatic highlighting
-                works
-              </li>
-              <li>
-                Check that threat warning messages appear when pieces are under
-                attack
-              </li>
-            </ul>
-          </li>
-          <li>
-            <strong>Normal Mode Test:</strong>
-            <ul>
-              <li>Verify no buttons are displayed above the chessboard</li>
-              <li>Make moves and verify no threat highlighting occurs</li>
-            </ul>
-          </li>
-          <li>
-            <strong>Kids Mode (No Threats) Test:</strong>
-            <ul>
-              <li>
-                Verify hints button is present but no threat highlighting occurs
-              </li>
-            </ul>
-          </li>
-        </ol>
+      <InstructionsContainer>
+        <InstructionsTitle>
+          {t("manual_testing_instructions")}
+        </InstructionsTitle>
+        <InstructionsList>
+          <InstructionItem>
+            <StrongText>{t("kids_mode_test")}</StrongText>
+            <InstructionSubList>
+              <InstructionSubItem>{t("instruction_1_1")}</InstructionSubItem>
+              <InstructionSubItem>{t("instruction_1_2")}</InstructionSubItem>
+              <InstructionSubItem>{t("instruction_1_3")}</InstructionSubItem>
+              <InstructionSubItem>{t("instruction_1_4")}</InstructionSubItem>
+            </InstructionSubList>
+          </InstructionItem>
+          <InstructionItem>
+            <StrongText>{t("normal_mode_test")}</StrongText>
+            <InstructionSubList>
+              <InstructionSubItem>{t("instruction_2_1")}</InstructionSubItem>
+              <InstructionSubItem>{t("instruction_2_2")}</InstructionSubItem>
+            </InstructionSubList>
+          </InstructionItem>
+          <InstructionItem>
+            <StrongText>{t("kids_mode_no_threats_test")}</StrongText>
+            <InstructionSubList>
+              <InstructionSubItem>{t("instruction_3_1")}</InstructionSubItem>
+            </InstructionSubList>
+          </InstructionItem>
+        </InstructionsList>
 
-        <h3>Success Criteria:</h3>
-        <p>✅ All test cases pass the expected behavior checks</p>
-        <p>✅ No "🔍 Проверить угрозы" button appears in any configuration</p>
-        <p>
-          ✅ Automatic threat analysis continues to work without manual button
-        </p>
-      </div>
-    </div>
+        <SuccessCriteriaTitle>{t("success_criteria")}</SuccessCriteriaTitle>
+        <SuccessCriteriaText>✅ {t("success_criteria_1")}</SuccessCriteriaText>
+        <SuccessCriteriaText>✅ {t("success_criteria_2")}</SuccessCriteriaText>
+        <SuccessCriteriaText>✅ {t("success_criteria_3")}</SuccessCriteriaText>
+      </InstructionsContainer>
+    </TestContainer>
   );
 };
 
