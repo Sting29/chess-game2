@@ -1,8 +1,16 @@
 import httpClient from "./httpClient";
 import errorHandler from "./errorHandler";
-import { User, UpdateProfileRequest, UserSession, ChessSet } from "./types";
+import {
+  User,
+  UpdateProfileRequest,
+  UserSession,
+  ChessSet,
+  Language,
+  AvatarWear,
+  AvatarHat,
+} from "./types";
 import { AxiosError } from "axios";
-import { Gender, Avatar } from "../utils/avatarUtils";
+import { Gender, Avatar } from "./types";
 
 class UserService {
   // Get current user profile
@@ -69,9 +77,7 @@ class UserService {
   }
 
   // Update language preference
-  public async updateLanguage(
-    language: "he" | "en" | "ar" | "ru"
-  ): Promise<User> {
+  public async updateLanguage(language: Language): Promise<User> {
     try {
       const profileData: UpdateProfileRequest = {
         profile: {
@@ -116,9 +122,9 @@ class UserService {
 
   // Update avatar settings
   public async updateAvatar(avatarData: {
-    avatar?: "avatar1" | "avatar2" | "avatar3";
-    avatarHat?: "avatarHat1" | "avatarHat2";
-    avatarWear?: "avatarWear1" | "avatarWear2" | "avatarWear3";
+    avatar?: Avatar;
+    avatarHat?: AvatarHat;
+    avatarWear?: AvatarWear;
   }): Promise<User> {
     try {
       const profileData: UpdateProfileRequest = {
@@ -163,7 +169,7 @@ class UserService {
   // Update personal information
   public async updatePersonalInfo(personalData: {
     age?: number;
-    gender?: "male" | "female" | "other" | "prefer_not_to_say";
+    gender?: Gender;
   }): Promise<User> {
     try {
       const profileData: UpdateProfileRequest = {

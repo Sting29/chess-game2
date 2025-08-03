@@ -171,7 +171,7 @@ export class PuzzleChessEngine {
 
   private isPromotionMove(from: Square, to: Square, piece: string): boolean {
     // Check if piece is a pawn
-    if (!piece.toLowerCase().endsWith("p")) return false;
+    if (piece.toLowerCase() !== "p") return false;
 
     // Check if pawn reaches promotion rank
     const [, toRank] = to.split("");

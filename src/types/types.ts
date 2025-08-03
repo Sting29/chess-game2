@@ -25,3 +25,9 @@ export interface PuzzleCategory {
   image: string;
   puzzles: ChessPuzzle[];
 }
+
+export interface ThreatInfo {
+  threatSquares: Square[];
+  showHints: boolean;
+  kidsMode: boolean;
+}

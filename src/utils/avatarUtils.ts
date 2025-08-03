@@ -2,21 +2,23 @@
 import boySet1 from "src/assets/avatars/boy_set_1.png";
 import boySet2 from "src/assets/avatars/boy_set_2.png";
 import boySet3 from "src/assets/avatars/boy_set_3.png";
+import boySet4 from "src/assets/avatars/boy_set_4.png";
 import girlSet1 from "src/assets/avatars/girl_set_1.png";
 import girlSet2 from "src/assets/avatars/girl_set_2.png";
 import girlSet3 from "src/assets/avatars/girl_set_3.png";
+import girlSet4 from "src/assets/avatars/girl_set_4.png";
+import { Avatar, Gender } from "src/services/types";
 
 export const avatars = [
   boySet1, // index 0: male, avatar1
   boySet2, // index 1: male, avatar2
   boySet3, // index 2: male, avatar3
-  girlSet1, // index 3: female, avatar1
-  girlSet2, // index 4: female, avatar2
-  girlSet3, // index 5: female, avatar3
+  boySet4, // index 3: male, avatar4
+  girlSet1, // index 4: female, avatar1
+  girlSet2, // index 5: female, avatar2
+  girlSet3, // index 6: female, avatar3
+  girlSet4, // index 7: female, avatar4
 ];
-
-export type Gender = "male" | "female" | "prefer_not_to_say";
-export type Avatar = "avatar1" | "avatar2" | "avatar3";
 
 export interface AvatarSelection {
   gender: Gender;
@@ -25,15 +27,15 @@ export interface AvatarSelection {
 
 // Convert index to gender and avatar
 export const indexToAvatarSelection = (index: number): AvatarSelection => {
-  if (index >= 0 && index <= 2) {
+  if (index >= 0 && index <= 3) {
     return {
       gender: "male",
       avatar: `avatar${index + 1}` as Avatar,
     };
-  } else if (index >= 3 && index <= 5) {
+  } else if (index >= 4 && index <= 7) {
     return {
       gender: "female",
-      avatar: `avatar${index - 2}` as Avatar,
+      avatar: `avatar${index - 3}` as Avatar,
     };
   }
 
@@ -52,9 +54,9 @@ export const avatarSelectionToIndex = (
   const avatarNumber = parseInt(avatar.replace("avatar", "")) - 1;
 
   if (gender === "male") {
-    return Math.max(0, Math.min(2, avatarNumber));
+    return Math.max(0, Math.min(3, avatarNumber));
   } else if (gender === "female") {
-    return Math.max(3, Math.min(5, avatarNumber + 3));
+    return Math.max(4, Math.min(7, avatarNumber + 4));
   }
 
   // Default to index 0 (male, avatar1) for prefer_not_to_say

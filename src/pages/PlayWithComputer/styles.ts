@@ -68,3 +68,37 @@ export const BoomAnimation = styled.div`
     }
   }
 `;
+
+// Стили для игровых элементов управления
+export const GameControls = styled.div`
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+`;
+
+export const SettingsButton = styled.button<{ kidsMode?: boolean }>`
+  padding: 10px 20px;
+  border-radius: 25px;
+  border: none;
+  background: ${(props) => (props.kidsMode ? "#FF6B6B" : "#4CAF50")};
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+
+  &:hover {
+    opacity: 0.9;
+  }
+`;
+
+export const QuestionButtonWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 40px;
+`;
+
+export const SideContent = styled.div`
+  position: absolute;
+  top: 120px;
+  right: 0;
+`;

@@ -9,9 +9,10 @@ import {
   LoginRequest,
   UpdateProfileRequest,
   ChessSet,
+  Language,
 } from "../services/types";
 import { authService, userService } from "../services";
-import { Gender, Avatar } from "../utils/avatarUtils";
+import { Gender, Avatar } from "../services/types";
 
 export type SettingsState = {
   language: string;
@@ -125,7 +126,7 @@ export const updateUserProfileAsync = createAsyncThunk(
 
 export const updateLanguageAsync = createAsyncThunk(
   "settings/updateLanguage",
-  async (language: "he" | "en" | "ar" | "ru", { rejectWithValue }) => {
+  async (language: Language, { rejectWithValue }) => {
     try {
       const user = await userService.updateLanguage(language);
       return user;

@@ -37,14 +37,20 @@ export interface User {
   updated_at: string;
 }
 
+export type Gender = "male" | "female" | "prefer_not_to_say";
+export type Avatar = "avatar1" | "avatar2" | "avatar3" | "avatar4";
+export type Language = "he" | "en" | "ar" | "ru";
+export type AvatarHat = "avatarHat1" | "avatarHat2";
+export type AvatarWear = "avatarWear1" | "avatarWear2" | "avatarWear3";
+
 export interface UserProfile {
   id: string;
-  gender?: "male" | "female" | "other" | "prefer_not_to_say";
-  avatar?: "avatar1" | "avatar2" | "avatar3";
-  avatarHat?: "avatarHat1" | "avatarHat2";
-  avatarWear?: "avatarWear1" | "avatarWear2" | "avatarWear3";
+  gender?: Gender;
+  avatar?: Avatar;
+  avatarHat?: AvatarHat;
+  avatarWear?: AvatarWear;
   age?: number;
-  language?: "he" | "en" | "ar" | "ru";
+  language?: Language;
   chessSet?: ChessSet;
   created_at: string;
   updated_at: string;
