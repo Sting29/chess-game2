@@ -21,7 +21,7 @@ import {
 } from "src/store/settingsSlice";
 import { FIGURES_SETS } from "src/data/figures-sets";
 import { languageConfig } from "src/data/languageConfig";
-import { ChessSet } from "src/services/types";
+import { ChessSet, Language } from "src/services/types";
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
@@ -45,9 +45,7 @@ function SettingsPage() {
     // If authenticated, also save to API
     if (isAuthenticated) {
       try {
-        await dispatch(
-          updateLanguageAsync(lang as "he" | "en" | "ar" | "ru")
-        ).unwrap();
+        await dispatch(updateLanguageAsync(lang as Language)).unwrap();
         console.log("Language saved to API successfully");
       } catch (error) {
         console.error("Failed to save language to API:", error);

@@ -12,12 +12,11 @@ import {
 import barrelImage from "src/assets/images/barrel.png";
 import {
   avatars,
-  Gender,
-  Avatar,
   indexToAvatarSelection,
   avatarSelectionToIndex,
   getDefaultAvatarSelection,
 } from "src/utils/avatarUtils";
+import { Gender, Avatar } from "src/services/types";
 
 interface AvatarSliderProps {
   initialGender?: Gender;

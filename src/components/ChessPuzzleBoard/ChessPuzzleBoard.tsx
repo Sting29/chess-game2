@@ -53,7 +53,7 @@ export function ChessPuzzleBoard({
     // Get the piece from the source square
     const fen = game.fen();
     const position = fen.split(" ")[0];
-    
+
     // Parse FEN to find the piece at source square
     let piece = "";
     let rank = 7;
