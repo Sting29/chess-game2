@@ -8,8 +8,8 @@ import tokenManager from "./tokenManager";
 import errorHandler from "./errorHandler";
 
 // API base configuration
-// const API_BASE_URL = `http://167.99.40.216:3000`;
-const API_BASE_URL = `https://chess.web-professionals.info/server`;
+const API_BASE_URL = `http://167.99.40.216:3000`;
+// const API_BASE_URL = `https://chess.web-professionals.info/server`;
 // const API_BASE_URL =
 //   process.env.REACT_APP_API_BASE_URL || process.env.API_BASE_URL;
 const REQUEST_TIMEOUT = parseInt(
