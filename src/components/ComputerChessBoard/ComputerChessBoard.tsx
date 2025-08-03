@@ -378,7 +378,6 @@ export function ComputerChessBoard({
           style={{
             display: "flex",
             justifyContent: "center",
-            gap: "10px",
             marginBottom: "10px",
           }}
         >
@@ -395,20 +394,6 @@ export function ComputerChessBoard({
             }}
           >
             {showHints ? "🙈 Скрыть подсказки" : "👁️ Показать подсказки"}
-          </button>
-          <button
-            onClick={updateThreatAnalysis}
-            style={{
-              padding: "8px 16px",
-              borderRadius: "20px",
-              border: "none",
-              background: "#2196F3",
-              color: "white",
-              cursor: "pointer",
-              fontSize: "14px",
-            }}
-          >
-            🔍 Проверить угрозы
           </button>
         </div>
       )}

@@ -101,6 +101,7 @@ function PlayWithComputer() {
           </BackButtonWrap>
 
           <ComputerChessBoard
+            key={resetKey}
             settings={difficultyConfig.engineSettings}
             uiSettings={difficultyConfig.uiSettings}
             onGameEnd={handleGameEnd}
