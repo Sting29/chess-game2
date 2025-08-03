@@ -164,5 +164,6 @@
   "api.server_error": "Server error. Please try again later",
   "api.service_unavailable": "Service temporarily unavailable",
   "api.unknown_error": "Unknown error occurred",
-  "edit_button": "Edit Account"
+  "edit_button": "Edit Account",
+  "question_button": "Help button"
 }

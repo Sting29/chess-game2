@@ -209,3 +209,15 @@ export const CloseButton = styled.button`
     background: #45a049;
   }
 `;
+
+export const QuestionButtonWrap = styled.div`
+  position: absolute;
+  top: 20px;
+  right: 40px;
+`;
+
+export const SideContent = styled.div`
+  position: absolute;
+  top: 120px;
+  right: 0;
+`;

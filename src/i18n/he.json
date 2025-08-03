@@ -164,5 +164,6 @@
   "api.server_error": "שגיאת שרת. נסה שוב מאוחר יותר",
   "api.service_unavailable": "השירות זמנית לא זמין",
   "api.unknown_error": "אירעה שגיאה לא ידועה",
-  "edit_button": "עריכת חשבון"
+  "edit_button": "עריכת חשבון",
+  "question_button": "כפתור עזרה"
 }

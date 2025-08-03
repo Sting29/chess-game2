@@ -162,5 +162,6 @@
   "api.server_error": "خطأ في الخادم. حاول مرة أخرى لاحقاً",
   "api.service_unavailable": "الخدمة غير متاحة مؤقتاً",
   "api.unknown_error": "حدث خطأ غير معروف",
-  "edit_button": "تعديل الحساب"
+  "edit_button": "تعديل الحساب",
+  "question_button": "زر المساعدة"
 }

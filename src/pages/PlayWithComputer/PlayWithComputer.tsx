@@ -27,6 +27,8 @@ import {
   CurrentSettingsTitle,
   ButtonContainer,
   CloseButton,
+  QuestionButtonWrap,
+  SideContent,
 } from "./styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
@@ -36,11 +38,21 @@ import {
   DifficultyLevel,
   SETTING_DESCRIPTIONS,
 } from "src/config/gameSettings";
+import QuestionButton from "src/components/QuestionButton/QuestionButton";
+import { Description } from "src/components/Description/Description";
+import { ThreatInfo } from "src/types/types";
+import { generateHints } from "src/utils/hintUtils";
 
 function PlayWithComputer() {
   const [gameResult, setGameResult] = useState<string | null>(null);
   const [showBoom, setShowBoom] = useState(false);
   const [resetKey, setResetKey] = useState(0);
+  const [showSideContent, setShowSideContent] = useState(true);
+  const [threatInfo, setThreatInfo] = useState<ThreatInfo>({
+    threatSquares: [],
+    showHints: true, // Initially true since showSideContent starts as true
+    kidsMode: false,
+  });
   const { t } = useTranslation();
   const { level } = useParams<{ level: "easy" | "medium" | "hard" }>();
 
@@ -54,8 +66,16 @@ function PlayWithComputer() {
 
   // Обновляем настройки при изменении уровня в URL
   useEffect(() => {
-    setDifficultyConfig(getDifficultySettings(level));
-  }, [level]);
+    const newConfig = getDifficultySettings(level);
+    setDifficultyConfig(newConfig);
+
+    // Update threatInfo with new kids mode setting
+    setThreatInfo((prev) => ({
+      ...prev,
+      kidsMode: newConfig.engineSettings.kidsMode,
+      showHints: newConfig.engineSettings.kidsMode ? showSideContent : false,
+    }));
+  }, [level, showSideContent]);
 
   const handleSettingsChange = (
     newEngineSettings: Partial<typeof difficultyConfig.engineSettings>
@@ -81,6 +101,23 @@ function PlayWithComputer() {
     setShowBoom(false);
   }, []);
 
+  const handleThreatsChange = useCallback((threats: ThreatInfo) => {
+    setThreatInfo(threats);
+  }, []);
+
+  const handleQuestionButtonClick = useCallback(() => {
+    const newShowSideContent = !showSideContent;
+    setShowSideContent(newShowSideContent);
+
+    // In kids mode, also control hints visibility
+    if (difficultyConfig.engineSettings.kidsMode) {
+      setThreatInfo((prev) => ({
+        ...prev,
+        showHints: newShowSideContent,
+      }));
+    }
+  }, [showSideContent, difficultyConfig.engineSettings.kidsMode]);
+
   return (
     <PageContainer>
       <ContentContainer>
@@ -100,11 +137,22 @@ function PlayWithComputer() {
             </GameControls>
           </BackButtonWrap>
 
+          <QuestionButtonWrap>
+            <QuestionButton onClick={handleQuestionButtonClick} />
+            {showSideContent && (
+              <SideContent>
+                <Description title="" hints={generateHints(threatInfo)} />
+              </SideContent>
+            )}
+          </QuestionButtonWrap>
+
           <ComputerChessBoard
             key={resetKey}
             settings={difficultyConfig.engineSettings}
             uiSettings={difficultyConfig.uiSettings}
             onGameEnd={handleGameEnd}
+            onThreatsChange={handleThreatsChange}
+            showHints={threatInfo.showHints}
           />
 
           {isSettingsOpen && (
