@@ -1,5 +1,4 @@
-import { useCallback, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState, useCallback } from "react";
 import { ComputerChessBoard } from "src/components/ComputerChessBoard/ComputerChessBoard";
 import { useTranslation } from "react-i18next";
 import {
@@ -9,67 +8,34 @@ import {
   GameCompleteMessage,
   ResetButton,
   BoomAnimation,
-  GameControls,
-  SettingsButton,
-  QuestionButtonWrap,
-  SideContent,
 } from "./styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
-import {
-  getDifficultySettings,
-  DifficultyLevel,
-} from "src/config/gameSettings";
-import GameSettingsModal from "src/components/GameSettingsModal";
-import QuestionButton from "src/components/QuestionButton/QuestionButton";
-import { Description } from "src/components/Description/Description";
-import { ThreatInfo } from "src/types/types";
-import { generateHints } from "src/utils/hintUtils";
+
+interface GameSettings {
+  depth: number; // глубина расчета (1-20)
+  skill: number; // уровень сложности (0-20)
+}
 
 function PlayWithComputer() {
   const [gameResult, setGameResult] = useState<string | null>(null);
   const [showBoom, setShowBoom] = useState(false);
   const [resetKey, setResetKey] = useState(0);
-  const [showSideContent, setShowSideContent] = useState(true);
-  const [threatInfo, setThreatInfo] = useState<ThreatInfo>({
-    threatSquares: [],
-    showHints: true, // Initially true since showSideContent starts as true
-    kidsMode: false,
-  });
   const { t } = useTranslation();
-  const { level } = useParams<{ level: "easy" | "medium" | "hard" }>();
 
   const previousPage = "/play/computer";
 
-  // Получаем настройки из конфигурации
-  const [difficultyConfig, setDifficultyConfig] = useState<DifficultyLevel>(
-    getDifficultySettings(level)
-  );
+  const [settings, setSettings] = useState<GameSettings>({
+    depth: 10,
+    skill: 10,
+  });
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  // Обновляем настройки при изменении уровня в URL
-  useEffect(() => {
-    const newConfig = getDifficultySettings(level);
-    setDifficultyConfig(newConfig);
-
-    // Update threatInfo with new kids mode setting
-    setThreatInfo((prev) => ({
+  const handleSettingsChange = (newSettings: Partial<GameSettings>) => {
+    setSettings((prev) => ({
       ...prev,
-      kidsMode: newConfig.engineSettings.kidsMode,
-      showHints: newConfig.engineSettings.kidsMode ? showSideContent : false,
-    }));
-  }, [level, showSideContent]);
-
-  const handleSettingsChange = (
-    newEngineSettings: Partial<typeof difficultyConfig.engineSettings>
-  ) => {
-    setDifficultyConfig((prev) => ({
-      ...prev,
-      engineSettings: {
-        ...prev.engineSettings,
-        ...newEngineSettings,
-      },
+      ...newSettings,
     }));
   };
 
@@ -85,76 +51,74 @@ function PlayWithComputer() {
     setShowBoom(false);
   }, []);
 
-  const handleThreatsChange = useCallback((threats: ThreatInfo) => {
-    setThreatInfo(threats);
-  }, []);
-
-  const handleQuestionButtonClick = useCallback(() => {
-    const newShowSideContent = !showSideContent;
-    setShowSideContent(newShowSideContent);
-
-    // In kids mode, also control hints visibility
-    if (difficultyConfig.engineSettings.kidsMode) {
-      setThreatInfo((prev) => ({
-        ...prev,
-        showHints: newShowSideContent,
-      }));
-    }
-  }, [showSideContent, difficultyConfig.engineSettings.kidsMode]);
-
   return (
     <PageContainer>
       <ContentContainer>
         <MainContent>
           <PageTitle title={t("play_with_computer")} />
-
           <BackButtonWrap>
             <BackButtonImage linkToPage={previousPage} />
-
-            <GameControls>
-              <SettingsButton
-                kidsMode={difficultyConfig.engineSettings.kidsMode}
-                onClick={() => setIsSettingsOpen(true)}
-              >
-                ⚙️ {t("settings")}
-              </SettingsButton>
-            </GameControls>
           </BackButtonWrap>
 
-          <QuestionButtonWrap>
-            <QuestionButton onClick={handleQuestionButtonClick} />
-            {showSideContent && (
-              <SideContent>
-                {(() => {
-                  const hintData = generateHints(threatInfo, t);
-                  return (
-                    <Description
-                      title={hintData.title}
-                      hints={hintData.hints}
-                    />
-                  );
-                })()}
-              </SideContent>
-            )}
-          </QuestionButtonWrap>
+          <div className="game-controls">
+            <button
+              className="settings-button"
+              onClick={() => setIsSettingsOpen(true)}
+            >
+              {t("settings")}
+            </button>
+          </div>
 
           <ComputerChessBoard
             key={resetKey}
-            settings={difficultyConfig.engineSettings}
-            uiSettings={difficultyConfig.uiSettings}
+            settings={settings}
             onGameEnd={handleGameEnd}
-            onThreatsChange={handleThreatsChange}
-            showHints={threatInfo.showHints}
           />
 
-          {/* Game Settings Modal - выключаю из отображения времмено эта информация ненужна */}
-          <GameSettingsModal
-            isOpen={isSettingsOpen}
-            onClose={() => setIsSettingsOpen(false)}
-            difficultyConfig={difficultyConfig}
-            onSettingsChange={handleSettingsChange}
-          />
+          {isSettingsOpen && (
+            <div className="settings-modal">
+              <div className="settings-content">
+                <h2>{t("game_settings")}</h2>
 
+                <div className="setting-item">
+                  <label>
+                    {t("calculation_depth")}: {settings.depth}
+                  </label>
+                  <input
+                    type="range"
+                    min="1"
+                    max="20"
+                    value={settings.depth}
+                    onChange={(e) =>
+                      handleSettingsChange({ depth: Number(e.target.value) })
+                    }
+                  />
+                </div>
+
+                <div className="setting-item">
+                  <label>
+                    {t("difficulty_level")}: {settings.skill}
+                  </label>
+                  <input
+                    type="range"
+                    min="0"
+                    max="20"
+                    value={settings.skill}
+                    onChange={(e) =>
+                      handleSettingsChange({ skill: Number(e.target.value) })
+                    }
+                  />
+                </div>
+
+                <button
+                  className="close-button"
+                  onClick={() => setIsSettingsOpen(false)}
+                >
+                  {t("close")}
+                </button>
+              </div>
+            </div>
+          )}
           {gameResult && (
             <>
               <GameCompleteMessage>{gameResult}</GameCompleteMessage>
