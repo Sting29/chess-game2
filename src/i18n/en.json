@@ -252,5 +252,8 @@
   "draw": "Draw!",
   "stalemate": "Stalemate!",
   "game_over": "Game over!",
-  "game_error": "Game error occurred"
+  "game_error": "Game error occurred",
+  "user_avatar": "User avatar",
+  "teacher_avatar": "Teacher avatar",
+  "player": "Player"
 }

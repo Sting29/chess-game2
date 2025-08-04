@@ -13,6 +13,7 @@ import {
   SettingsButton,
   QuestionButtonWrap,
   SideContent,
+  ChessBoardWrapper,
 } from "./styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
@@ -26,6 +27,8 @@ import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { Description } from "src/components/Description/Description";
 import { ThreatInfo } from "src/types/types";
 import { generateHints } from "src/utils/hintUtils";
+import UserAvatar from "src/components/UserAvatar/UserAvatar";
+import TeacherAvatar from "src/components/TeacherAvatar/TeacherAvatar";
 
 function PlayWithComputer() {
   const [gameResult, setGameResult] = useState<string | null>(null);
@@ -136,15 +139,18 @@ function PlayWithComputer() {
               </SideContent>
             )}
           </QuestionButtonWrap>
-
-          <ComputerChessBoard
-            key={resetKey}
-            settings={difficultyConfig.engineSettings}
-            uiSettings={difficultyConfig.uiSettings}
-            onGameEnd={handleGameEnd}
-            onThreatsChange={handleThreatsChange}
-            showHints={threatInfo.showHints}
-          />
+          <ChessBoardWrapper>
+            <UserAvatar />
+            <ComputerChessBoard
+              key={resetKey}
+              settings={difficultyConfig.engineSettings}
+              uiSettings={difficultyConfig.uiSettings}
+              onGameEnd={handleGameEnd}
+              onThreatsChange={handleThreatsChange}
+              showHints={threatInfo.showHints}
+            />
+            <TeacherAvatar />
+          </ChessBoardWrapper>
 
           {/* Game Settings Modal - выключаю из отображения времмено эта информация ненужна */}
           <GameSettingsModal

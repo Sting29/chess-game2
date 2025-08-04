@@ -102,3 +102,21 @@ export const SideContent = styled.div`
   top: 120px;
   right: 0;
 `;
+
+export const ChessBoardWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+
+  @media (max-width: 768px) {
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  @media (max-width: 480px) {
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+`;

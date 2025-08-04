@@ -252,5 +252,8 @@
   "draw": "תיקו!",
   "stalemate": "פט!",
   "game_over": "המשחק הסתיים!",
-  "game_error": "אירעה שגיאת משחק"
+  "game_error": "אירעה שגיאת משחק",
+  "user_avatar": "אווטאר משתמש",
+  "teacher_avatar": "אווטאר מורה",
+  "player": "שחקן"
 }
