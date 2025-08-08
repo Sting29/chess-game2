@@ -7,6 +7,21 @@ export interface ApiError {
   details?: any;
 }
 
+export interface AuthError extends ApiError {
+  isTokenExpired: boolean;
+  isRefreshTokenInvalid: boolean;
+  shouldLogout: boolean;
+  retryAfter?: number;
+}
+
+export enum AuthErrorType {
+  TOKEN_EXPIRED = "TOKEN_EXPIRED",
+  REFRESH_TOKEN_INVALID = "REFRESH_TOKEN_INVALID",
+  NETWORK_ERROR = "NETWORK_ERROR",
+  SERVER_ERROR = "SERVER_ERROR",
+  UNAUTHORIZED = "UNAUTHORIZED",
+}
+
 export interface RetryConfig {
   maxRetries: number;
   retryDelay: number;
@@ -141,8 +156,181 @@ class ErrorHandler {
     return apiError.message;
   }
 
-  // Log error for debugging
+  // Process authentication errors with detailed classification
+  public processAuthError(error: AxiosError): AuthError {
+    const baseError = this.processError(error);
+
+    const authError: AuthError = {
+      ...baseError,
+      isTokenExpired: false,
+      isRefreshTokenInvalid: false,
+      shouldLogout: false,
+    };
+
+    // Classify authentication errors
+    if (error.response?.status === 401) {
+      const errorMessage = this.getErrorMessageFromResponse(
+        error.response.data
+      );
+
+      // Check for specific error patterns
+      if (this.isRefreshTokenError(error, errorMessage)) {
+        authError.isRefreshTokenInvalid = true;
+        authError.shouldLogout = true;
+        authError.code = AuthErrorType.REFRESH_TOKEN_INVALID;
+        console.warn("ErrorHandler: Refresh token is invalid or expired", {
+          url: error.config?.url,
+          message: errorMessage,
+        });
+      } else if (this.isTokenExpiredError(errorMessage)) {
+        authError.isTokenExpired = true;
+        authError.code = AuthErrorType.TOKEN_EXPIRED;
+        console.log("ErrorHandler: Access token is expired", {
+          url: error.config?.url,
+          message: errorMessage,
+        });
+      } else {
+        authError.code = AuthErrorType.UNAUTHORIZED;
+        authError.shouldLogout = true;
+        console.warn("ErrorHandler: Unauthorized access", {
+          url: error.config?.url,
+          message: errorMessage,
+        });
+      }
+    }
+
+    return authError;
+  }
+
+  // Check if error indicates refresh token is invalid
+  private isRefreshTokenError(
+    error: AxiosError,
+    errorMessage: string
+  ): boolean {
+    const isRefreshEndpoint = error.config?.url?.includes("/user/refresh");
+    const hasRefreshTokenErrorMessage =
+      errorMessage.toLowerCase().includes("refresh token") ||
+      errorMessage.toLowerCase().includes("invalid or expired refresh token");
+
+    return isRefreshEndpoint || hasRefreshTokenErrorMessage;
+  }
+
+  // Check if error indicates token is expired
+  private isTokenExpiredError(errorMessage: string): boolean {
+    return (
+      errorMessage.toLowerCase().includes("token expired") ||
+      errorMessage.toLowerCase().includes("expired token")
+    );
+  }
+
+  // Get error message from response data
+  private getErrorMessageFromResponse(data: any): string {
+    if (data && typeof data === "object") {
+      if (data.message) return data.message;
+      if (data.error) return data.error;
+    }
+    return "";
+  }
+
+  // Determine if user should be logged out based on error
+  public shouldLogoutUser(error: AxiosError): boolean {
+    const authError = this.processAuthError(error);
+    return authError.shouldLogout;
+  }
+
+  // Get authentication error type
+  public getAuthErrorType(error: AxiosError): AuthErrorType {
+    if (error.response?.status === 401) {
+      const authError = this.processAuthError(error);
+      return authError.code as AuthErrorType;
+    }
+
+    if (!error.response) {
+      return AuthErrorType.NETWORK_ERROR;
+    }
+
+    if (error.response.status >= 500) {
+      return AuthErrorType.SERVER_ERROR;
+    }
+
+    return AuthErrorType.UNAUTHORIZED;
+  }
+
+  // Enhanced logging for authentication errors
+  public logAuthError(
+    error: AxiosError,
+    context?: string,
+    additionalInfo?: any
+  ): void {
+    const authError = this.processAuthError(error);
+
+    console.error(`Auth Error${context ? ` (${context})` : ""}:`, {
+      message: authError.message,
+      status: authError.status,
+      code: authError.code,
+      url: error.config?.url,
+      method: error.config?.method,
+      isTokenExpired: authError.isTokenExpired,
+      isRefreshTokenInvalid: authError.isRefreshTokenInvalid,
+      shouldLogout: authError.shouldLogout,
+      details: authError.details,
+      ...additionalInfo,
+    });
+  }
+
+  // Log refresh attempt tracking
+  public logRefreshAttempt(
+    attemptNumber: number,
+    success: boolean,
+    error?: any
+  ): void {
+    const logLevel = success ? "log" : "error";
+    const message = success
+      ? "Token refresh successful"
+      : "Token refresh failed";
+
+    console[logLevel](`ErrorHandler: ${message}`, {
+      attemptNumber,
+      success,
+      timestamp: new Date().toISOString(),
+      error: error
+        ? {
+            message: error.message,
+            status: error.response?.status,
+            code: error.code,
+          }
+        : undefined,
+    });
+  }
+
+  // Log infinite loop detection
+  public logInfiniteLoopDetection(context: string, attemptCount: number): void {
+    console.error("ErrorHandler: Infinite loop detected and prevented", {
+      context,
+      attemptCount,
+      timestamp: new Date().toISOString(),
+      action: "Circuit breaker activated",
+    });
+  }
+
+  // Log token cleanup
+  public logTokenCleanup(reason: string, additionalInfo?: any): void {
+    console.log("ErrorHandler: Tokens cleared", {
+      reason,
+      timestamp: new Date().toISOString(),
+      ...additionalInfo,
+    });
+  }
+
+  // Log error for debugging (enhanced version)
   public logError(error: AxiosError, context?: string): void {
+    // Use enhanced auth error logging for 401 errors
+    if (error.response?.status === 401) {
+      this.logAuthError(error, context);
+      return;
+    }
+
+    // Use standard logging for other errors
     const apiError = this.processError(error);
     console.error(`API Error${context ? ` (${context})` : ""}:`, {
       message: apiError.message,
@@ -151,6 +339,7 @@ class ErrorHandler {
       url: error.config?.url,
       method: error.config?.method,
       details: apiError.details,
+      timestamp: new Date().toISOString(),
     });
   }
 }

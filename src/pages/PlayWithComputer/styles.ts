@@ -76,11 +76,11 @@ export const GameControls = styled.div`
   justify-content: center;
 `;
 
-export const SettingsButton = styled.button<{ kidsMode?: boolean }>`
+export const SettingsButton = styled.button<{ $kidsMode?: boolean }>`
   padding: 10px 20px;
   border-radius: 25px;
   border: none;
-  background: ${(props) => (props.kidsMode ? "#FF6B6B" : "#4CAF50")};
+  background: ${(props) => (props.$kidsMode ? "#FF6B6B" : "#4CAF50")};
   color: white;
   cursor: pointer;
   font-size: 16px;

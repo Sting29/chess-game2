@@ -11,10 +11,7 @@ import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  getDifficultyLevelsArray,
-  DIFFICULTY_LEVELS,
-} from "src/data/play-with-computer";
+import { getDifficultyLevelsArray } from "src/data/play-with-computer";
 
 const visibleCountMap = {
   mobile: 1,
@@ -26,9 +23,7 @@ const visibleCountMap = {
 
 // Get difficulty levels from centralized configuration
 const PLAY_WITH_COMPUTER = getDifficultyLevelsArray();
-console.log("PLAY_WITH_COMPUTER", PLAY_WITH_COMPUTER);
 
-console.log("DIFFICULTY_LEVELS", DIFFICULTY_LEVELS);
 function PlayWithComputerSelectLevel() {
   const { t } = useTranslation();
   const previousPage = "/play";

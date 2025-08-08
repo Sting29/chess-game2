@@ -120,7 +120,7 @@ function PlayWithComputer() {
 
             <GameControls>
               <SettingsButton
-                kidsMode={difficultyConfig.engineSettings.kidsMode}
+                $kidsMode={difficultyConfig.engineSettings.kidsMode}
                 onClick={() => setIsSettingsOpen(true)}
               >
                 ⚙️
