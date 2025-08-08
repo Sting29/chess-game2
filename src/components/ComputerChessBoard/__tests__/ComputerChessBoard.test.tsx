@@ -5,7 +5,7 @@ import { ComputerChessBoard } from "../ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
-} from "src/data/play-with-computer";
+} from "src/types/computerGameTypes";
 
 // Mock the StockfishEngine
 jest.mock("src/utils/StockfishEngine", () => {

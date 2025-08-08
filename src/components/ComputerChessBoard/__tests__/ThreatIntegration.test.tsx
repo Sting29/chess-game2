@@ -4,7 +4,7 @@ import { ComputerChessBoard } from "../ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
-} from "src/data/play-with-computer";
+} from "src/types/computerGameTypes";
 
 // Mock the StockfishEngine
 jest.mock("src/utils/StockfishEngine", () => ({
@@ -47,12 +47,14 @@ describe("ComputerChessBoard Threat Integration", () => {
     showMoveHints: true,
     showThreatHighlight: true,
     showLastMoveArrow: true,
+    enableSoundEffects: true,
   };
 
   const adultUISettings: GameUISettings = {
     showMoveHints: false,
     showThreatHighlight: false,
     showLastMoveArrow: true,
+    enableSoundEffects: false,
   };
 
   beforeEach(() => {

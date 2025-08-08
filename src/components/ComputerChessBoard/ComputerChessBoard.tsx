@@ -12,7 +12,7 @@ import { PromotionPiece } from "src/types/types";
 import {
   GameEngineSettings,
   GameUISettings,
-} from "src/data/play-with-computer";
+} from "src/types/computerGameTypes";
 import { ThreatInfo } from "src/types/types";
 
 interface ComputerChessBoardProps {

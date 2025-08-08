@@ -4,7 +4,7 @@ import { ComputerChessBoard } from "./ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
-} from "src/data/play-with-computer";
+} from "src/types/computerGameTypes";
 import {
   TestContainer,
   TestTitle,

@@ -18,10 +18,8 @@ import {
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
-import {
-  getDifficultySettings,
-  DifficultyLevel,
-} from "src/data/play-with-computer";
+import { DifficultyLevel, DifficultyId } from "src/types/computerGameTypes";
+import { getDifficultySettings } from "src/data/play-with-computer";
 import GameSettingsModal from "src/components/GameSettingsModal";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { Description } from "src/components/Description/Description";
@@ -42,7 +40,7 @@ function PlayWithComputer() {
   });
   const { t } = useTranslation();
   const { level } = useParams<{
-    level: "easy" | "medium" | "hard" | "master";
+    level: DifficultyId;
   }>();
 
   const previousPage = "/play/computer";
