@@ -21,7 +21,7 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import {
   getDifficultySettings,
   DifficultyLevel,
-} from "src/config/gameSettings";
+} from "src/data/play-with-computer";
 import GameSettingsModal from "src/components/GameSettingsModal";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { Description } from "src/components/Description/Description";
@@ -41,7 +41,9 @@ function PlayWithComputer() {
     kidsMode: false,
   });
   const { t } = useTranslation();
-  const { level } = useParams<{ level: "easy" | "medium" | "hard" }>();
+  const { level } = useParams<{
+    level: "easy" | "medium" | "hard" | "master";
+  }>();
 
   const previousPage = "/play/computer";
 
@@ -104,6 +106,11 @@ function PlayWithComputer() {
     }
   }, [showSideContent, difficultyConfig.engineSettings.kidsMode]);
 
+  // Get the appropriate teacher avatar from difficulty configuration
+  const getTeacherAvatar = () => {
+    return difficultyConfig.avatar;
+  };
+
   return (
     <PageContainer>
       <ContentContainer>
@@ -149,7 +156,7 @@ function PlayWithComputer() {
               onThreatsChange={handleThreatsChange}
               showHints={threatInfo.showHints}
             />
-            <TeacherAvatar />
+            <TeacherAvatar avatarSrc={getTeacherAvatar()} />
           </ChessBoardWrapper>
 
           {/* Game Settings Modal - выключаю из отображения времмено эта информация ненужна */}

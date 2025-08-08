@@ -69,7 +69,6 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
         width={width}
         height={height}
         className={className}
-        role="img"
         aria-label={t("user_avatar", { name: user?.name || t("player") })}
       >
         <AvatarImage

@@ -1,8 +1,10 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { ComputerChessBoard } from "../ComputerChessBoard";
-import { GameEngineSettings, GameUISettings } from "src/config/gameSettings";
-import { ThreatInfo } from "src/types/types";
+import {
+  GameEngineSettings,
+  GameUISettings,
+} from "src/data/play-with-computer";
 
 // Mock the StockfishEngine
 jest.mock("src/utils/StockfishEngine", () => ({

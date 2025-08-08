@@ -4,7 +4,7 @@ import {
   DifficultyLevel,
   SETTING_DESCRIPTIONS,
   GameEngineSettings,
-} from "src/config/gameSettings";
+} from "src/data/play-with-computer";
 import {
   SettingsModal,
   SettingsContent,

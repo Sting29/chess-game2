@@ -5,10 +5,10 @@ import { ComputerChessBoard } from "../ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
-} from "../../../config/gameSettings";
+} from "src/data/play-with-computer";
 
 // Mock the StockfishEngine
-jest.mock("../../../utils/StockfishEngine", () => {
+jest.mock("src/utils/StockfishEngine", () => {
   return {
     StockfishEngine: jest.fn().mockImplementation(() => ({
       init: jest.fn().mockResolvedValue(undefined),

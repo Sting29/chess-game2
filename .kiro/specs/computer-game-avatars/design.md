@@ -62,7 +62,7 @@ interface TeacherAvatarProps {
 **Functionality**:
 
 - Displays static teacher avatar image
-- Uses `teacher_v2.png` from assets (most recent teacher avatar)
+- Uses `teacher_adult.png` from assets (most recent teacher avatar)
 - Supports responsive sizing
 - Consistent styling with UserAvatar
 
@@ -169,8 +169,7 @@ export const getDefaultAvatarSelection = (): AvatarSelection => {
 
 ### Teacher Avatar Error Scenarios
 
-1. **Missing Teacher Image**: Fall back to alternative teacher avatar (`teacher_1.png`)
-2. **Image Load Failure**: Display text-based placeholder
+1. **Image Load Failure**: Display text-based placeholder (emoji)
 
 ### Implementation Strategy
 

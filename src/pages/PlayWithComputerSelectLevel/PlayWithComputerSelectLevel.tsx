@@ -11,10 +11,10 @@ import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
-import ChessPawn from "src/assets/images/slides/slide_pawn.png";
-import ChessKnight from "src/assets/images/slides/slide_knight.png";
-import ChessQueen from "src/assets/images/slides/slide_queen.png";
-import ChessKing from "src/assets/images/slides/slide_king.png";
+import {
+  getDifficultyLevelsArray,
+  DIFFICULTY_LEVELS,
+} from "src/data/play-with-computer";
 
 const visibleCountMap = {
   mobile: 1,
@@ -24,33 +24,11 @@ const visibleCountMap = {
   fullHD: 3,
 };
 
-const PLAY_WITH_COMPUTER = [
-  {
-    id: `easy`,
-    titleKey: "easy",
-    image: ChessPawn,
-    widgetSize: "large",
-  },
-  {
-    id: `medium`,
-    titleKey: "medium",
-    image: ChessKnight,
-    widgetSize: "large",
-  },
-  {
-    id: `hard`,
-    titleKey: "hard",
-    image: ChessQueen,
-    widgetSize: "large",
-  },
-  {
-    id: `master`,
-    titleKey: "master",
-    image: ChessKing,
-    widgetSize: "large",
-  },
-];
+// Get difficulty levels from centralized configuration
+const PLAY_WITH_COMPUTER = getDifficultyLevelsArray();
+console.log("PLAY_WITH_COMPUTER", PLAY_WITH_COMPUTER);
 
+console.log("DIFFICULTY_LEVELS", DIFFICULTY_LEVELS);
 function PlayWithComputerSelectLevel() {
   const { t } = useTranslation();
   const previousPage = "/play";
