@@ -6,16 +6,33 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "../../../i18n";
 import UserAvatar from "../UserAvatar";
 import settingsReducer from "../../../store/settingsSlice";
-import { User, Gender, Avatar } from "../../../services/types";
+import { User } from "../../../services/types";
+
+// Mock axios to prevent import issues
+jest.mock("axios", () => ({
+  __esModule: true,
+  default: {
+    create: jest.fn(() => ({
+      get: jest.fn(),
+      post: jest.fn(),
+      put: jest.fn(),
+      delete: jest.fn(),
+      interceptors: {
+        request: { use: jest.fn() },
+        response: { use: jest.fn() },
+      },
+    })),
+  },
+}));
 
 // Mock avatar utils
 jest.mock("../../../utils/avatarUtils", () => ({
   getAvatarBySelection: jest.fn(
-    (gender: Gender, avatar: Avatar) => `/mock-avatar-${gender}-${avatar}.png`
+    (gender: string, avatar: string) => `/mock-avatar-${gender}-${avatar}.png`
   ),
   getDefaultAvatarSelection: jest.fn(() => ({
-    gender: "male" as Gender,
-    avatar: "avatar1" as Avatar,
+    gender: "male",
+    avatar: "avatar1",
   })),
 }));
 
@@ -53,9 +70,9 @@ describe("UserAvatar", () => {
   it("renders with default avatar when no user data", () => {
     renderWithProviders(<UserAvatar />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
-    expect(avatar).toHaveAttribute("aria-label", "User avatar");
+    const avatarContainer = screen.getByLabelText("User avatar");
+    expect(avatarContainer).toBeInTheDocument();
+    expect(avatarContainer).toHaveAttribute("aria-label", "User avatar");
   });
 
   it("renders with user avatar when user data is available", () => {
@@ -85,18 +102,18 @@ describe("UserAvatar", () => {
     );
   });
 
-  it("handles custom size prop", () => {
-    renderWithProviders(<UserAvatar size={100} />);
+  it("handles custom width and height props", () => {
+    renderWithProviders(<UserAvatar width={100} height={120} />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
+    const avatarContainer = screen.getByLabelText("User avatar");
+    expect(avatarContainer).toBeInTheDocument();
   });
 
   it("handles custom className prop", () => {
     renderWithProviders(<UserAvatar className="custom-class" />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toHaveClass("custom-class");
+    const avatarContainer = screen.getByLabelText("User avatar");
+    expect(avatarContainer).toHaveClass("custom-class");
   });
 
   it("handles image loading error with fallback", () => {
@@ -131,8 +148,8 @@ describe("UserAvatar", () => {
 
     renderWithProviders(<UserAvatar />, mockUser);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toHaveAttribute("aria-label", "User avatar");
+    const avatarContainer = screen.getByLabelText("User avatar");
+    expect(avatarContainer).toHaveAttribute("aria-label", "User avatar");
   });
 
   it("falls back to default when user profile is incomplete", () => {

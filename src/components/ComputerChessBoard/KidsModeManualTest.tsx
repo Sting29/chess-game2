@@ -1,10 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { ComputerChessBoard } from "../ComputerChessBoard";
+import { ComputerChessBoard } from "./ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
-} from "../../../config/gameSettings";
+} from "src/types/computerGameTypes";
 import {
   TestContainer,
   TestTitle,

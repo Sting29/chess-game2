@@ -6,10 +6,9 @@ import TeacherAvatar from "../TeacherAvatar";
 
 // Mock the avatar images
 jest.mock(
-  "../../../assets/avatars/teacher_v2.png",
-  () => "/mock-teacher-v2.png"
+  "../../../assets/avatars/teacher_adult.png",
+  () => "/mock-teacher-adult.png"
 );
-jest.mock("../../../assets/avatars/teacher_1.png", () => "/mock-teacher-1.png");
 
 const renderWithProviders = (component: React.ReactElement) => {
   return render(<I18nextProvider i18n={i18n}>{component}</I18nextProvider>);
@@ -19,97 +18,77 @@ describe("TeacherAvatar", () => {
   it("renders with default teacher avatar", () => {
     renderWithProviders(<TeacherAvatar />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
-    expect(avatar).toHaveAttribute("aria-label", "Teacher avatar");
+    const avatarContainer = screen.getByLabelText("Teacher avatar");
+    expect(avatarContainer).toBeInTheDocument();
+    expect(avatarContainer).toHaveAttribute("aria-label", "Teacher avatar");
 
     const avatarImage = screen.getByAltText("Teacher avatar");
-    expect(avatarImage).toHaveAttribute("src", "/mock-teacher-v2.png");
+    expect(avatarImage).toHaveAttribute("src", "/mock-teacher-adult.png");
   });
 
-  it("handles custom size prop", () => {
-    renderWithProviders(<TeacherAvatar size={100} />);
+  it("handles custom width and height props", () => {
+    renderWithProviders(<TeacherAvatar width={100} height={120} />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
+    const avatarImage = screen.getByAltText("Teacher avatar");
+    expect(avatarImage).toBeInTheDocument();
   });
 
   it("handles custom className prop", () => {
     renderWithProviders(<TeacherAvatar className="custom-teacher-class" />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toHaveClass("custom-teacher-class");
+    const avatarContainer = screen.getByLabelText("Teacher avatar");
+    expect(avatarContainer).toHaveClass("custom-teacher-class");
   });
 
-  it("falls back to teacher_1.png when teacher_v2.png fails to load", () => {
-    renderWithProviders(<TeacherAvatar />);
+  it("shows emoji placeholder when image fails to load", () => {
+    renderWithProviders(<TeacherAvatar width={80} height={100} />);
 
     const avatarImage = screen.getByAltText("Teacher avatar");
-    expect(avatarImage).toHaveAttribute("src", "/mock-teacher-v2.png");
-
-    // Mock the error event to simulate teacher_v2.png failing
-    Object.defineProperty(avatarImage, "src", {
-      writable: true,
-      value: "/mock-teacher-v2.png",
-    });
 
     // Simulate image loading error
     fireEvent.error(avatarImage);
 
-    // Should still be in document (error handling should prevent crashes)
-    expect(avatarImage).toBeInTheDocument();
-  });
-
-  it("shows emoji placeholder when both images fail to load", () => {
-    renderWithProviders(<TeacherAvatar size={80} />);
-
-    const avatarImage = screen.getByAltText("Teacher avatar");
-
-    // Mock both images failing
-    Object.defineProperty(avatarImage, "src", {
-      writable: true,
-      value: "/mock-teacher-1.png",
-    });
-
-    // Simulate second image loading error
-    fireEvent.error(avatarImage);
-
-    // Should still be in document
-    expect(avatarImage).toBeInTheDocument();
+    // Container should still be in document
+    const avatarContainer = screen.getByLabelText("Teacher avatar");
+    expect(avatarContainer).toBeInTheDocument();
   });
 
   it("renders with correct accessibility attributes", () => {
     renderWithProviders(<TeacherAvatar />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toHaveAttribute("role", "img");
-    expect(avatar).toHaveAttribute("aria-label", "Teacher avatar");
+    const avatarContainer = screen.getByLabelText("Teacher avatar");
+    expect(avatarContainer).toHaveAttribute("aria-label", "Teacher avatar");
+
+    const avatarImage = screen.getByRole("img");
+    expect(avatarImage).toHaveAttribute("alt", "Teacher avatar");
   });
 
   it("maintains consistent styling with default props", () => {
     renderWithProviders(<TeacherAvatar />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
+    const avatarContainer = screen.getByLabelText("Teacher avatar");
+    expect(avatarContainer).toBeInTheDocument();
 
     const avatarImage = screen.getByAltText("Teacher avatar");
     expect(avatarImage).toBeInTheDocument();
   });
 
-  it("handles different size values correctly", () => {
-    const { rerender } = renderWithProviders(<TeacherAvatar size={50} />);
+  it("handles different width and height values correctly", () => {
+    const { rerender } = renderWithProviders(
+      <TeacherAvatar width={50} height={60} />
+    );
 
-    let avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
+    let avatarImage = screen.getByAltText("Teacher avatar");
+    expect(avatarImage).toBeInTheDocument();
 
     rerender(
       <I18nextProvider i18n={i18n}>
-        <TeacherAvatar size={120} />
+        <TeacherAvatar width={120} height={150} />
       </I18nextProvider>
     );
 
-    avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
+    avatarImage = screen.getByAltText("Teacher avatar");
+    expect(avatarImage).toBeInTheDocument();
   });
 
   it("does not crash when error boundary is triggered", () => {
@@ -120,8 +99,8 @@ describe("TeacherAvatar", () => {
 
     renderWithProviders(<TeacherAvatar />);
 
-    const avatar = screen.getByRole("img");
-    expect(avatar).toBeInTheDocument();
+    const avatarImage = screen.getByAltText("Teacher avatar");
+    expect(avatarImage).toBeInTheDocument();
 
     consoleSpy.mockRestore();
   });

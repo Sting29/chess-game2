@@ -2,9 +2,9 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import {
   DifficultyLevel,
-  SETTING_DESCRIPTIONS,
   GameEngineSettings,
-} from "src/config/gameSettings";
+} from "src/types/computerGameTypes";
+import { SETTING_DESCRIPTIONS } from "src/data/play-with-computer";
 import {
   SettingsModal,
   SettingsContent,

@@ -19,7 +19,7 @@
 - [x] 3. Create TeacherAvatar component
 
   - Create `src/components/TeacherAvatar/TeacherAvatar.tsx` component
-  - Implement static teacher avatar display using `teacher_v2.png`
+  - Implement static teacher avatar display using `teacher_adult.png`
   - Add proper TypeScript interfaces matching UserAvatar structure
   - Include error handling for missing teacher image assets
   - _Requirements: 2.1, 2.2_

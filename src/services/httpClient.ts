@@ -6,6 +6,7 @@ import axios, {
 } from "axios";
 import tokenManager from "./tokenManager";
 import errorHandler from "./errorHandler";
+import tokenRefreshManager from "./tokenRefreshManager";
 
 // API base configuration
 const API_BASE_URL = `http://167.99.40.216:3000`;
@@ -48,7 +49,7 @@ class HttpClient {
       }
     );
 
-    // Response interceptor for handling common responses and errors
+    // Response interceptor with TokenRefreshManager integration
     this.axiosInstance.interceptors.response.use(
       (response: AxiosResponse) => {
         return response;
@@ -59,37 +60,32 @@ class HttpClient {
         // Log error for debugging
         errorHandler.logError(error, originalRequest?.url);
 
-        // Handle token refresh for 401 errors
-        if (
-          errorHandler.shouldRefreshToken(error) &&
-          originalRequest &&
-          !(originalRequest as any)._retry
-        ) {
-          (originalRequest as any)._retry = true;
+        // Handle authentication errors
+        if (this.shouldAttemptRefresh(error, originalRequest)) {
+          console.log(
+            "HttpClient: 401 error detected, queuing request for refresh",
+            {
+              url: originalRequest?.url,
+              method: originalRequest?.method,
+            }
+          );
 
           try {
-            // Import authService dynamically to avoid circular dependency
-            const { default: authService } = await import("./authService");
-
-            // Try to refresh token
-            await authService.refreshToken();
-
-            // Update authorization header with new token
-            const newAuthHeader = tokenManager.getAuthHeader();
-            if (newAuthHeader) {
-              originalRequest.headers.Authorization = newAuthHeader;
-            }
-
-            // Retry the original request
-            return this.axiosInstance(originalRequest);
+            // Queue the request with TokenRefreshManager
+            return await tokenRefreshManager.queueRequest({
+              originalRequest: originalRequest!,
+              resolve: (value: any) => value,
+              reject: (error: any) => Promise.reject(error),
+            });
           } catch (refreshError) {
-            // Refresh failed, clear tokens
-            tokenManager.clearTokens();
+            console.error("HttpClient: Request failed after refresh attempt", {
+              originalUrl: originalRequest?.url,
+              error: refreshError,
+            });
 
-            // Log refresh error
-            console.error("Token refresh failed:", refreshError);
+            // Handle authentication error through AuthService
+            await this.handleAuthenticationFailure(error);
 
-            // Reject with original error
             return Promise.reject(error);
           }
         }
@@ -97,6 +93,80 @@ class HttpClient {
         return Promise.reject(error);
       }
     );
+  }
+
+  // Check if we should attempt token refresh
+  private shouldAttemptRefresh(
+    error: AxiosError,
+    originalRequest?: AxiosRequestConfig
+  ): boolean {
+    // Must be a 401 error
+    if (!errorHandler.shouldRefreshToken(error)) {
+      return false;
+    }
+
+    // Must have original request
+    if (!originalRequest) {
+      return false;
+    }
+
+    // Don't retry if already retried (prevent infinite loops)
+    if ((originalRequest as any)._retry) {
+      console.warn(
+        "HttpClient: Request already retried, not attempting refresh again",
+        {
+          url: originalRequest.url,
+        }
+      );
+      return false;
+    }
+
+    // Don't retry refresh endpoint itself
+    if (originalRequest.url?.includes("/user/refresh")) {
+      console.log("HttpClient: Not retrying refresh endpoint");
+      return false;
+    }
+
+    // Don't retry logout endpoint
+    if (originalRequest.url?.includes("/user/logout")) {
+      console.log("HttpClient: Not retrying logout endpoint");
+      return false;
+    }
+
+    // Check if TokenRefreshManager can attempt refresh
+    if (!tokenRefreshManager.canAttemptRefresh()) {
+      console.warn("HttpClient: TokenRefreshManager cannot attempt refresh", {
+        circuitBreakerActive: tokenRefreshManager.isCircuitBreakerActive(),
+        refreshInProgress: tokenRefreshManager.isRefreshInProgress(),
+      });
+      return false;
+    }
+
+    // Mark request as retried to prevent future retries
+    (originalRequest as any)._retry = true;
+
+    return true;
+  }
+
+  // Handle authentication failure
+  private async handleAuthenticationFailure(error: AxiosError): Promise<void> {
+    try {
+      // Import authService dynamically to avoid circular dependency
+      const { default: authService } = await import("./authService");
+
+      // Let AuthService handle the error
+      authService.handleAuthError(error);
+
+      console.log("HttpClient: Authentication failure handled", {
+        status: error.response?.status,
+        url: error.config?.url,
+      });
+    } catch (importError) {
+      console.error(
+        "HttpClient: Failed to handle authentication failure",
+        importError
+      );
+    }
   }
 
   // HTTP methods

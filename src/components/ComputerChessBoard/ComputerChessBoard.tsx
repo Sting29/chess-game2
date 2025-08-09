@@ -9,7 +9,10 @@ import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
 import { PromotionPiece } from "src/types/types";
-import { GameEngineSettings, GameUISettings } from "src/config/gameSettings";
+import {
+  GameEngineSettings,
+  GameUISettings,
+} from "src/types/computerGameTypes";
 import { ThreatInfo } from "src/types/types";
 
 interface ComputerChessBoardProps {

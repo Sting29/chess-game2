@@ -18,10 +18,8 @@ import {
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
-import {
-  getDifficultySettings,
-  DifficultyLevel,
-} from "src/config/gameSettings";
+import { DifficultyLevel, DifficultyId } from "src/types/computerGameTypes";
+import { getDifficultySettings } from "src/data/play-with-computer";
 import GameSettingsModal from "src/components/GameSettingsModal";
 import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { Description } from "src/components/Description/Description";
@@ -41,7 +39,9 @@ function PlayWithComputer() {
     kidsMode: false,
   });
   const { t } = useTranslation();
-  const { level } = useParams<{ level: "easy" | "medium" | "hard" }>();
+  const { level } = useParams<{
+    level: DifficultyId;
+  }>();
 
   const previousPage = "/play/computer";
 
@@ -104,6 +104,11 @@ function PlayWithComputer() {
     }
   }, [showSideContent, difficultyConfig.engineSettings.kidsMode]);
 
+  // Get the appropriate teacher avatar from difficulty configuration
+  const getTeacherAvatar = () => {
+    return difficultyConfig.avatar;
+  };
+
   return (
     <PageContainer>
       <ContentContainer>
@@ -115,7 +120,7 @@ function PlayWithComputer() {
 
             <GameControls>
               <SettingsButton
-                kidsMode={difficultyConfig.engineSettings.kidsMode}
+                $kidsMode={difficultyConfig.engineSettings.kidsMode}
                 onClick={() => setIsSettingsOpen(true)}
               >
                 ⚙️
@@ -149,7 +154,7 @@ function PlayWithComputer() {
               onThreatsChange={handleThreatsChange}
               showHints={threatInfo.showHints}
             />
-            <TeacherAvatar />
+            <TeacherAvatar avatarSrc={getTeacherAvatar()} />
           </ChessBoardWrapper>
 
           {/* Game Settings Modal - выключаю из отображения времмено эта информация ненужна */}

@@ -1,39 +1,25 @@
-// Game settings configuration for computer play
-
-export interface GameEngineSettings {
-  skill: number; // Stockfish skill level (0-20): 0 = weakest, 20 = strongest
-  depth: number; // Search depth (1-20): number of half-moves to analyze
-  time: number; // Time per move in milliseconds
-  MultiPV: number; // Number of best moves to analyze
-  threads: number; // Number of threads for calculation
-  kidsMode: boolean; // Kids mode with simplified logic and hints
-}
-
-export interface GameUISettings {
-  showLastMoveArrow: boolean; // Show last move arrow
-  showThreatHighlight: boolean; // Highlight threatened pieces (in kids mode)
-  showMoveHints: boolean; // Show possible move hints
-  enableSoundEffects: boolean; // Enable sound effects
-}
-
-export interface DifficultyLevel {
-  id: "easy" | "medium" | "hard" | "master";
-  titleKey: string;
-  description: string;
-  ageGroupKey: string; // Translation key for age group
-  featuresKey: string; // Translation key for features description
-  engineSettings: GameEngineSettings;
-  uiSettings: GameUISettings;
-}
+// Difficulty levels configuration for computer play
+import ChessPawn from "src/assets/images/slides/slide_pawn.png";
+import ChessKnight from "src/assets/images/slides/slide_knight.png";
+import ChessQueen from "src/assets/images/slides/slide_queen.png";
+import ChessKing from "src/assets/images/slides/slide_king.png";
+import TeacherBaby from "src/assets/avatars/teacher_baby.png";
+import TeacherChild from "src/assets/avatars/teacher_child.png";
+import TeacherTeenager from "src/assets/avatars/teacher_teenager.png";
+import TeacherAdult from "src/assets/avatars/teacher_adult.png";
+import { DifficultyLevel, DifficultyId } from "src/types/computerGameTypes";
 
 // Settings for different difficulty levels
 export const DIFFICULTY_LEVELS: Record<string, DifficultyLevel> = {
   easy: {
-    id: "easy",
+    id: DifficultyId.EASY,
     titleKey: "easy",
     description: "Kids mode for the youngest players",
     ageGroupKey: "easy_age_group",
     featuresKey: "easy_features",
+    image: ChessPawn,
+    widgetSize: "large",
+    avatar: TeacherBaby,
     engineSettings: {
       skill: 0, // Minimum level
       depth: 1, // Minimum depth
@@ -51,11 +37,14 @@ export const DIFFICULTY_LEVELS: Record<string, DifficultyLevel> = {
   },
 
   medium: {
-    id: "medium",
+    id: DifficultyId.MEDIUM,
     titleKey: "medium",
     description: "Mode for older kids without hints",
     ageGroupKey: "medium_age_group",
     featuresKey: "medium_features",
+    image: ChessKnight,
+    widgetSize: "large",
+    avatar: TeacherChild,
     engineSettings: {
       skill: 1, // Very low level
       depth: 1, // Minimum depth
@@ -73,11 +62,14 @@ export const DIFFICULTY_LEVELS: Record<string, DifficultyLevel> = {
   },
 
   hard: {
-    id: "hard",
+    id: DifficultyId.HARD,
     titleKey: "hard",
     description: "Challenging mode for experienced players",
     ageGroupKey: "hard_age_group",
     featuresKey: "hard_features",
+    image: ChessQueen,
+    widgetSize: "large",
+    avatar: TeacherTeenager,
     engineSettings: {
       skill: 5, // Medium-low level
       depth: 5, // Moderate depth
@@ -94,11 +86,14 @@ export const DIFFICULTY_LEVELS: Record<string, DifficultyLevel> = {
     },
   },
   master: {
-    id: "master",
+    id: DifficultyId.MASTER,
     titleKey: "master",
     description: "Challenging mode for experienced players",
     ageGroupKey: "master_age_group",
     featuresKey: "master_features",
+    image: ChessKing,
+    widgetSize: "large",
+    avatar: TeacherAdult,
     engineSettings: {
       skill: 10, // Medium-low level
       depth: 10, // Moderate depth
@@ -127,6 +122,11 @@ export const getDifficultySettings = (
     return DIFFICULTY_LEVELS[level];
   }
   return DEFAULT_DIFFICULTY;
+};
+
+// Function to get all difficulty levels as an array (for UI components)
+export const getDifficultyLevelsArray = (): DifficultyLevel[] => {
+  return Object.values(DIFFICULTY_LEVELS);
 };
 
 // Parameter descriptions for UI settings - using translation keys

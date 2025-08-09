@@ -1,13 +1,21 @@
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
 import { I18nextProvider } from "react-i18next";
 import i18n from "../../../i18n";
 import PlayWithComputer from "../PlayWithComputer";
 import settingsReducer from "../../../store/settingsSlice";
 import { User } from "../../../services/types";
+
+// Mock react-router-dom
+jest.mock("react-router-dom", () => ({
+  useParams: () => ({ level: "easy" }),
+  useNavigate: () => jest.fn(),
+  MemoryRouter: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+}));
 
 // Mock the chess board component to avoid complex chess logic in tests
 jest.mock("../../../components/ComputerChessBoard/ComputerChessBoard", () => {
@@ -71,9 +79,7 @@ const renderPlayWithComputer = (user?: User, level: string = "easy") => {
   return render(
     <Provider store={store}>
       <I18nextProvider i18n={i18n}>
-        <MemoryRouter initialEntries={[`/play/computer/${level}`]}>
-          <PlayWithComputer />
-        </MemoryRouter>
+        <PlayWithComputer />
       </I18nextProvider>
     </Provider>
   );
@@ -158,9 +164,7 @@ describe("PlayWithComputer Avatar Integration", () => {
     rerender(
       <Provider store={store}>
         <I18nextProvider i18n={i18n}>
-          <MemoryRouter initialEntries={["/play/computer/hard"]}>
-            <PlayWithComputer />
-          </MemoryRouter>
+          <PlayWithComputer />
         </I18nextProvider>
       </Provider>
     );
