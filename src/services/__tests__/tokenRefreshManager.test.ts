@@ -4,13 +4,20 @@ import tokenManager from "../tokenManager";
 // Mock dependencies
 jest.mock("../tokenManager");
 jest.mock("../httpClient", () => ({
+  __esModule: true,
   default: {
     post: jest.fn(),
-    getInstance: jest.fn(() => jest.fn()),
+    get: jest.fn(),
+    patch: jest.fn(),
+    delete: jest.fn(),
+    getInstance: jest.fn(),
   },
 }));
 
+import httpClient from "../httpClient";
+
 const mockTokenManager = tokenManager as jest.Mocked<typeof tokenManager>;
+const mockHttpClient = httpClient as jest.Mocked<typeof httpClient>;
 
 describe("TokenRefreshManager", () => {
   beforeEach(() => {
@@ -24,13 +31,35 @@ describe("TokenRefreshManager", () => {
     mockTokenManager.hasRefreshToken.mockReturnValue(true);
     mockTokenManager.getRefreshToken.mockReturnValue("mock-refresh-token");
     mockTokenManager.getAuthHeader.mockReturnValue("Bearer mock-access-token");
+    mockTokenManager.setTokens.mockImplementation(() => {});
+    mockTokenManager.clearTokens.mockImplementation(() => {});
+
+    // Setup default HTTP client mocks
+    mockHttpClient.post.mockResolvedValue({
+      access_token: "new-access-token",
+      refresh_token: "new-refresh-token",
+      expires_in: 3600,
+      session_id: "session-123",
+    });
+
+    // Mock getInstance to return a mock axios instance function
+    const mockAxiosInstance = jest.fn().mockResolvedValue({ data: "success" });
+    mockHttpClient.getInstance.mockReturnValue(mockAxiosInstance as any);
+  });
+
+  afterEach(() => {
+    // Clean up any remaining timers or async operations
+    jest.clearAllTimers();
+    jest.useRealTimers();
+
+    // Clear refresh state to prevent test interference
+    tokenRefreshManager.clearRefreshState();
   });
 
   describe("refreshToken", () => {
     it("should successfully refresh token", async () => {
       // Mock successful HTTP response
-      const mockHttpClient = await import("../httpClient");
-      (mockHttpClient.default.post as jest.Mock).mockResolvedValue({
+      mockHttpClient.post.mockResolvedValue({
         access_token: "new-access-token",
         refresh_token: "new-refresh-token",
         expires_in: 3600,
@@ -58,10 +87,7 @@ describe("TokenRefreshManager", () => {
     });
 
     it("should fail when HTTP request fails", async () => {
-      const mockHttpClient = await import("../httpClient");
-      (mockHttpClient.default.post as jest.Mock).mockRejectedValue(
-        new Error("Network error")
-      );
+      mockHttpClient.post.mockRejectedValue(new Error("Network error"));
 
       const result = await tokenRefreshManager.refreshToken();
 
@@ -70,14 +96,26 @@ describe("TokenRefreshManager", () => {
     });
 
     it("should not attempt refresh when already in progress", async () => {
-      // Start first refresh
-      const mockHttpClient = await import("../httpClient");
-      (mockHttpClient.default.post as jest.Mock).mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 100))
+      let resolveFirstRefresh: (value: any) => void = () => {};
+
+      // Start first refresh with a promise that we control
+      mockHttpClient.post.mockImplementation(
+        () =>
+          new Promise((resolve) => {
+            resolveFirstRefresh = resolve;
+          })
       );
 
       const firstRefresh = tokenRefreshManager.refreshToken();
       const secondRefresh = tokenRefreshManager.refreshToken();
+
+      // Resolve the first refresh
+      resolveFirstRefresh({
+        access_token: "new-access-token",
+        refresh_token: "new-refresh-token",
+        expires_in: 3600,
+        session_id: "session-123",
+      });
 
       const [firstResult, secondResult] = await Promise.all([
         firstRefresh,
@@ -109,7 +147,11 @@ describe("TokenRefreshManager", () => {
       expect(tokenRefreshManager.canAttemptRefresh()).toBe(false);
     });
 
-    it("should return true after cooldown period", async () => {
+    it("should return true after cooldown period", () => {
+      // Mock Date.now to return a valid timestamp
+      const mockNow = 1640995200000; // Fixed timestamp: 2022-01-01 00:00:00
+      const dateNowSpy = jest.spyOn(Date, "now").mockReturnValue(mockNow);
+
       // Simulate max failures
       for (let i = 0; i < 3; i++) {
         tokenRefreshManager.recordFailure();
@@ -118,18 +160,19 @@ describe("TokenRefreshManager", () => {
       expect(tokenRefreshManager.canAttemptRefresh()).toBe(false);
 
       // Mock time passage (cooldown period is 30 seconds)
-      jest.spyOn(Date, "now").mockReturnValue(Date.now() + 31000);
+      dateNowSpy.mockReturnValue(mockNow + 31000);
 
       expect(tokenRefreshManager.canAttemptRefresh()).toBe(true);
+
+      // Restore the spy
+      dateNowSpy.mockRestore();
     });
   });
 
   describe("queueRequest", () => {
     it("should queue request and process after successful refresh", async () => {
-      const mockHttpClient = await import("../httpClient");
-
       // Mock successful refresh
-      (mockHttpClient.default.post as jest.Mock).mockResolvedValue({
+      mockHttpClient.post.mockResolvedValue({
         access_token: "new-access-token",
         refresh_token: "new-refresh-token",
         expires_in: 3600,
@@ -140,9 +183,7 @@ describe("TokenRefreshManager", () => {
       const mockAxiosInstance = jest
         .fn()
         .mockResolvedValue({ data: "success" });
-      (mockHttpClient.default.getInstance as jest.Mock).mockReturnValue(
-        mockAxiosInstance
-      );
+      mockHttpClient.getInstance.mockReturnValue(mockAxiosInstance as any);
 
       const mockRequest = {
         originalRequest: { url: "/api/test", method: "GET", headers: {} },
@@ -150,19 +191,19 @@ describe("TokenRefreshManager", () => {
         reject: jest.fn(),
       };
 
-      await tokenRefreshManager.queueRequest(mockRequest);
+      // Use Promise.resolve to handle the async nature properly
+      const queuePromise = tokenRefreshManager.queueRequest(mockRequest);
+
+      // Wait for the promise to resolve
+      await queuePromise;
 
       expect(mockRequest.resolve).toHaveBeenCalledWith({ data: "success" });
       expect(mockRequest.reject).not.toHaveBeenCalled();
     });
 
     it("should reject queued requests when refresh fails", async () => {
-      const mockHttpClient = await import("../httpClient");
-
       // Mock failed refresh
-      (mockHttpClient.default.post as jest.Mock).mockRejectedValue(
-        new Error("Refresh failed")
-      );
+      mockHttpClient.post.mockRejectedValue(new Error("Refresh failed"));
 
       const mockRequest = {
         originalRequest: { url: "/api/test", method: "GET", headers: {} },
@@ -170,7 +211,11 @@ describe("TokenRefreshManager", () => {
         reject: jest.fn(),
       };
 
-      await tokenRefreshManager.queueRequest(mockRequest);
+      // Use Promise.resolve to handle the async nature properly
+      const queuePromise = tokenRefreshManager.queueRequest(mockRequest);
+
+      // Wait for the promise to resolve
+      await queuePromise;
 
       expect(mockRequest.reject).toHaveBeenCalledWith(
         new Error("Token refresh failed")
@@ -202,15 +247,26 @@ describe("TokenRefreshManager", () => {
     it("should activate circuit breaker after max failures", () => {
       expect(tokenRefreshManager.isCircuitBreakerActive()).toBe(false);
 
+      // Mock Date.now to return a valid timestamp
+      const mockNow = 1640995200000; // Fixed timestamp: 2022-01-01 00:00:00
+      const dateNowSpy = jest.spyOn(Date, "now").mockReturnValue(mockNow);
+
       // Record max failures
       for (let i = 0; i < 3; i++) {
         tokenRefreshManager.recordFailure();
       }
 
       expect(tokenRefreshManager.isCircuitBreakerActive()).toBe(true);
+
+      // Restore the spy
+      dateNowSpy.mockRestore();
     });
 
     it("should deactivate circuit breaker after cooldown", () => {
+      // Mock Date.now to return a valid timestamp
+      const mockNow = 1640995200000; // Fixed timestamp: 2022-01-01 00:00:00
+      const dateNowSpy = jest.spyOn(Date, "now").mockReturnValue(mockNow);
+
       // Record max failures
       for (let i = 0; i < 3; i++) {
         tokenRefreshManager.recordFailure();
@@ -218,10 +274,13 @@ describe("TokenRefreshManager", () => {
 
       expect(tokenRefreshManager.isCircuitBreakerActive()).toBe(true);
 
-      // Mock time passage
-      jest.spyOn(Date, "now").mockReturnValue(Date.now() + 31000);
+      // Mock time passage (31 seconds later)
+      dateNowSpy.mockReturnValue(mockNow + 31000);
 
       expect(tokenRefreshManager.isCircuitBreakerActive()).toBe(false);
+
+      // Restore the spy
+      dateNowSpy.mockRestore();
     });
   });
 
@@ -229,13 +288,25 @@ describe("TokenRefreshManager", () => {
     it("should track refresh in progress state", async () => {
       expect(tokenRefreshManager.isRefreshInProgress()).toBe(false);
 
-      const mockHttpClient = await import("../httpClient");
-      (mockHttpClient.default.post as jest.Mock).mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 100))
+      let resolveRefresh: (value: any) => void = () => {};
+
+      mockHttpClient.post.mockImplementation(
+        () =>
+          new Promise((resolve) => {
+            resolveRefresh = resolve;
+          })
       );
 
       const refreshPromise = tokenRefreshManager.refreshToken();
       expect(tokenRefreshManager.isRefreshInProgress()).toBe(true);
+
+      // Resolve the refresh
+      resolveRefresh({
+        access_token: "new-access-token",
+        refresh_token: "new-refresh-token",
+        expires_in: 3600,
+        session_id: "session-123",
+      });
 
       await refreshPromise;
       expect(tokenRefreshManager.isRefreshInProgress()).toBe(false);
