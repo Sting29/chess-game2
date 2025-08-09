@@ -7,14 +7,17 @@ import {
 } from "./styles";
 import { useTranslation } from "react-i18next";
 
+export type Direction = "horizontal" | "vertical";
 interface TutorialSliderProps {
   children: React.ReactNode[];
   visibleCount: number;
+  direction?: Direction;
 }
 
 const TutorialSlider: React.FC<TutorialSliderProps> = ({
   children,
   visibleCount,
+  direction = "horizontal",
 }) => {
   const { t } = useTranslation();
   const [startIndex, setStartIndex] = useState(0);
@@ -53,7 +56,7 @@ const TutorialSlider: React.FC<TutorialSliderProps> = ({
           aria-label={t("previous")}
         />
       )}
-      <SlidesContainer>
+      <SlidesContainer direction={direction}>
         {children.slice(startIndex, startIndex + visibleCount)}
       </SlidesContainer>
       {needsScrolling && (

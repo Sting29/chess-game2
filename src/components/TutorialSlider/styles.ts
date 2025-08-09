@@ -1,5 +1,6 @@
 import styled, { css } from "styled-components";
 import buttonSlide from "src/assets/elements/button_slide.png";
+import { Direction } from "./TutorialSlider";
 
 export const SliderWrapper = styled.div`
   display: flex;
@@ -44,9 +45,19 @@ export const ArrowButtonRight = styled.button`
   height: 120px;
 `;
 
-export const SlidesContainer = styled.div`
+interface SlidesContainerProps {
+  direction: Direction;
+}
+
+export const SlidesContainer = styled.div<SlidesContainerProps>`
   display: flex;
   gap: 1rem;
   flex: 1;
   justify-content: center;
+  flex-direction: ${(props: SlidesContainerProps) =>
+    props.direction === "vertical" ? "column" : "row"};
+  min-height: ${(props: SlidesContainerProps) =>
+    props.direction === "vertical" ? "540px" : "auto"};
+  overflow-y: ${(props: SlidesContainerProps) =>
+    props.direction === "vertical" ? "auto" : "hidden"};
 `;

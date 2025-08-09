@@ -14,9 +14,9 @@ import { useTranslation } from "react-i18next";
 import { getDifficultyLevelsArray } from "src/data/play-with-computer";
 
 const visibleCountMap = {
-  mobile: 1,
-  tablet: 2,
-  laptop: 2,
+  mobile: 5,
+  tablet: 3,
+  laptop: 3,
   desktop: 3,
   fullHD: 3,
 };
