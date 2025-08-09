@@ -253,5 +253,8 @@
   "game_error": "حدث خطأ في اللعبة",
   "user_avatar": "صورة المستخدم الرمزية",
   "teacher_avatar": "صورة المعلم الرمزية",
-  "player": "لاعب"
+  "player": "لاعب",
+
+  "puzzles_maze_title": "المخطط",
+  "puzzles_maze_desc": "ابحث عن المخرج"
 }

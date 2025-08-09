@@ -255,5 +255,8 @@
   "game_error": "Произошла ошибка игры",
   "user_avatar": "Аватар пользователя",
   "teacher_avatar": "Аватар учителя",
-  "player": "Игрок"
+  "player": "Игрок",
+
+  "puzzles_maze_title": "Лабиринт",
+  "puzzles_maze_desc": "Найдите выход из лабиринта"
 }

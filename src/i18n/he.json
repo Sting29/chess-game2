@@ -255,5 +255,8 @@
   "game_error": "אירעה שגיאת משחק",
   "user_avatar": "אווטאר משתמש",
   "teacher_avatar": "אווטאר מורה",
-  "player": "שחקן"
+  "player": "שחקן",
+
+  "puzzles_maze_title": "מעבר",
+  "puzzles_maze_desc": "מצאו את היציאה מהמעבר"
 }

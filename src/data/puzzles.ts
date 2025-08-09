@@ -2,6 +2,7 @@ import { PuzzleCategory } from "../types/types";
 import Compass from "src/assets/images/compass.png";
 import Darts from "src/assets/images/darts.png";
 import Fire from "src/assets/images/fire.png";
+import Labyrinth from "src/assets/images/labyrinth.png";
 
 export const CHESS_PUZZLES: PuzzleCategory[] = [
   {
@@ -199,5 +200,12 @@ export const CHESS_PUZZLES: PuzzleCategory[] = [
         playerColor: "b",
       },
     ],
+  },
+  {
+    id: "maze",
+    titleKey: "puzzles_maze_title",
+    image: Labyrinth,
+    descriptionKey: "puzzles_maze_desc",
+    puzzles: [],
   },
 ];

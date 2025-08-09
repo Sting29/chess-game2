@@ -255,5 +255,8 @@
   "game_error": "Game error occurred",
   "user_avatar": "User avatar",
   "teacher_avatar": "Teacher avatar",
-  "player": "Player"
+  "player": "Player",
+
+  "puzzles_maze_title": "Maze",
+  "puzzles_maze_desc": "Find the exit from the maze "
 }
