@@ -1,4 +1,5 @@
 import { PuzzleCategory } from "../types/types";
+import { MAZE_PUZZLES } from "./mazePuzzles";
 import Compass from "src/assets/images/compass.png";
 import Darts from "src/assets/images/darts.png";
 import Fire from "src/assets/images/fire.png";
@@ -206,6 +207,6 @@ export const CHESS_PUZZLES: PuzzleCategory[] = [
     titleKey: "puzzles_maze_title",
     image: Labyrinth,
     descriptionKey: "puzzles_maze_desc",
-    puzzles: [],
+    puzzles: MAZE_PUZZLES, // Now includes actual maze puzzles
   },
 ];

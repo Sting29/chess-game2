@@ -8,9 +8,21 @@ export function useCustomPieces() {
   const currentChessSet = useSelector(
     (state: RootState) => state.settings.chessSet
   );
-  const pieceImages = FIGURES_SETS[Number(currentChessSet) - 1].chessSet;
 
   return useMemo(() => {
+    const chessSetIndex = Number(currentChessSet) - 1;
+    if (chessSetIndex < 0 || chessSetIndex >= FIGURES_SETS.length) {
+      console.warn(`Invalid chess set index: ${chessSetIndex}, using default`);
+      return {};
+    }
+
+    const figureSet = FIGURES_SETS[chessSetIndex];
+    if (!figureSet || !figureSet.chessSet) {
+      console.warn(`Chess set not found for index: ${chessSetIndex}`);
+      return {};
+    }
+
+    const pieceImages = figureSet.chessSet;
     const pieces = Object.keys(pieceImages);
     const pieceComponents: {
       [key: string]: (props?: {
@@ -88,5 +100,5 @@ export function useCustomPieces() {
     });
 
     return pieceComponents;
-  }, [pieceImages]);
+  }, [currentChessSet]);
 }

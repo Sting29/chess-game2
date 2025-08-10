@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { ChessPuzzleBoard } from "src/components/ChessPuzzleBoard/ChessPuzzleBoard";
 import { CHESS_PUZZLES } from "src/data/puzzles";
+import { ChessPuzzle } from "src/types/types";
 import {
   SolverPage,
   PuzzleDescription,
@@ -48,8 +49,13 @@ export function PuzzleSolver() {
     ? category?.puzzles[currentPuzzleIndex + 1]
     : null;
 
-  if (!puzzle) {
-    console.error("Puzzle not found:", {
+  // Type guard to check if puzzle is a ChessPuzzle
+  const isChessPuzzle = (puzzle: any): puzzle is ChessPuzzle => {
+    return puzzle && "correctMoves" in puzzle && "playerColor" in puzzle;
+  };
+
+  if (!puzzle || !isChessPuzzle(puzzle)) {
+    console.error("Chess puzzle not found:", {
       categoryId,
       puzzleId,
       availableCategories: CHESS_PUZZLES.map((c) => c.id),
