@@ -1,0 +1,1 @@
+export { ChessCoordinates } from "./ChessCoordinates";

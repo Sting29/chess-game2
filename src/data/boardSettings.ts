@@ -12,4 +12,5 @@ export const boardStyles = {
   lightSquareStyle: {
     backgroundColor: "#dededc",
   },
+  showNotation: false, // Отключаем стандартную нотацию
 };

@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { useTranslation } from "react-i18next";
 import { Square } from "src/types/playTypes";
@@ -8,6 +7,7 @@ import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
+import { ChessboardWithCoordinates } from "../ChessboardWithCoordinates/ChessboardWithCoordinates";
 import { PromotionPiece } from "src/types/types";
 import {
   GameEngineSettings,
@@ -553,7 +553,7 @@ export function ComputerChessBoard({
     <BoardContainer>
       <GameStatus>{moveMessage}</GameStatus>
 
-      <Chessboard
+      <ChessboardWithCoordinates
         options={{
           position: game.fen(),
           onPieceDrop: ({ sourceSquare, targetSquare }) =>

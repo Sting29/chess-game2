@@ -112,7 +112,7 @@
   - Handle malformed puzzle configurations gracefully
   - _Requirements: 2.4, 2.5, 2.6_
 
-- [ ] 16. Write unit tests for MazeEngine
+- [x] 16. Write unit tests for MazeEngine
 
   - Test FEN-like notation parsing
   - Verify piece movement validation with wall constraints
