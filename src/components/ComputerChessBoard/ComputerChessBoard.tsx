@@ -7,7 +7,7 @@ import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
-import { ChessboardWithCoordinates } from "../ChessboardWithCoordinates/ChessboardWithCoordinates";
+import ChessboardWithCoordinates from "../ChessboardWithCoordinates/ChessboardWithCoordinates";
 import { PromotionPiece } from "src/types/types";
 import {
   GameEngineSettings,
