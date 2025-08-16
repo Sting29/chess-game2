@@ -120,7 +120,7 @@
   - Validate move limits and time constraints
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6_
 
-- [ ] 17. Write component tests for MazeBoard
+- [x] 17. Write component tests for MazeBoard
 
   - Test board rendering with maze elements
   - Verify move highlighting and piece selection
@@ -128,7 +128,7 @@
   - Validate promotion dialog integration
   - _Requirements: 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 5.7_
 
-- [ ] 18. Create integration tests for complete maze puzzle flow
+- [x] 18. Create integration tests for complete maze puzzle flow
   - Test full puzzle completion workflow
   - Verify progress tracking and Redux state updates
   - Test navigation between puzzles
