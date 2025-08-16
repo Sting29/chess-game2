@@ -448,4 +448,14 @@ export class MazeEngine {
   getGameState(): MazeGameState {
     return { ...this.gameState };
   }
+
+  isPlayerPiece(piece: string): boolean {
+    // In maze puzzles, the player controls the piece that matches the current turn
+    // White pieces are uppercase, black pieces are lowercase
+    if (this.gameState.turn === "w") {
+      return piece === piece.toUpperCase();
+    } else {
+      return piece === piece.toLowerCase();
+    }
+  }
 }

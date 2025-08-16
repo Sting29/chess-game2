@@ -6,9 +6,15 @@ import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
 import { MazeCounters } from "../MazeCounters/MazeCounters";
 import { MazeControls } from "../MazeControls/MazeControls";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
+import { ChessCoordinates } from "../ChessCoordinates/ChessCoordinates";
 import styled from "styled-components";
 
 // Custom board styles
+const BoardWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
 const ChessBoard = styled.div`
   display: grid;
   grid-template-columns: repeat(8, 60px);
@@ -46,7 +52,11 @@ const BoardSquare = styled.div<BoardSquareProps>`
     return $color === "light" ? "#F0D9B5" : "#B58863";
   }};
 
-  border: ${({ $selected }) => ($selected ? "3px solid #FFD700" : "none")};
+  ${({ $selected }) =>
+    $selected &&
+    `
+    background: rgba(255, 255, 0, 0.4) !important;
+  `}
 
   &:hover {
     ${({ $contentType }) =>
@@ -56,12 +66,6 @@ const BoardSquare = styled.div<BoardSquareProps>`
       transform: scale(1.02);
     `}
   }
-
-  ${({ $highlighted }) =>
-    $highlighted &&
-    `
-    box-shadow: inset 0 0 0 3px rgba(0, 255, 0, 0.6);
-  `}
 `;
 
 const PieceElement = styled.div`
@@ -83,17 +87,22 @@ interface HintDotProps {
 
 const HintDot = styled.div<HintDotProps>`
   position: absolute;
-  width: ${({ $hasPiece }) => ($hasPiece ? "80%" : "30%")};
-  height: ${({ $hasPiece }) => ($hasPiece ? "80%" : "30%")};
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  background-color: rgba(0, 255, 0, 0.4);
   pointer-events: none;
+  z-index: 10;
+
   ${({ $hasPiece }) =>
-    !$hasPiece &&
-    `
-    border: 3px solid rgba(0, 255, 0, 0.6);
-    background-color: transparent;
-  `}
+    $hasPiece
+      ? `
+        background: radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%);
+      `
+      : `
+        background: radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%);
+      `}
 `;
 
 interface MazeBoardProps {
@@ -206,9 +215,7 @@ export function MazeBoard({
 
       // Show legal moves when dragging starts
       const legalMoves = engine.getLegalMoves(square);
-      if (showHints) {
-        setHighlightSquares(legalMoves);
-      }
+      setHighlightSquares(legalMoves);
       setSelectedSquare(square);
     }
   };
@@ -233,14 +240,15 @@ export function MazeBoard({
 
   // Handle square click
   const handleSquareClick = (square: Square) => {
-    // If no square is selected, select this square and show legal moves
+    const piece = getPieceOnSquare(square);
+
+    // If no square is selected
     if (!selectedSquare) {
-      const legalMoves = engine.getLegalMoves(square);
-      if (legalMoves.length > 0) {
+      // Only select if there's a player piece on this square
+      if (piece && engine.isPlayerPiece(piece)) {
+        const legalMoves = engine.getLegalMoves(square);
         setSelectedSquare(square);
-        if (showHints) {
-          setHighlightSquares(legalMoves);
-        }
+        setHighlightSquares(legalMoves);
       }
       return;
     }
@@ -252,22 +260,24 @@ export function MazeBoard({
       return;
     }
 
-    // If clicking a highlighted square, make the move
-    if (showHints && highlightSquares.includes(square)) {
+    // If clicking a valid move destination, make the move
+    if (highlightSquares.includes(square)) {
       makeMove(selectedSquare, square);
-    } else {
-      // If clicking a different square, select it if it has legal moves
-      const legalMoves = engine.getLegalMoves(square);
-      if (legalMoves.length > 0) {
-        setSelectedSquare(square);
-        if (showHints) {
-          setHighlightSquares(legalMoves);
-        }
-      } else {
-        setSelectedSquare(null);
-        setHighlightSquares([]);
-      }
+      return;
     }
+
+    // If clicking another player piece, switch selection
+    if (piece && engine.isPlayerPiece(piece)) {
+      const legalMoves = engine.getLegalMoves(square);
+      setSelectedSquare(square);
+      setHighlightSquares(legalMoves);
+      return;
+    }
+
+    // If clicking on invalid square (wall, opponent piece that can't be captured, or empty square with no valid move)
+    // Deselect current piece
+    setSelectedSquare(null);
+    setHighlightSquares([]);
   };
 
   // Make a move
@@ -392,23 +402,35 @@ export function MazeBoard({
                 onDragStart={(e) => handleDragStart(e, square)}
                 onDragEnd={handleDragEnd}
               >
-                {customPieces && customPieces[content.content] ? (
-                  customPieces[content.content]()
-                ) : (
-                  <div
-                    style={{
-                      fontSize: "40px",
-                      lineHeight: "1",
-                      textAlign: "center",
-                      color: content.content.startsWith("w") ? "#fff" : "#000",
-                      textShadow: content.content.startsWith("w")
-                        ? "1px 1px 1px #000"
-                        : "1px 1px 1px #fff",
-                    }}
-                  >
-                    {content.content}
-                  </div>
-                )}
+                {(() => {
+                  // Convert single character piece notation to custom pieces format
+                  // Uppercase = white, lowercase = black
+                  const isWhite =
+                    content.content === content.content.toUpperCase();
+                  const pieceType = content.content.toUpperCase();
+                  const pieceKey = `${isWhite ? "w" : "b"}${pieceType}`;
+
+                  if (customPieces && customPieces[pieceKey]) {
+                    return customPieces[pieceKey]();
+                  }
+
+                  // Fallback to text display
+                  return (
+                    <div
+                      style={{
+                        fontSize: "40px",
+                        lineHeight: "1",
+                        textAlign: "center",
+                        color: isWhite ? "#fff" : "#000",
+                        textShadow: isWhite
+                          ? "1px 1px 1px #000"
+                          : "1px 1px 1px #fff",
+                      }}
+                    >
+                      {content.content}
+                    </div>
+                  );
+                })()}
               </PieceElement>
             )}
             {content.type === "wall" && (
@@ -436,8 +458,13 @@ export function MazeBoard({
                 {content.content}
               </div>
             )}
-            {isHighlighted && showHints && (
-              <HintDot $hasPiece={content.type === "piece"} />
+            {isHighlighted && square !== selectedSquare && (
+              <HintDot
+                $hasPiece={
+                  content.type === "checkpoint" ||
+                  (content.type === "exit" && content.active === true)
+                }
+              />
             )}
           </BoardSquare>
         );
@@ -457,7 +484,10 @@ export function MazeBoard({
 
       <GameStatus>{errorMessage || statusMessage}</GameStatus>
 
-      <ChessBoard key={boardKey}>{renderBoard()}</ChessBoard>
+      <BoardWrapper>
+        <ChessBoard key={boardKey}>{renderBoard()}</ChessBoard>
+        <ChessCoordinates boardOrientation="white" />
+      </BoardWrapper>
 
       <PromotionDialog
         isOpen={!!promotionData}

@@ -134,3 +134,45 @@
   - Test navigation between puzzles
   - Validate error handling scenarios
   - _Requirements: 1.7, 4.7, 6.4_
+
+## Enhancement Tasks
+
+- [x] 19. Add language-specific coordinate display
+
+  - Modify ChessboardWithCoordinates to show Hebrew coordinates for Hebrew language
+  - Use English coordinates for all other languages (Russian, English, Arabic)
+  - Integrate coordinate display with MazeBoard component
+  - _Requirements: 6.1, 6.2_
+
+- [x] 20. Implement click-based piece movement
+
+  - Add click-to-select piece functionality similar to /how-to-move section
+  - Implement click-to-move on valid destination squares
+  - Support switching between pieces by clicking different player pieces
+  - Deselect piece when clicking invalid squares or opponent pieces that can't be captured
+  - _Requirements: 1.3, 1.4_
+
+- [x] 21. Add move highlighting for selected pieces
+
+  - Show possible moves when a piece is selected (similar to /how-to-move)
+  - Highlight valid destination squares with visual indicators
+  - Update highlighting when switching between pieces
+  - Clear highlighting when piece is deselected
+  - _Requirements: 1.3, 5.1_
+
+- [x] 22. Implement proper chess piece graphics rendering
+
+  - Replace FEN notation letters (R, r, P, k, etc.) with actual chess piece graphics
+  - Use selected piece set from game settings for piece rendering
+  - Ensure piece graphics change based on selected set while keeping maze elements (walls, exits, checkpoints) unchanged
+  - Support both white and black pieces according to FEN notation (uppercase=white, lowercase=black)
+  - _Requirements: 7.6_
+
+- [x] 23. Update visual indicators to match /how-to-move style
+  - **Selected piece**: yellow background `rgba(255, 255, 0, 0.4)` (no circle overlay)
+  - **Empty squares**: small green circle `radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)`
+  - **Checkpoints/exits only**: large green circle `radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)`
+  - **Fix**: Exclude selected piece from showing hint dots (`square !== selectedSquare`)
+  - Remove debug elements and finalize clean visual implementation
+  - Match the exact visual style from /how-to-move/pawn-move section
+  - _Requirements: 5.1, 1.3_
