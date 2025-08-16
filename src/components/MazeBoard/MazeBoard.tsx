@@ -8,6 +8,7 @@ import { MazeControls } from "../MazeControls/MazeControls";
 import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { ChessCoordinates } from "../ChessCoordinates/ChessCoordinates";
 import styled from "styled-components";
+import starImage from "../../assets/images/star.png";
 
 // Custom board styles
 const BoardWrapper = styled.div`
@@ -452,11 +453,15 @@ export function MazeBoard({
               </div>
             )}
             {content.type === "checkpoint" && (
-              <div
-                style={{ color: "blue", fontWeight: "bold", fontSize: "20px" }}
-              >
-                {content.content}
-              </div>
+              <img
+                src={starImage}
+                alt="Checkpoint"
+                style={{
+                  width: "80%",
+                  height: "80%",
+                  objectFit: "contain",
+                }}
+              />
             )}
             {isHighlighted && square !== selectedSquare && (
               <HintDot

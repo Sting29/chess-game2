@@ -169,6 +169,7 @@
   - _Requirements: 7.6_
 
 - [x] 23. Update visual indicators to match /how-to-move style
+
   - **Selected piece**: yellow background `rgba(255, 255, 0, 0.4)` (no circle overlay)
   - **Empty squares**: small green circle `radial-gradient(circle, rgba(0, 255, 0, 0.4) 25%, transparent 25%)`
   - **Checkpoints/exits only**: large green circle `radial-gradient(circle, rgba(0, 255, 0, 0.4) 85%, transparent 85%)`
@@ -176,3 +177,10 @@
   - Remove debug elements and finalize clean visual implementation
   - Match the exact visual style from /how-to-move/pawn-move section
   - _Requirements: 5.1, 1.3_
+
+- [x] 24. Replace checkpoint text with star image
+  - Import star image from `src/assets/images/star.png`
+  - Replace "C" text display with star image for checkpoints
+  - Set image size to 80% width/height with `objectFit: "contain"`
+  - Maintain checkpoint functionality and visual highlighting
+  - _Requirements: 5.7_
