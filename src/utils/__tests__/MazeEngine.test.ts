@@ -966,7 +966,7 @@ describe("MazeEngine", () => {
         id: "promotion-make-move",
         titleKey: "promotion_make_move",
         descriptionKey: "promotion_make_move",
-        initialPosition: "8/P6E/8/8/8/8/8/8 w - - 0 1", // Pawn on a7, exit on h7 (not on promotion square)
+        initialPosition: "E7/P7/8/8/8/8/8/8 w - - 0 1", // Pawn on a7, exit on a8 (promotion square)
         hintKey: "promotion_make_move",
       };
 
@@ -975,19 +975,14 @@ describe("MazeEngine", () => {
       // Check if promotion move is detected
       expect(engine.isPromotionMove("a7", "a8")).toBe(true);
 
-      // First promote the pawn
+      // First promote the pawn - this should complete the game since pawn promotes on exit
       const promotionResult = engine.makeMove("a7", "a8", "q");
       expect(promotionResult.success).toBe(true);
-      expect(promotionResult.gameComplete).toBeFalsy(); // Should not complete yet
+      expect(promotionResult.gameComplete).toBe(true); // Game completes when reaching exit
 
       const gameState = engine.getGameState();
       expect(gameState.playerPiece.type).toBe("Q"); // Promoted to queen
       expect(gameState.playerPiece.square).toBe("a8");
-
-      // Now move to exit to complete
-      const exitResult = engine.makeMove("a8", "h7");
-      expect(exitResult.success).toBe(true);
-      expect(exitResult.gameComplete).toBe(true);
     });
 
     it("should get promotion squares correctly", () => {

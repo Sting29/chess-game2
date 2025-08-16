@@ -270,12 +270,15 @@ export class MazeEngine {
       checkpointVisited = true;
     }
 
+    // Check for pawn promotion before moving the piece
+    const isPromotion = promotion && this.isPromotionMove(from, to);
+
     // Move the piece
     this.gameState.position.delete(from);
     let pieceToPlace = this.gameState.playerPiece.type;
 
     // Handle pawn promotion
-    if (promotion && this.isPromotionMove(from, to)) {
+    if (isPromotion) {
       const isWhite =
         this.gameState.playerPiece.type ===
         this.gameState.playerPiece.type.toUpperCase();
