@@ -62,7 +62,13 @@ function PuzzleList() {
   );
 
   const handleCategoryClick = useCallback(
-    (id: string) => navigate(`/puzzles/${id}`),
+    (id: string) => {
+      if (id === "maze") {
+        navigate("/puzzles/maze");
+      } else {
+        navigate(`/puzzles/${id}`);
+      }
+    },
     [navigate]
   );
 

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Test Maze Board</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 20px;
+		}
+
+		.test-info {
+			background: #f0f0f0;
+			padding: 10px;
+			margin: 10px 0;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Maze Board Test</h1>
+	<div class="test-info">
+		<h3>Test Position: E6C/WWWW1WWW/8/8/8/2W1W3/WWW1WWW1/R7</h3>
+		<p>Expected layout:</p>
+		<ul>
+			<li>E = Exit on a8</li>
+			<li>C = Checkpoint on h8</li>
+			<li>W = Walls on b8,c8,d8,e8,g8,h8</li>
+			<li>R = White Rook on a1</li>
+		</ul>
+		<p>The rook should be able to move and show legal moves when clicked.</p>
+	</div>
+
+	<p>Open the React app at <a href="http://localhost:3000/puzzles/maze/2">http://localhost:3000/puzzles/maze/2</a> to
+		test the maze board.</p>
+
+	<h3>Expected Features:</h3>
+	<ul>
+		<li>✅ Rook image should be displayed (not Unicode symbol)</li>
+		<li>✅ Click on rook should show possible moves as dots</li>
+		<li>✅ Drag & drop should work for moving the rook</li>
+		<li>✅ Walls should be brown/dark colored</li>
+		<li>✅ Exit should be green (when accessible) or red (when not)</li>
+		<li>✅ Checkpoint should be blue</li>
+	</ul>
+</body>
+
+</html>

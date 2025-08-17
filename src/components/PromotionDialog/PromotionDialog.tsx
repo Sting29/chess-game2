@@ -24,6 +24,14 @@ export function PromotionDialog({
 }: PromotionDialogProps) {
   const [hoveredButton, setHoveredButton] = useState<string | null>(null);
   const customPieces = useCustomPieces();
+
+  // Fallback pieces for promotion dialog
+  const fallbackPieces = {
+    wQ: () => <div style={{ fontSize: "32px", textAlign: "center" }}>♕</div>,
+    wR: () => <div style={{ fontSize: "32px", textAlign: "center" }}>♖</div>,
+    wB: () => <div style={{ fontSize: "32px", textAlign: "center" }}>♗</div>,
+    wN: () => <div style={{ fontSize: "32px", textAlign: "center" }}>♘</div>,
+  };
   const { t } = useTranslation();
 
   if (!isOpen) return null;
@@ -31,7 +39,12 @@ export function PromotionDialog({
   // Function to render piece in promotion dialog
   function renderPromotionPiece(pieceType: PromotionPiece) {
     const pieceKey = `w${pieceType.toUpperCase()}` as keyof typeof customPieces;
-    const PieceComponent = customPieces[pieceKey];
+    let PieceComponent = customPieces && customPieces[pieceKey];
+
+    // Use fallback if custom piece is not available
+    if (!PieceComponent) {
+      PieceComponent = fallbackPieces[pieceKey as keyof typeof fallbackPieces];
+    }
 
     if (PieceComponent) {
       return (

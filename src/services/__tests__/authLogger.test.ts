@@ -40,12 +40,23 @@ describe("AuthLogger", () => {
       const startTime = Date.now() - 1000;
       authLogger.logRefreshSuccess(2, startTime, 3600);
 
-      const logs = authLogger.getRecentLogs(1);
-      expect(logs).toHaveLength(1);
-      expect(logs[0].type).toBe(AuthLogType.TOKEN_REFRESH_SUCCESS);
-      expect(logs[0].details.attemptNumber).toBe(2);
-      expect(logs[0].details.duration).toBeGreaterThan(900);
-      expect(logs[0].details.expiresIn).toBe(3600);
+      const logs = authLogger.getRecentLogs(2); // Get last 2 logs
+      expect(logs).toHaveLength(2);
+
+      // Find the TOKEN_REFRESH_SUCCESS log
+      const refreshSuccessLog = logs.find(
+        (log) => log.type === AuthLogType.TOKEN_REFRESH_SUCCESS
+      );
+      expect(refreshSuccessLog).toBeDefined();
+      expect(refreshSuccessLog!.details.attemptNumber).toBe(2);
+      expect(refreshSuccessLog!.details.duration).toBeGreaterThan(900);
+      expect(refreshSuccessLog!.details.expiresIn).toBe(3600);
+
+      // Also verify TOKEN_LIFECYCLE log exists
+      const lifecycleLog = logs.find(
+        (log) => log.type === AuthLogType.TOKEN_LIFECYCLE
+      );
+      expect(lifecycleLog).toBeDefined();
     });
 
     it("should log failed refresh", () => {

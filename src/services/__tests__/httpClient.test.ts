@@ -47,22 +47,29 @@ describe("HttpClient", () => {
     jest.spyOn(console, "error").mockImplementation(() => {});
     jest.spyOn(console, "warn").mockImplementation(() => {});
 
+    // Setup mock axios instance with interceptors
+    mockAxiosInstance = {
+      interceptors: {
+        request: {
+          use: jest.fn().mockImplementation((success: any) => {
+            requestInterceptor = success;
+          }),
+        },
+        response: {
+          use: jest.fn().mockImplementation((success: any, error: any) => {
+            responseInterceptor = { success, error };
+          }),
+        },
+      },
+      get: jest.fn(),
+      post: jest.fn(),
+      patch: jest.fn(),
+      delete: jest.fn(),
+    };
+
     // Get the mocked axios instance
     const axios = require("axios");
-    mockAxiosInstance = axios.create();
-
-    // Capture interceptors
-    mockAxiosInstance.interceptors.request.use.mockImplementation(
-      (success: any) => {
-        requestInterceptor = success;
-      }
-    );
-
-    mockAxiosInstance.interceptors.response.use.mockImplementation(
-      (success: any, error: any) => {
-        responseInterceptor = { success, error };
-      }
-    );
+    axios.create.mockReturnValue(mockAxiosInstance);
 
     // Re-import httpClient to trigger constructor
     jest.resetModules();

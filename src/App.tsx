@@ -1,13 +1,13 @@
-import { AppRouter } from "./routes";
-import "./App.css";
-import { GlobalStyles } from "./styles/GlobalStyles";
+import { AppRouter } from "src/routes";
+import "src/App.css";
+import { GlobalStyles } from "src/styles/GlobalStyles";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { RootState, AppDispatch } from "./store";
+import { RootState, AppDispatch } from "src/store";
 import { setLanguage, loadUserProfile } from "./store/settingsSlice";
 import { useTranslation } from "react-i18next";
-import { authService } from "./services";
-import { Loader } from "./components/Loader/Loader";
+import { authService } from "src/services";
+import { Loader } from "src/components/Loader/Loader";
 
 function LanguageSync() {
   const { i18n } = useTranslation();

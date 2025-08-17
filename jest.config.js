@@ -40,6 +40,13 @@ module.exports = {
         clearMocks: true,
         restoreMocks: true,
 
+        // Use separate TypeScript config for tests
+        globals: {
+          "ts-jest": {
+            tsconfig: "tsconfig.test.json",
+          },
+        },
+
         // Coverage settings
         collectCoverageFrom: [
           "src/**/*.{ts,tsx}",

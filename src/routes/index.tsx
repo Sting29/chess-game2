@@ -11,6 +11,8 @@ import HowToPlay from "src/pages/HowToPlay/HowToPlay";
 import ChessMoves from "src/pages/ChessMoves/ChessMoves";
 import PuzzleList from "src/pages/PuzzleList/PuzzleList";
 import { PuzzleSolver } from "src/pages/PuzzleSolver/PuzzleSolver";
+import MazePuzzleList from "src/pages/MazePuzzleList/MazePuzzleList";
+import { MazePuzzleSolver } from "src/pages/MazePuzzleSolver/MazePuzzleSolver";
 import PlayWithComputer from "src/pages/PlayWithComputer/PlayWithComputer";
 import PlayWithPerson from "src/pages/PlayWithPerson/PlayWithPerson";
 import { Layout } from "src/Layout/Layout";
@@ -75,6 +77,22 @@ const router = createBrowserRouter(
       element: (
         <ProtectedRoute>
           <PuzzleList />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/puzzles/maze",
+      element: (
+        <ProtectedRoute>
+          <MazePuzzleList />
+        </ProtectedRoute>
+      ),
+    },
+    {
+      path: "/puzzles/maze/:puzzleId",
+      element: (
+        <ProtectedRoute>
+          <MazePuzzleSolver />
         </ProtectedRoute>
       ),
     },

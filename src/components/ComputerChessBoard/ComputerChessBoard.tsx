@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useCallback } from "react";
-import { Chessboard } from "react-chessboard";
 import { Chess } from "chess.js";
 import { useTranslation } from "react-i18next";
 import { Square } from "src/types/playTypes";
@@ -8,11 +7,13 @@ import { useCustomPieces } from "src/components/CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
+import ChessboardWithCoordinates from "../ChessboardWithCoordinates/ChessboardWithCoordinates";
 import { PromotionPiece } from "src/types/types";
 import {
   GameEngineSettings,
   GameUISettings,
 } from "src/types/computerGameTypes";
+import { PieceDropHandlerArgs, SquareHandlerArgs } from "react-chessboard";
 import { ThreatInfo } from "src/types/types";
 
 interface ComputerChessBoardProps {
@@ -553,14 +554,15 @@ export function ComputerChessBoard({
     <BoardContainer>
       <GameStatus>{moveMessage}</GameStatus>
 
-      <Chessboard
+      <ChessboardWithCoordinates
         options={{
           position: game.fen(),
-          onPieceDrop: ({ sourceSquare, targetSquare }) =>
+          onPieceDrop: ({ sourceSquare, targetSquare }: PieceDropHandlerArgs) =>
             targetSquare
               ? onDrop(sourceSquare as Square, targetSquare as Square)
               : false,
-          onSquareClick: ({ square }) => onSquareClick(square as Square),
+          onSquareClick: ({ square }: SquareHandlerArgs) =>
+            onSquareClick(square as Square),
           ...boardStyles,
           squareStyles: {
             // Выделение выбранной клетки

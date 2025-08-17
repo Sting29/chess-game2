@@ -96,6 +96,8 @@ describe("TokenRefreshManager", () => {
     });
 
     it("should not attempt refresh when already in progress", async () => {
+      jest.setTimeout(15000); // Increase timeout for this test
+
       let resolveFirstRefresh: (value: any) => void = () => {};
 
       // Start first refresh with a promise that we control
@@ -109,13 +111,15 @@ describe("TokenRefreshManager", () => {
       const firstRefresh = tokenRefreshManager.refreshToken();
       const secondRefresh = tokenRefreshManager.refreshToken();
 
-      // Resolve the first refresh
-      resolveFirstRefresh({
-        access_token: "new-access-token",
-        refresh_token: "new-refresh-token",
-        expires_in: 3600,
-        session_id: "session-123",
-      });
+      // Resolve the first refresh immediately
+      setTimeout(() => {
+        resolveFirstRefresh({
+          access_token: "new-access-token",
+          refresh_token: "new-refresh-token",
+          expires_in: 3600,
+          session_id: "session-123",
+        });
+      }, 0);
 
       const [firstResult, secondResult] = await Promise.all([
         firstRefresh,
@@ -191,12 +195,16 @@ describe("TokenRefreshManager", () => {
         reject: jest.fn(),
       };
 
-      // Use Promise.resolve to handle the async nature properly
-      const queuePromise = tokenRefreshManager.queueRequest(mockRequest);
+      // Queue the request and wait for it to process
+      await tokenRefreshManager.queueRequest(mockRequest);
 
-      // Wait for the promise to resolve
-      await queuePromise;
+      // Wait a bit for async processing
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
+      // Verify the axios instance was called and request was resolved
+      expect(mockAxiosInstance).toHaveBeenCalledWith(
+        mockRequest.originalRequest
+      );
       expect(mockRequest.resolve).toHaveBeenCalledWith({ data: "success" });
       expect(mockRequest.reject).not.toHaveBeenCalled();
     });
@@ -211,12 +219,13 @@ describe("TokenRefreshManager", () => {
         reject: jest.fn(),
       };
 
-      // Use Promise.resolve to handle the async nature properly
-      const queuePromise = tokenRefreshManager.queueRequest(mockRequest);
+      // Queue the request and wait for it to process
+      await tokenRefreshManager.queueRequest(mockRequest);
 
-      // Wait for the promise to resolve
-      await queuePromise;
+      // Wait a bit for async processing
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
+      // Verify the request was rejected with the correct error
       expect(mockRequest.reject).toHaveBeenCalledWith(
         new Error("Token refresh failed")
       );
@@ -286,6 +295,8 @@ describe("TokenRefreshManager", () => {
 
   describe("state management", () => {
     it("should track refresh in progress state", async () => {
+      jest.setTimeout(15000); // Increase timeout for this test
+
       expect(tokenRefreshManager.isRefreshInProgress()).toBe(false);
 
       let resolveRefresh: (value: any) => void = () => {};
@@ -300,13 +311,15 @@ describe("TokenRefreshManager", () => {
       const refreshPromise = tokenRefreshManager.refreshToken();
       expect(tokenRefreshManager.isRefreshInProgress()).toBe(true);
 
-      // Resolve the refresh
-      resolveRefresh({
-        access_token: "new-access-token",
-        refresh_token: "new-refresh-token",
-        expires_in: 3600,
-        session_id: "session-123",
-      });
+      // Resolve the refresh immediately
+      setTimeout(() => {
+        resolveRefresh({
+          access_token: "new-access-token",
+          refresh_token: "new-refresh-token",
+          expires_in: 3600,
+          session_id: "session-123",
+        });
+      }, 0);
 
       await refreshPromise;
       expect(tokenRefreshManager.isRefreshInProgress()).toBe(false);

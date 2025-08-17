@@ -1,4 +1,3 @@
-import { Chessboard } from "react-chessboard";
 import { useState } from "react";
 import { Square, PromotionPiece } from "../../types/types";
 import { PuzzleChessEngine } from "../../utils/PuzzleChessEngine";
@@ -6,6 +5,8 @@ import { useCustomPieces } from "../CustomPieces/CustomPieces";
 import { boardStyles } from "src/data/boardSettings";
 import { BoardContainer, GameStatus } from "src/styles/BoardStyles";
 import { PromotionDialog } from "../PromotionDialog/PromotionDialog";
+import ChessboardWithCoordinates from "src/components/ChessboardWithCoordinates/ChessboardWithCoordinates";
+import { PieceDropHandlerArgs, SquareHandlerArgs } from "react-chessboard";
 
 interface ChessPuzzleBoardProps {
   initialPosition: string;
@@ -257,12 +258,13 @@ export function ChessPuzzleBoard({
     <BoardContainer>
       <GameStatus>{errorMessage || turnMessage}</GameStatus>
 
-      <Chessboard
+      <ChessboardWithCoordinates
         options={{
           position: game.fen(),
-          onPieceDrop: ({ sourceSquare, targetSquare }) =>
+          onPieceDrop: ({ sourceSquare, targetSquare }: PieceDropHandlerArgs) =>
             targetSquare ? onDrop(sourceSquare, targetSquare) : false,
-          onSquareClick: ({ square }) => onSquareClick(square as Square),
+          onSquareClick: ({ square }: SquareHandlerArgs) =>
+            onSquareClick(square as Square),
           onMouseOverSquare: onMouseOverSquare,
           onMouseOutSquare: onMouseOutSquare,
           ...boardStyles,
