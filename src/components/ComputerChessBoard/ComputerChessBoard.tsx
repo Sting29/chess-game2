@@ -13,6 +13,7 @@ import {
   GameEngineSettings,
   GameUISettings,
 } from "src/types/computerGameTypes";
+import { PieceDropHandlerArgs, SquareHandlerArgs } from "react-chessboard";
 import { ThreatInfo } from "src/types/types";
 
 interface ComputerChessBoardProps {
@@ -556,11 +557,12 @@ export function ComputerChessBoard({
       <ChessboardWithCoordinates
         options={{
           position: game.fen(),
-          onPieceDrop: ({ sourceSquare, targetSquare }) =>
+          onPieceDrop: ({ sourceSquare, targetSquare }: PieceDropHandlerArgs) =>
             targetSquare
               ? onDrop(sourceSquare as Square, targetSquare as Square)
               : false,
-          onSquareClick: ({ square }) => onSquareClick(square as Square),
+          onSquareClick: ({ square }: SquareHandlerArgs) =>
+            onSquareClick(square as Square),
           ...boardStyles,
           squareStyles: {
             // Выделение выбранной клетки

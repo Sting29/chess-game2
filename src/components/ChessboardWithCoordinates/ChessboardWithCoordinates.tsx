@@ -1,6 +1,6 @@
 import React from "react";
 import { Chessboard } from "react-chessboard";
-import { ChessboardOptions } from "react-chessboard/dist/ChessboardProvider";
+import { ChessboardOptions } from "react-chessboard";
 import styled from "styled-components";
 import { ChessCoordinates } from "src/components/ChessCoordinates/ChessCoordinates";
 
