@@ -17,5 +17,13 @@
     "jsx": "react-jsx",
     "baseUrl": "."
   },
-  "include": ["src", "custom.d.ts", ".storybook"]
+  "include": ["src", "custom.d.ts", ".storybook"],
+  "exclude": [
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/__tests__/**",
+    "**/__mocks__/**",
+    "**/test-utils/**",
+    "src/setupTests.ts"
+  ]
 }
