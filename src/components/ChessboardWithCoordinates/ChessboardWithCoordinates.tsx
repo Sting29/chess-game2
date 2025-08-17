@@ -2,7 +2,7 @@ import React from "react";
 import { Chessboard } from "react-chessboard";
 import { ChessboardOptions } from "react-chessboard/dist/ChessboardProvider";
 import styled from "styled-components";
-import { ChessCoordinates } from "../ChessCoordinates/ChessCoordinates";
+import { ChessCoordinates } from "src/components/ChessCoordinates/ChessCoordinates";
 
 const ChessboardWrapper = styled.div`
   position: relative;
