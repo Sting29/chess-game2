@@ -29,14 +29,14 @@ export function ChessCoordinates({
     <CoordinatesContainer>
       {/* Отображение файлов */}
       {files.map((file, index) => (
-        <FileLabel key={file} index={index} orientation={boardOrientation}>
+        <FileLabel key={file} $index={index} $orientation={boardOrientation}>
           {file}
         </FileLabel>
       ))}
 
       {/* Отображение рангов (1-8) */}
       {ranks.map((rank, index) => (
-        <RankLabel key={rank} index={index} orientation={boardOrientation}>
+        <RankLabel key={rank} $index={index} $orientation={boardOrientation}>
           {rank}
         </RankLabel>
       ))}

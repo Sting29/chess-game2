@@ -11,14 +11,14 @@ export const CoordinatesContainer = styled.div`
 `;
 
 export const FileLabel = styled.div<{
-  index: number;
-  orientation: "white" | "black";
+  $index: number;
+  $orientation: "white" | "black";
 }>`
   position: absolute;
   bottom: 2px;
   left: ${(props) => {
     const fileIndex =
-      props.orientation === "white" ? props.index : 7 - props.index;
+      props.$orientation === "white" ? props.$index : 7 - props.$index;
     return `${fileIndex * 68 + 58}px`;
   }};
   font-size: 12px;
@@ -28,14 +28,14 @@ export const FileLabel = styled.div<{
 `;
 
 export const RankLabel = styled.div<{
-  index: number;
-  orientation: "white" | "black";
+  $index: number;
+  $orientation: "white" | "black";
 }>`
   position: absolute;
   left: 2px;
   top: ${(props) => {
     const rankIndex =
-      props.orientation === "white" ? 7 - props.index : props.index;
+      props.$orientation === "white" ? 7 - props.$index : props.$index;
     return `${rankIndex * 68 + 8}px`;
   }};
   transform: translateY(-50%);

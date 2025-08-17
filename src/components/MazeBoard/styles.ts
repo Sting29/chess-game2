@@ -60,14 +60,19 @@ export const BoardWrapper = styled.div`
 
 export const ChessBoard = styled.div`
   display: grid;
-  grid-template-columns: repeat(8, 60px);
-  grid-template-rows: repeat(8, 60px);
-  border: 2px solid #8b4513;
-  background-color: #deb887;
+  grid-template-columns: repeat(8, 68px);
+  grid-template-rows: repeat(8, 68px);
+  border: 10px solid #2a80bd;
+  border-radius: 4px;
+  width: 564px;
+  height: 564px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
 
   @media (max-width: 768px) {
     grid-template-columns: repeat(8, 45px);
     grid-template-rows: repeat(8, 45px);
+    width: 376px;
+    height: 376px;
   }
 `;
 
@@ -92,7 +97,7 @@ export const BoardSquare = styled.div<BoardSquareProps>`
     if ($contentType === "wall") return "#8B4513";
     if ($contentType === "exit") return $active ? "#90EE90" : "#FFB6C1";
     if ($contentType === "checkpoint") return "#87CEEB";
-    return $color === "light" ? "#F0D9B5" : "#B58863";
+    return $color === "light" ? "#dededc" : "#438dce";
   }};
 
   ${({ $selected }) =>
