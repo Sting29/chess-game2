@@ -120,12 +120,14 @@ describe("UserAvatar", () => {
     renderWithProviders(<UserAvatar />);
 
     const avatarImage = screen.getByAltText("User avatar");
+    const container = avatarImage.parentElement;
 
-    // Simulate image loading error
+    // Simulate image loading error twice to trigger fallback to emoji
+    fireEvent.error(avatarImage);
     fireEvent.error(avatarImage);
 
-    // Should still be in document (error handling should prevent crashes)
-    expect(avatarImage).toBeInTheDocument();
+    // Should show fallback emoji when image fails
+    expect(container).toHaveTextContent("👤");
   });
 
   it("displays user name in aria-label when available", () => {

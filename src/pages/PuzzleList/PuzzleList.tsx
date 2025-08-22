@@ -69,7 +69,9 @@ function PuzzleList() {
         navigate(`/puzzles/${id}`);
       }
     },
-    [navigate]
+    // navigate is stable from useNavigate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
   );
 
   // Если categoryId не указан, показываем список категорий

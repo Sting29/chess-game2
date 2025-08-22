@@ -1,10 +1,13 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { ComputerChessBoard } from "../ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
 } from "src/types/computerGameTypes";
+import settingsSlice from "../../../store/settingsSlice";
 
 // Mock the StockfishEngine
 jest.mock("src/utils/StockfishEngine", () => ({
@@ -20,6 +23,33 @@ jest.mock("src/utils/StockfishEngine", () => ({
 jest.mock("src/components/CustomPieces/CustomPieces", () => ({
   useCustomPieces: () => ({}),
 }));
+
+// Helper function to create a test store
+const createTestStore = () => {
+  return configureStore({
+    reducer: {
+      settings: settingsSlice,
+    },
+    preloadedState: {
+      settings: {
+        language: "en",
+        chessSet: "1",
+        user: undefined,
+        isAuthenticated: false,
+        loading: false,
+        error: undefined,
+      },
+    },
+  });
+};
+
+// Helper function to render with providers
+const renderWithProviders = (
+  ui: React.ReactElement,
+  store = createTestStore()
+) => {
+  return render(<Provider store={store}>{ui}</Provider>);
+};
 
 describe("ComputerChessBoard Threat Integration", () => {
   const mockOnThreatsChange = jest.fn();
@@ -63,7 +93,7 @@ describe("ComputerChessBoard Threat Integration", () => {
 
   describe("Kids Mode Threat Detection", () => {
     it("should call onThreatsChange with correct threat info in kids mode", async () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -83,7 +113,7 @@ describe("ComputerChessBoard Threat Integration", () => {
     });
 
     it("should show hints toggle button in kids mode", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -99,7 +129,7 @@ describe("ComputerChessBoard Threat Integration", () => {
     });
 
     it("should toggle hints when button is clicked", async () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -131,7 +161,7 @@ describe("ComputerChessBoard Threat Integration", () => {
         showMoveHints: false,
       };
 
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={uiSettingsNoHints}
@@ -152,7 +182,7 @@ describe("ComputerChessBoard Threat Integration", () => {
 
   describe("Adult Mode Behavior", () => {
     it("should not show hints toggle button in adult mode", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={adultEngineSettings}
           uiSettings={adultUISettings}
@@ -168,7 +198,7 @@ describe("ComputerChessBoard Threat Integration", () => {
     });
 
     it("should call onThreatsChange with empty threats in adult mode", async () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={adultEngineSettings}
           uiSettings={adultUISettings}
@@ -194,7 +224,7 @@ describe("ComputerChessBoard Threat Integration", () => {
         showThreatHighlight: false,
       };
 
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={uiSettingsNoThreats}
@@ -215,7 +245,7 @@ describe("ComputerChessBoard Threat Integration", () => {
 
   describe("Settings Changes", () => {
     it("should update threat detection when switching from adult to kids mode", async () => {
-      const { rerender } = render(
+      const { rerenderWithProviders } = renderWithProviders(
         <ComputerChessBoard
           settings={adultEngineSettings}
           uiSettings={adultUISettings}
@@ -234,7 +264,7 @@ describe("ComputerChessBoard Threat Integration", () => {
       });
 
       // Switch to kids mode
-      rerender(
+      rerenderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -257,7 +287,7 @@ describe("ComputerChessBoard Threat Integration", () => {
   describe("Callback Safety", () => {
     it("should not crash when onThreatsChange is not provided", () => {
       expect(() => {
-        render(
+        renderWithProviders(
           <ComputerChessBoard
             settings={kidsEngineSettings}
             uiSettings={kidsUISettings}

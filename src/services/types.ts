@@ -43,6 +43,11 @@ export type Language = "he" | "en" | "ar" | "ru";
 export type AvatarHat = "avatarHat1" | "avatarHat2";
 export type AvatarWear = "avatarWear1" | "avatarWear2" | "avatarWear3";
 
+export interface AvatarSelection {
+  gender: Gender;
+  avatar: Avatar;
+}
+
 export interface UserProfile {
   id: string;
   gender?: Gender;

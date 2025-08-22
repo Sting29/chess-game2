@@ -36,6 +36,9 @@ const UserAvatar: React.FC<UserAvatarProps> = ({
 
   // Get the avatar image source
   const avatarSrc = React.useMemo(() => {
+    if (!avatarSelection) {
+      return getAvatarBySelection("male", "avatar1");
+    }
     return getAvatarBySelection(avatarSelection.gender, avatarSelection.avatar);
   }, [avatarSelection]);
 

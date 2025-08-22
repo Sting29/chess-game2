@@ -1,4 +1,4 @@
-import { AppRouter } from "src/routes";
+import { AppRouter, GlobalErrorBoundary } from "src/routes";
 import "src/App.css";
 import { GlobalStyles } from "src/styles/GlobalStyles";
 import { useEffect } from "react";
@@ -67,13 +67,15 @@ function App() {
   const shouldShowLoader = loading && isAuthenticated && !user;
 
   return (
-    <div className="app">
-      <GlobalStyles />
-      <LanguageSync />
-      <AuthRestore />
+    <GlobalErrorBoundary>
+      <div className="app">
+        <GlobalStyles />
+        <LanguageSync />
+        <AuthRestore />
 
-      {shouldShowLoader ? <Loader /> : <AppRouter />}
-    </div>
+        {shouldShowLoader ? <Loader /> : <AppRouter />}
+      </div>
+    </GlobalErrorBoundary>
   );
 }
 

@@ -1,60 +1,29 @@
-const { createJestConfig } = require("@craco/craco");
-
+// Jest configuration for debugging
 module.exports = {
-  // Use Create React App's Jest configuration as base
-  ...createJestConfig({
-    jest: {
-      configure: {
-        // Handle ES modules properly
-        extensionsToTreatAsEsm: [".ts", ".tsx"],
-
-        // Transform ES modules from node_modules
-        transformIgnorePatterns: [
-          "node_modules/(?!(axios|@testing-library|react-chessboard)/)",
-        ],
-
-        // Module name mapping for better imports
-        moduleNameMapper: {
-          "^src/(.*)$": "<rootDir>/src/$1",
-          "^@/(.*)$": "<rootDir>/src/$1",
-          // Handle axios ES module imports
-          "^axios$": "<rootDir>/node_modules/axios/dist/node/axios.cjs",
-        },
-
-        // Setup files
-        setupFilesAfterEnv: [
-          "<rootDir>/src/setupTests.ts",
-          "<rootDir>/src/test-utils/globalSetup.ts",
-        ],
-
-        // Test environment
-        testEnvironment: "jsdom",
-
-        // Global setup for browser APIs
-        setupFiles: ["<rootDir>/src/test-utils/jestSetup.ts"],
-
-        // Timeout for async tests
-        testTimeout: 10000,
-
-        // Clear mocks between tests
-        clearMocks: true,
-        restoreMocks: true,
-
-        // Use separate TypeScript config for tests
-        globals: {
-          "ts-jest": {
-            tsconfig: "tsconfig.test.json",
-          },
-        },
-
-        // Coverage settings
-        collectCoverageFrom: [
-          "src/**/*.{ts,tsx}",
-          "!src/**/*.d.ts",
-          "!src/test-utils/**",
-          "!src/setupTests.ts",
-        ],
-      },
-    },
-  }),
+  testEnvironment: "jsdom",
+  maxWorkers: 1,
+  setupFilesAfterEnv: ["<rootDir>/src/setupTests.ts"],
+  transform: {
+    "^.+\\.(js|jsx|ts|tsx)$": "babel-jest",
+    "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$":
+      "<rootDir>/src/__mocks__/fileTransformer.js",
+  },
+  moduleFileExtensions: ["js", "jsx", "ts", "tsx", "json"],
+  testMatch: [
+    "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+    "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}",
+  ],
+  moduleNameMapper: {
+    "^src/(.*)$": "<rootDir>/src/$1",
+    "\\.(css|less|scss|sass)$": "identity-obj-proxy",
+  },
+  collectCoverageFrom: [
+    "src/**/*.{ts,tsx}",
+    "!src/**/*.d.ts",
+    "!src/test-utils/**",
+    "!src/setupTests.ts",
+  ],
+  clearMocks: true,
+  restoreMocks: true,
+  testTimeout: 10000,
 };

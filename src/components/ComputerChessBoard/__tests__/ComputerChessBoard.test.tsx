@@ -1,11 +1,14 @@
 import React from "react";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import "@testing-library/jest-dom";
+import { Provider } from "react-redux";
+import { configureStore } from "@reduxjs/toolkit";
 import { ComputerChessBoard } from "../ComputerChessBoard";
 import {
   GameEngineSettings,
   GameUISettings,
 } from "src/types/computerGameTypes";
+import settingsSlice from "../../../store/settingsSlice";
 
 // Mock the StockfishEngine
 jest.mock("src/utils/StockfishEngine");
@@ -29,6 +32,33 @@ jest.mock("react-i18next", () => ({
     t: (key: string) => key,
   }),
 }));
+
+// Helper function to create a test store
+const createTestStore = () => {
+  return configureStore({
+    reducer: {
+      settings: settingsSlice,
+    },
+    preloadedState: {
+      settings: {
+        language: "en",
+        chessSet: "1",
+        user: undefined,
+        isAuthenticated: false,
+        loading: false,
+        error: undefined,
+      },
+    },
+  });
+};
+
+// Helper function to render with providers
+const renderWithProviders = (
+  ui: React.ReactElement,
+  store = createTestStore()
+) => {
+  return render(<Provider store={store}>{ui}</Provider>);
+};
 
 // Mock PromotionDialog
 jest.mock("../../PromotionDialog/PromotionDialog", () => ({
@@ -92,14 +122,14 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
 
   describe("Kids Mode Button Display", () => {
     test("should render component in kids mode", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
         />
       );
 
-      // Component should render successfully
+      // Component should renderWithProviders successfully
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
 
       // Should show game status
@@ -107,14 +137,14 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     });
 
     test("should render component in non-kids mode", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={nonKidsEngineSettings}
           uiSettings={nonKidsUISettings}
         />
       );
 
-      // Component should render successfully
+      // Component should renderWithProviders successfully
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
 
       // Should show game status
@@ -122,21 +152,21 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     });
 
     test("should handle different settings", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
         />
       );
 
-      // Component should render without errors
+      // Component should renderWithProviders without errors
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
     });
   });
 
   describe("Automatic Threat Analysis", () => {
     test("should display threat warning when threats are detected in kids mode", async () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -145,7 +175,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
 
       // Wait for component to initialize and potentially detect threats
       await waitFor(() => {
-        // The component should be rendered
+        // The component should be renderWithProvidersed
         expect(screen.getByTestId("chessboard")).toBeInTheDocument();
       });
 
@@ -158,7 +188,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     });
 
     test("should not display threat warnings when not in kids mode", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={nonKidsEngineSettings}
           uiSettings={nonKidsUISettings}
@@ -176,7 +206,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
         showThreatHighlight: false,
       };
 
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={settingsWithoutThreatHighlight}
@@ -191,7 +221,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
 
   describe("Game Status Messages", () => {
     test("should display kids-friendly messages in kids mode", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -204,7 +234,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     });
 
     test("should handle square clicks and update game state", async () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -222,7 +252,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
 
   describe("Component Integration", () => {
     test("should render chessboard with correct initial position", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -239,7 +269,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     test("should call onGameEnd callback when provided", () => {
       const mockOnGameEnd = jest.fn();
 
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -247,12 +277,12 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
         />
       );
 
-      // Component should render without calling onGameEnd initially
+      // Component should renderWithProviders without calling onGameEnd initially
       expect(mockOnGameEnd).not.toHaveBeenCalled();
     });
 
     test("should handle promotion dialog correctly", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -267,25 +297,27 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
 
   describe("Settings Integration", () => {
     test("should respect kidsMode setting for hints display", () => {
-      const { rerender } = render(
+      const { rerender } = renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
         />
       );
 
-      // Component should render successfully
+      // Component should renderWithProviders successfully
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
 
       // Switch to non-kids mode
       rerender(
-        <ComputerChessBoard
-          settings={nonKidsEngineSettings}
-          uiSettings={nonKidsUISettings}
-        />
+        <Provider store={createTestStore()}>
+          <ComputerChessBoard
+            settings={nonKidsEngineSettings}
+            uiSettings={nonKidsUISettings}
+          />
+        </Provider>
       );
 
-      // Component should still render successfully
+      // Component should still renderWithProviders successfully
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
     });
 
@@ -295,21 +327,21 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
         showMoveHints: false,
       };
 
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={settingsWithoutHints}
         />
       );
 
-      // Component should render successfully
+      // Component should renderWithProviders successfully
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
     });
   });
 
   describe("Engine Integration", () => {
     test("should initialize engine on mount", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -322,7 +354,7 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     });
 
     test("should set engine options", () => {
-      render(
+      renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
@@ -335,14 +367,14 @@ describe("ComputerChessBoard - Kids Mode Testing", () => {
     });
 
     test("should quit engine on unmount", () => {
-      const { unmount } = render(
+      const { unmount } = renderWithProviders(
         <ComputerChessBoard
           settings={kidsEngineSettings}
           uiSettings={kidsUISettings}
         />
       );
 
-      // Component should be rendered initially
+      // Component should be renderWithProvidersed initially
       expect(screen.getByTestId("chessboard")).toBeInTheDocument();
 
       unmount();
