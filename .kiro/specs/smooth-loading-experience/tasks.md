@@ -39,20 +39,20 @@
   - Write unit tests for enhanced settingsSlice loading integration
   - _Requirements: 3.1, 3.2, 5.1, 5.2_
 
-- [ ] 6. Redesign ProtectedRoute component
+- [ ] 6. Update LazyRoute component to use overlay loading
 
-  - Remove the white "Loading..." div and replace with LoadingOverlay integration
-  - Implement initialCheckComplete logic to prevent flickering on first load
-  - Add useLoading hook integration for authentication loading states
-  - Write unit tests for ProtectedRoute without flickering behavior
-  - _Requirements: 1.1, 1.2, 3.1, 3.4_
+  - Replace LoadingContainer gradient background with transparent overlay approach
+  - Modify LazyRoute fallback to show Loader as overlay on top of previous page content
+  - Remove full-screen gradient background that causes jarring transitions
+  - Write unit tests for LazyRoute overlay loading behavior
+  - _Requirements: 1.1, 1.2, 4.3, 4.4_
 
-- [ ] 7. Update AuthRestore component
+- [ ] 7. Update AuthGuard component for smooth authentication
 
-  - Integrate AuthRestore with the new loading system using appropriate loading keys
+  - Integrate AuthGuard with the new loading system for authentication checks
   - Add proper error handling that clears loading states on authentication failures
   - Implement background token validation without showing loading indicators
-  - Write unit tests for AuthRestore loading state management
+  - Write unit tests for AuthGuard loading state management
   - _Requirements: 3.1, 3.2, 3.3_
 
 - [ ] 8. Integrate LoadingProvider into App component

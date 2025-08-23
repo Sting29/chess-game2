@@ -47,8 +47,8 @@ The chess application currently experiences flickering and jarring loading state
 
 1. WHEN loading indicators are necessary THEN the system SHALL use the existing Loader.tsx component for consistency
 2. WHEN showing loading states THEN the system SHALL display the loader as a centered overlay on top of the current page content
-3. WHEN loading indicators appear THEN they SHALL maintain the current page's background and context rather than replacing it with a white screen
-4. IF a loading state must be shown THEN it SHALL use the established Loader component positioned centrally over the existing content
+3. WHEN loading indicators appear THEN they SHALL maintain the current page's background and context rather than replacing it with a gradient background screen
+4. IF a loading state must be shown THEN it SHALL use the established Loader component positioned centrally over the existing content without changing the page background
 
 ### Requirement 5
 
