@@ -3,27 +3,8 @@
  */
 
 import React, { Suspense } from "react";
-import styled from "styled-components";
 import { LazyErrorBoundary } from "./LazyErrorBoundary";
-import { Loader } from "src/components/Loader/Loader";
-
-const LoadingContainer = styled.div`
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: fadeIn 0.3s ease-in-out;
-
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-`;
+import FullScreenLoader from "src/components/FullScreenLoader/FullScreenLoader";
 
 interface LazyRouteProps {
   children: React.ReactElement;
@@ -32,16 +13,13 @@ interface LazyRouteProps {
 
 /**
  * Компонент-обертка для lazy компонентов с Suspense
+ * Использует FullScreenLoader для полноэкранной загрузки
  */
 export function LazyRoute({
   children,
   fallback,
 }: LazyRouteProps): React.ReactElement {
-  const defaultFallback = fallback || (
-    <LoadingContainer>
-      <Loader />
-    </LoadingContainer>
-  );
+  const defaultFallback = fallback || <FullScreenLoader size="medium" />;
 
   return (
     <LazyErrorBoundary>

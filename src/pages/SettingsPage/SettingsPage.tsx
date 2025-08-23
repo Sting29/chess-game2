@@ -22,6 +22,7 @@ import {
 import { FIGURES_SETS } from "src/data/figures-sets";
 import { languageConfig } from "src/data/languageConfig";
 import { ChessSet, Language } from "src/services/types";
+import { useLoading, LOADING_KEYS } from "src/hooks/useLoading";
 
 function SettingsPage() {
   const { t, i18n } = useTranslation();
@@ -29,6 +30,7 @@ function SettingsPage() {
   const { language, chessSet, isAuthenticated } = useSelector(
     (state: RootState) => state.settings
   );
+  const { withLoading } = useLoading();
 
   // Синхронизируем язык redux <-> i18next
   useEffect(() => {
@@ -42,15 +44,21 @@ function SettingsPage() {
     i18n.changeLanguage(lang);
     dispatch(setLanguage(lang));
 
-    // If authenticated, also save to API
+    // If authenticated, also save to API with loading indicator
     if (isAuthenticated) {
-      try {
-        await dispatch(updateLanguageAsync(lang as Language)).unwrap();
-        console.log("Language saved to API successfully");
-      } catch (error) {
-        console.error("Failed to save language to API:", error);
-        // UI is already updated, so no need to revert
-      }
+      await withLoading(
+        LOADING_KEYS.LANGUAGE_UPDATE,
+        async () => {
+          try {
+            await dispatch(updateLanguageAsync(lang as Language)).unwrap();
+            console.log("Language saved to API successfully");
+          } catch (error) {
+            console.error("Failed to save language to API:", error);
+            // UI is already updated, so no need to revert
+          }
+        },
+        t("updating_language")
+      );
     }
   };
 
@@ -58,17 +66,24 @@ function SettingsPage() {
     // Immediately update UI for instant feedback
     dispatch(setChessSet(set));
     console.log("Chess set changed to:", set);
-    // If authenticated, also save to API
+
+    // If authenticated, also save to API with loading indicator
     if (isAuthenticated) {
-      try {
-        // Convert local chess set ID to API format
-        const apiChessSet = `chessSet${set}` as ChessSet;
-        await dispatch(updateChessSetAsync(apiChessSet)).unwrap();
-        console.log("Chess set saved to API successfully");
-      } catch (error) {
-        console.error("Failed to save chess set to API:", error);
-        // UI is already updated, so no need to revert
-      }
+      await withLoading(
+        LOADING_KEYS.CHESS_SET_UPDATE,
+        async () => {
+          try {
+            // Convert local chess set ID to API format
+            const apiChessSet = `chessSet${set}` as ChessSet;
+            await dispatch(updateChessSetAsync(apiChessSet)).unwrap();
+            console.log("Chess set saved to API successfully");
+          } catch (error) {
+            console.error("Failed to save chess set to API:", error);
+            // UI is already updated, so no need to revert
+          }
+        },
+        t("updating_chess_set")
+      );
     }
   };
 

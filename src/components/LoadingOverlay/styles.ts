@@ -1,84 +1,62 @@
+/**
+ * Стили для LoadingOverlay компонента
+ */
+
 import styled from "styled-components";
 
-export const OverlayContainer = styled.div`
-  position: relative;
-`;
-
-export const OverlayBackdrop = styled.div`
-  position: absolute;
+export const OverlayContainer = styled.div<{ $backdrop: boolean }>`
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(2px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
-
-  /* High contrast mode support */
-  @media (prefers-contrast: high) {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: none;
-    border: 2px solid #000000;
-  }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    backdrop-filter: none;
-  }
-
-  /* Focus styles for keyboard navigation */
-  &:focus {
-    outline: 2px solid #0066cc;
-    outline-offset: -2px;
-  }
-
-  @media (prefers-contrast: high) {
-    &:focus {
-      outline: 3px solid #000000;
-    }
-  }
-`;
-
-export const LoaderWrapper = styled.div`
+  z-index: 9999;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px;
+  justify-content: center;
+
+  /* Backdrop с размытием */
+  background-color: ${(props) =>
+    props.$backdrop ? "rgba(102, 126, 234, 0.9)" : "transparent"};
+  backdrop-filter: ${(props) => (props.$backdrop ? "blur(4px)" : "none")};
+
+  /* Плавное появление */
+  animation: overlayFadeIn 0.2s ease-in-out;
+
+  @keyframes overlayFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Поддержка reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    backdrop-filter: none;
+  }
+
+  /* Высокий контраст */
+  @media (prefers-contrast: high) {
+    background-color: ${(props) =>
+      props.$backdrop ? "rgba(0, 0, 0, 0.8)" : "transparent"};
+  }
 `;
 
-export const Message = styled.div`
+export const LoadingMessage = styled.div`
+  margin-top: 16px;
   color: white;
   font-size: 16px;
   font-weight: 500;
   text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
 
-  /* High contrast mode support */
+  /* Высокий контраст */
   @media (prefers-contrast: high) {
-    color: #000000;
-    background-color: #ffffff;
-    padding: 8px 16px;
-    border-radius: 4px;
-    text-shadow: none;
+    color: white;
+    text-shadow: 0 0 4px rgba(0, 0, 0, 0.8);
   }
-
-  /* Reduced motion support */
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-`;
-
-export const ScreenReaderOnly = styled.div`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
 `;

@@ -4,9 +4,16 @@ import { GlobalStyles } from "src/styles/GlobalStyles";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, AppDispatch } from "src/store";
-import { setLanguage, loadUserProfile } from "./store/settingsSlice";
+import {
+  setLanguage,
+  loadUserProfile,
+  setInitialCheckComplete,
+} from "./store/settingsSlice";
 import { useTranslation } from "react-i18next";
 import { authService } from "src/services";
+import { LoadingProvider } from "src/contexts/LoadingProvider";
+import FullScreenLoader from "src/components/FullScreenLoader/FullScreenLoader";
+import { useLoading } from "src/hooks/useLoading";
 // Removed Loader import as per loader refactoring requirements
 
 function LanguageSync() {
@@ -28,51 +35,63 @@ function LanguageSync() {
 
 function AuthRestore() {
   const dispatch = useDispatch<AppDispatch>();
-  const { isAuthenticated, loading, user } = useSelector(
+  const { initialCheckComplete } = useSelector(
     (state: RootState) => state.settings
   );
 
   useEffect(() => {
     const restoreSession = async () => {
-      // Check if user has valid tokens and is not already authenticated and not already loading
-      if (
-        !isAuthenticated &&
-        !loading &&
-        !user &&
-        authService.isAuthenticated()
-      ) {
+      // Skip if initial check is already complete
+      if (initialCheckComplete) {
+        return;
+      }
+
+      // Check if user has valid tokens
+      if (authService.isAuthenticated()) {
         try {
           // Try to load user profile to restore session
           await dispatch(loadUserProfile()).unwrap();
         } catch (error) {
-          // If profile loading fails, clear auth state
+          // If profile loading fails, clear auth state and mark check complete
           console.error("Failed to restore session:", error);
           authService.clearAuthState();
+          dispatch(setInitialCheckComplete(true));
         }
+      } else {
+        // If no valid tokens, mark initial check as complete immediately
+        dispatch(setInitialCheckComplete(true));
       }
     };
 
     restoreSession();
-  }, [dispatch, isAuthenticated, loading, user]);
+  }, [dispatch, initialCheckComplete]);
 
   return null;
 }
 
-function App() {
-  // Removed loading selector as per loader refactoring requirements
-
-  // Removed profile loading indicator as per loader refactoring requirements
-  // Only login and logout operations should show loading indicators
+function AppContent() {
+  const { isGlobalLoading, loadingMessage } = useLoading();
 
   return (
-    <GlobalErrorBoundary>
-      <div className="app">
-        <GlobalStyles />
-        <LanguageSync />
-        <AuthRestore />
+    <div className="app">
+      <GlobalStyles />
+      <LanguageSync />
+      <AuthRestore />
 
-        <AppRouter />
-      </div>
+      <AppRouter />
+
+      {/* Глобальный FullScreenLoader */}
+      {isGlobalLoading && <FullScreenLoader message={loadingMessage} />}
+    </div>
+  );
+}
+
+function App() {
+  return (
+    <GlobalErrorBoundary>
+      <LoadingProvider>
+        <AppContent />
+      </LoadingProvider>
     </GlobalErrorBoundary>
   );
 }

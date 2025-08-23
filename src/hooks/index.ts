@@ -14,3 +14,7 @@ export * from "./useTypedNavigate";
 
 // Хуки для мета-данных
 export * from "./usePageMetadata";
+
+// Хуки для загрузки
+export * from "./useLoading";
+export * from "./useLoadingCleanup";

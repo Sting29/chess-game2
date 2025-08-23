@@ -21,6 +21,7 @@ export type SettingsState = {
   isAuthenticated: boolean;
   loading: boolean;
   error?: string;
+  initialCheckComplete: boolean;
 };
 
 const getInitialSettings = (): SettingsState => {
@@ -37,6 +38,7 @@ const getInitialSettings = (): SettingsState => {
           isAuthenticated: parsed.isAuthenticated || false,
           loading: false,
           error: undefined,
+          initialCheckComplete: false,
         };
       } catch {}
     }
@@ -46,6 +48,7 @@ const getInitialSettings = (): SettingsState => {
     chessSet: "1",
     isAuthenticated: false,
     loading: false,
+    initialCheckComplete: false,
   };
 };
 
@@ -199,6 +202,9 @@ const settingsSlice = createSlice({
       state.error = undefined;
       state.loading = false;
     },
+    setInitialCheckComplete(state, action: PayloadAction<boolean>) {
+      state.initialCheckComplete = action.payload;
+    },
     updateUserProfile(state, action: PayloadAction<User>) {
       if (state.user) {
         state.user = action.payload;
@@ -273,6 +279,7 @@ const settingsSlice = createSlice({
         state.user = action.payload;
         state.isAuthenticated = true;
         state.error = undefined;
+        state.initialCheckComplete = true;
         // Sync language and chess set from user profile
         if (action.payload.profile?.language) {
           state.language = action.payload.profile.language;
@@ -286,6 +293,7 @@ const settingsSlice = createSlice({
       .addCase(loadUserProfile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload as string;
+        state.initialCheckComplete = true;
       });
 
     // Update user profile
@@ -389,6 +397,7 @@ export const {
   setError,
   clearAuthState,
   updateUserProfile,
+  setInitialCheckComplete,
 } = settingsSlice.actions;
 export default settingsSlice.reducer;
 

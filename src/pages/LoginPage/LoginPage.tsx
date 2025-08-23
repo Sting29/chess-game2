@@ -106,51 +106,54 @@ export function LoginPage() {
           <Image src={Boy} height={385} />
         </BoyContainer>
 
-        <LoadingOverlay isVisible={loading} message={t("logging_in")}>
-          <LoginForm onSubmit={handleLogin} aria-label={t("login_and_play")}>
-            {error && <ErrorMessage>{t(error) || error}</ErrorMessage>}
+        <LoginForm onSubmit={handleLogin} aria-label={t("login_and_play")}>
+          {error && <ErrorMessage>{t(error) || error}</ErrorMessage>}
 
-            <FormGroup>
-              <SrOnly htmlFor="username">{t("username")}</SrOnly>
-              <Input
-                id="username"
-                name="username"
-                type="text"
-                autoComplete="username"
-                required
-                placeholder={t("username")}
-                value={formData.username}
-                onChange={handleInputChange}
-                disabled={loading}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <SrOnly htmlFor="password">{t("password")}</SrOnly>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                placeholder={t("password")}
-                value={formData.password}
-                onChange={handleInputChange}
-                disabled={loading}
-              />
-            </FormGroup>
-
-            <PlayButton
-              type="submit"
-              aria-label={t("login_and_play")}
-              disabled={
-                loading ||
-                !formData.username.trim() ||
-                !formData.password.trim()
-              }
+          <FormGroup>
+            <SrOnly htmlFor="username">{t("username")}</SrOnly>
+            <Input
+              id="username"
+              name="username"
+              type="text"
+              autoComplete="username"
+              required
+              placeholder={t("username")}
+              value={formData.username}
+              onChange={handleInputChange}
+              disabled={loading}
             />
-          </LoginForm>
-        </LoadingOverlay>
+          </FormGroup>
+
+          <FormGroup>
+            <SrOnly htmlFor="password">{t("password")}</SrOnly>
+            <Input
+              id="password"
+              name="password"
+              type="password"
+              autoComplete="current-password"
+              required
+              placeholder={t("password")}
+              value={formData.password}
+              onChange={handleInputChange}
+              disabled={loading}
+            />
+          </FormGroup>
+
+          <PlayButton
+            type="submit"
+            aria-label={t("login_and_play")}
+            disabled={
+              loading || !formData.username.trim() || !formData.password.trim()
+            }
+          />
+        </LoginForm>
+
+        {/* LoadingOverlay as separate overlay component */}
+        <LoadingOverlay
+          show={loading}
+          message={t("logging_in")}
+          backdrop={true}
+        />
       </LoginBox>
     </LoginContainer>
   );

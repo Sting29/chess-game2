@@ -23,7 +23,15 @@ export function AuthGuard({
   fallbackPath = ROUTES.ROOT,
   requireAuth = true,
 }: AuthGuardProps): React.ReactElement {
-  const { isAuthenticated } = useSelector((state: RootState) => state.settings);
+  const { isAuthenticated, initialCheckComplete } = useSelector(
+    (state: RootState) => state.settings
+  );
+
+  // Если начальная проверка не завершена, не показываем ничего
+  // RootRoute покажет загрузчик на корневом маршруте
+  if (!initialCheckComplete) {
+    return <></>;
+  }
 
   // Для защищенных маршрутов - редирект если не аутентифицирован
   if (requireAuth && !isAuthenticated) {
