@@ -4,7 +4,7 @@ import { RootState } from "src/store";
 import { LoginPage } from "src/pages/LoginPage/LoginPage";
 import ChessTutorial from "src/pages/ChessTutorial/ChessTutorial";
 import { Layout } from "src/Layout/Layout";
-import Loader from "src/components/Loader/Loader";
+// Removed Loader import as per loader refactoring requirements
 
 /**
  * RootRoute component that conditionally renders LoginPage or ChessTutorial
@@ -12,14 +12,10 @@ import Loader from "src/components/Loader/Loader";
  * and eliminates the need for a separate "/login" route.
  */
 export function RootRoute(): React.ReactElement {
-  const { isAuthenticated, loading } = useSelector(
-    (state: RootState) => state.settings
-  );
+  const { isAuthenticated } = useSelector((state: RootState) => state.settings);
 
-  // Show loading state while authentication is being checked
-  if (loading) {
-    return <Loader />;
-  }
+  // Removed authentication loading state as per loader refactoring requirements
+  // Only login and logout operations should show loading indicators
 
   // Show LoginPage without Layout wrapper for unauthenticated users
   if (!isAuthenticated) {

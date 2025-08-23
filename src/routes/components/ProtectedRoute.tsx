@@ -4,7 +4,6 @@
  */
 
 import React from "react";
-import { RouteGuard } from "./RouteGuard";
 import { AuthGuard } from "./AuthGuard";
 import { LazyRoute } from "./LazyRoute";
 import { LayoutWrapper } from "./LayoutWrapper";
@@ -18,7 +17,7 @@ interface ProtectedRouteProps {
 
 /**
  * Композитный компонент для защищенных маршрутов
- * Объединяет RouteGuard, AuthGuard, LazyRoute и LayoutWrapper
+ * Объединяет AuthGuard, LazyRoute и LayoutWrapper
  */
 export function ProtectedRoute({
   children,
@@ -27,12 +26,10 @@ export function ProtectedRoute({
   requireAuth = true,
 }: ProtectedRouteProps): React.ReactElement {
   return (
-    <RouteGuard>
-      <AuthGuard fallbackPath={fallbackPath} requireAuth={requireAuth}>
-        <LayoutWrapper useLayout={useLayout}>
-          <LazyRoute>{children}</LazyRoute>
-        </LayoutWrapper>
-      </AuthGuard>
-    </RouteGuard>
+    <AuthGuard fallbackPath={fallbackPath} requireAuth={requireAuth}>
+      <LayoutWrapper useLayout={useLayout}>
+        <LazyRoute>{children}</LazyRoute>
+      </LayoutWrapper>
+    </AuthGuard>
   );
 }

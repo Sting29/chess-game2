@@ -33,7 +33,7 @@ function Account() {
 
   // Get user data from Redux store
   const user = useSelector((state: RootState) => state.settings.user);
-  const loading = useSelector((state: RootState) => state.settings.loading);
+  // Removed loading selector as per loader refactoring requirements
 
   // Form fields state
   const [name, setName] = useState("");
@@ -113,11 +113,13 @@ function Account() {
     }
   };
 
-  if (loading && !user) {
+  // Removed loading state display as per loader refactoring requirements
+  // Only login and logout operations should show loading indicators
+  if (!user) {
     return (
       <PageContainer>
         <PageTitle title={t("account_settings")} />
-        <div>Loading...</div>
+        <div>Loading user profile...</div>
       </PageContainer>
     );
   }
@@ -152,7 +154,7 @@ function Account() {
               onChange={handleNameChange}
               onBlur={handleNameBlur}
               placeholder={t("name")}
-              disabled={loading}
+              disabled={false}
             />
           </InputField>
 
@@ -166,7 +168,7 @@ function Account() {
               placeholder={t("age")}
               min="1"
               max="100"
-              disabled={loading}
+              disabled={false}
             />
           </InputField>
 

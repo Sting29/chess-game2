@@ -7,7 +7,7 @@ import { RootState, AppDispatch } from "src/store";
 import { setLanguage, loadUserProfile } from "./store/settingsSlice";
 import { useTranslation } from "react-i18next";
 import { authService } from "src/services";
-import { Loader } from "src/components/Loader/Loader";
+// Removed Loader import as per loader refactoring requirements
 
 function LanguageSync() {
   const { i18n } = useTranslation();
@@ -59,12 +59,10 @@ function AuthRestore() {
 }
 
 function App() {
-  const { loading, isAuthenticated, user } = useSelector(
-    (state: RootState) => state.settings
-  );
+  // Removed loading selector as per loader refactoring requirements
 
-  // Show loader if user is authenticated but profile is still loading
-  const shouldShowLoader = loading && isAuthenticated && !user;
+  // Removed profile loading indicator as per loader refactoring requirements
+  // Only login and logout operations should show loading indicators
 
   return (
     <GlobalErrorBoundary>
@@ -73,7 +71,7 @@ function App() {
         <LanguageSync />
         <AuthRestore />
 
-        {shouldShowLoader ? <Loader /> : <AppRouter />}
+        <AppRouter />
       </div>
     </GlobalErrorBoundary>
   );
