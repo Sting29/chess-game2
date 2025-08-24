@@ -4,23 +4,17 @@ import { CHESS_PUZZLES } from "../../data/puzzles";
 import {
   TutorialPage,
   PuzzleCategories,
-  PuzzleBoardButton,
   // PuzzleListWrap,
   PuzzleItem,
-  PuzzleCount,
-  PuzzleCategory,
   PuzzleCategoryTitle,
-  PuzzleCategoryDescriptionWrap,
-  PuzzleCategoryDescription,
-  PuzzleCountText,
 } from "./styles";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
-import Image from "src/components/Image/Image";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { useTranslation } from "react-i18next";
 import TutorialSlider from "src/components/TutorialSlider/TutorialSlider";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
+import PuzzleCategoryCard from "src/components/PuzzleCategoryCard/PuzzleCategoryCard";
 
 const visibleCountMap = {
   mobile: 1,
@@ -94,27 +88,11 @@ function PuzzleList() {
         {!categoryId ? (
           <TutorialSlider visibleCount={visibleCount} direction="vertical">
             {CHESS_PUZZLES.map((category) => (
-              <PuzzleBoardButton
+              <PuzzleCategoryCard
                 key={category.id}
-                onClick={() => handleCategoryClick(category.id)}
-              >
-                <PuzzleCategory>
-                  <PuzzleCategoryTitle>
-                    {t(category.titleKey)}
-                  </PuzzleCategoryTitle>
-                  <PuzzleCategoryDescriptionWrap>
-                    <PuzzleCategoryDescription>
-                      {t(category.descriptionKey)}
-                    </PuzzleCategoryDescription>
-                    <PuzzleCount>
-                      <PuzzleCountText>
-                        {t("tasks")}: {category.puzzles.length}
-                      </PuzzleCountText>
-                    </PuzzleCount>
-                  </PuzzleCategoryDescriptionWrap>
-                </PuzzleCategory>
-                <Image src={category.image} alt="" width={100} height={100} />
-              </PuzzleBoardButton>
+                category={category}
+                onClick={handleCategoryClick}
+              />
             ))}
           </TutorialSlider>
         ) : !category ? (
