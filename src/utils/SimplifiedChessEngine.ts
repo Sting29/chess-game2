@@ -523,11 +523,15 @@ export class SimplifiedChessEngine {
     if (!this.hasBlackPieces()) {
       return "white_wins";
     }
-    // 2. Check for stalemate - are there any legal moves
+    // 2. Check for victory - has white pawn reached 8th rank (promotion)
+    if (this.hasWhitePawnOnEighthRank()) {
+      return "white_wins";
+    }
+    // 3. Check for stalemate - are there any legal moves
     if (!this.hasLegalMoves()) {
       return "draw";
     }
-    // 3. If neither condition is met - game continues
+    // 4. If neither condition is met - game continues
     return "playing";
   }
 
@@ -550,5 +554,18 @@ export class SimplifiedChessEngine {
 
   getPiece(square: Square): string | undefined {
     return this.position.get(square);
+  }
+
+  hasWhitePawnOnEighthRank(): boolean {
+    // Check if there's a white pawn or promoted piece on the 8th rank
+    for (let file = 0; file < 8; file++) {
+      const square = this.algebraic(file, 7); // 8th rank (index 7)
+      const piece = this.position.get(square);
+      if (piece && piece === piece.toUpperCase() && piece !== "K") {
+        // Any white piece (except king) on 8th rank means promotion occurred
+        return true;
+      }
+    }
+    return false;
   }
 }

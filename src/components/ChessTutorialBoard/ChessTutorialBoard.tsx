@@ -38,7 +38,17 @@ export function ChessTutorialBoard({
 
   // Change message based on game status
   if (gameStatus === "white_wins") {
-    turnMessage = "White wins! All black pieces captured";
+    // Check if victory was due to promotion or capturing all pieces
+    const hasBlackPieces = game.hasBlackPieces();
+    const hasWhitePawnOnEighthRank = game.hasWhitePawnOnEighthRank();
+
+    if (!hasBlackPieces) {
+      turnMessage = "White wins! All black pieces captured";
+    } else if (hasWhitePawnOnEighthRank) {
+      turnMessage = "White wins! Pawn promoted to Queen";
+    } else {
+      turnMessage = "White wins!";
+    }
   } else if (gameStatus === "draw") {
     turnMessage = "Draw! No more possible moves";
   }
@@ -82,10 +92,28 @@ export function ChessTutorialBoard({
     const piece = game.getPiece(sourceSquare);
     if (!piece) return false;
 
-    // Check if this is a promotion move
+    // Check if this is a promotion move - auto-promote to Queen
     if (isPromotionMove(sourceSquare, targetSquare, piece)) {
-      setPromotionData({ sourceSquare, targetSquare });
-      return true;
+      const result = game.move(sourceSquare, targetSquare, "q"); // Auto-promote to Queen
+      if (result) {
+        const newGame = new SimplifiedChessEngine(game.fen());
+        setGame(newGame);
+        setHighlightSquares([]);
+        setSelectedSquare(null);
+        setPromotionData(null);
+
+        if (result.captured) {
+          onCapture?.(targetSquare);
+        }
+
+        const newGameStatus = newGame.getGameStatus();
+        setGameStatus(newGameStatus);
+        if (newGameStatus !== "playing") {
+          onComplete?.(newGameStatus);
+        }
+
+        return true;
+      }
     }
 
     const result = game.move(sourceSquare, targetSquare);
@@ -139,12 +167,26 @@ export function ChessTutorialBoard({
       const piece = game.getPiece(selectedSquare);
       if (!piece) return;
 
-      // Check if this is a promotion move
+      // Check if this is a promotion move - auto-promote to Queen
       if (isPromotionMove(selectedSquare, square, piece)) {
-        setPromotionData({
-          sourceSquare: selectedSquare,
-          targetSquare: square,
-        });
+        const result = game.move(selectedSquare, square, "q"); // Auto-promote to Queen
+        if (result) {
+          const newGame = new SimplifiedChessEngine(game.fen());
+          setGame(newGame);
+          setHighlightSquares([]);
+          setSelectedSquare(null);
+          setPromotionData(null);
+
+          if (result.captured) {
+            onCapture?.(square);
+          }
+
+          const newGameStatus = newGame.getGameStatus();
+          setGameStatus(newGameStatus);
+          if (newGameStatus !== "playing") {
+            onComplete?.(newGameStatus);
+          }
+        }
         return;
       }
 
