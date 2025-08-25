@@ -94,9 +94,7 @@ export const BoardSquare = styled.div<BoardSquareProps>`
   transition: all 0.2s ease;
 
   background-color: ${({ $color, $contentType, $active }) => {
-    if ($contentType === "wall") return "#8B4513";
     if ($contentType === "exit") return $active ? "#90EE90" : "#FFB6C1";
-    if ($contentType === "checkpoint") return "#87CEEB";
     return $color === "light" ? "#dededc" : "#438dce";
   }};
 

@@ -1,6 +1,8 @@
 import React from "react";
 import { PieceRenderer } from "./PieceRenderer";
-import starImage from "../../../assets/images/star.png";
+import checkpointImage from "src/assets/images/star.png";
+import wallImage from "src/assets/images/wall.png";
+import exitImage from "src/assets/images/door.png";
 
 interface SquareContentProps {
   type: "piece" | "wall" | "exit" | "checkpoint" | "empty";
@@ -19,28 +21,34 @@ export const SquareContent: React.FC<SquareContentProps> = ({
 
     case "wall":
       return (
-        <div style={{ color: "white", fontWeight: "bold", fontSize: "20px" }}>
-          {content}
-        </div>
+        <img
+          src={wallImage}
+          alt="Checkpoint"
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+          }}
+        />
       );
 
     case "exit":
       return (
-        <div
+        <img
+          src={exitImage}
+          alt="Checkpoint"
           style={{
-            color: active ? "green" : "red",
-            fontWeight: "bold",
-            fontSize: "20px",
+            width: "80%",
+            height: "80%",
+            objectFit: "contain",
           }}
-        >
-          {content}
-        </div>
+        />
       );
 
     case "checkpoint":
       return (
         <img
-          src={starImage}
+          src={checkpointImage}
           alt="Checkpoint"
           style={{
             width: "80%",
