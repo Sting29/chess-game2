@@ -80,45 +80,6 @@ export interface UserSession {
   isCurrent: boolean;
 }
 
-// Progress tracking types
-export interface Progress {
-  id: string;
-  userId: string;
-  sections: SectionProgress[];
-  totalProgress: number; // общий прогресс в процентах
-  lastUpdated: string;
-}
-
-export interface SectionProgress {
-  sectionId: string;
-  sectionType: ProgressSectionType;
-  completed: boolean;
-  items: ItemProgress[];
-  progress: number; // прогресс секции в процентах
-}
-
-export interface ItemProgress {
-  itemId: string;
-  completed: boolean;
-  attempts: number;
-  bestScore?: number;
-  completedAt?: string;
-}
-
-export enum ProgressSectionType {
-  HowToMove = "howToMove",
-  HowToPlay = "howToPlay",
-  Puzzles = "puzzles",
-  Lessons = "lessons",
-}
-
-export interface UpdateProgressRequest {
-  sectionId: string;
-  itemId: string;
-  completed: boolean;
-  score?: number;
-}
-
 // API Error types
 export interface ApiErrorResponse {
   message: string;
