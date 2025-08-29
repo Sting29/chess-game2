@@ -10,9 +10,10 @@ import {
   UpdateProfileRequest,
   ChessSet,
   Language,
-} from "../services/types";
-import { authService, userService } from "../services";
-import { Gender, Avatar } from "../services/types";
+  Gender,
+  Avatar,
+} from "../api";
+import { authService, userService } from "../api";
 
 export type SettingsState = {
   language: string;

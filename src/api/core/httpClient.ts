@@ -152,7 +152,9 @@ class HttpClient {
   private async handleAuthenticationFailure(error: AxiosError): Promise<void> {
     try {
       // Import authService dynamically to avoid circular dependency
-      const { default: authService } = await import("./authService");
+      const { default: authService } = await import(
+        "../services/auth/authService"
+      );
 
       // Let AuthService handle the error
       authService.handleAuthError(error);

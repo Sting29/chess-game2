@@ -6,7 +6,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "../../../i18n";
 import UserAvatar from "../UserAvatar";
 import settingsReducer from "../../../store/settingsSlice";
-import { User } from "../../../services/types";
+import { User } from "../../../api";
 
 // Mock axios to prevent import issues
 jest.mock("axios", () => ({

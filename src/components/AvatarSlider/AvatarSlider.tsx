@@ -16,7 +16,7 @@ import {
   avatarSelectionToIndex,
   getDefaultAvatarSelection,
 } from "src/utils/avatarUtils";
-import { Gender, Avatar } from "src/services/types";
+import { Gender, Avatar } from "src/api";
 
 interface AvatarSliderProps {
   initialGender?: Gender;

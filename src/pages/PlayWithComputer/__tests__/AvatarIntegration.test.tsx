@@ -6,7 +6,7 @@ import { I18nextProvider } from "react-i18next";
 import i18n from "../../../i18n";
 import PlayWithComputer from "../PlayWithComputer";
 import settingsReducer from "../../../store/settingsSlice";
-import { User } from "../../../services/types";
+import { User } from "../../../api";
 
 // Mock react-router-dom
 jest.mock("react-router-dom", () => ({

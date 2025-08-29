@@ -1,6 +1,6 @@
-import tokenManager from "./tokenManager";
-import authService from "./authService";
-import authLogger from "./authLogger";
+import tokenManager from "../../core/tokenManager";
+import authService from "../auth/authService";
+import authLogger from "../../core/authLogger";
 
 // Types for session experience
 export interface SessionExpirationNotification {

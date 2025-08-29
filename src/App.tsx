@@ -10,7 +10,7 @@ import {
   setInitialCheckComplete,
 } from "./store/settingsSlice";
 import { useTranslation } from "react-i18next";
-import { authService } from "src/services";
+import { authService } from "src/api";
 import { LoadingProvider } from "src/contexts/LoadingProvider";
 import FullScreenLoader from "src/components/FullScreenLoader/FullScreenLoader";
 import { useLoading } from "src/hooks/useLoading";

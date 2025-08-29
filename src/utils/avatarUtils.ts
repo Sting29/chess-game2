@@ -7,7 +7,7 @@ import girlSet1 from "src/assets/avatars/girl_set_1.png";
 import girlSet2 from "src/assets/avatars/girl_set_2.png";
 import girlSet3 from "src/assets/avatars/girl_set_3.png";
 import girlSet4 from "src/assets/avatars/girl_set_4.png";
-import { Avatar, Gender, AvatarSelection } from "src/services/types";
+import { Avatar, Gender, AvatarSelection } from "src/api";
 
 export const avatars = [
   boySet1, // index 0: male, avatar1

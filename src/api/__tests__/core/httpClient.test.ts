@@ -1,13 +1,13 @@
-import httpClient from "../httpClient";
-import tokenManager from "../tokenManager";
-import tokenRefreshManager from "../tokenRefreshManager";
+import httpClient from "../../core/httpClient";
+import tokenManager from "../../core/tokenManager";
+import tokenRefreshManager from "../../core/tokenRefreshManager";
 import { AxiosError } from "axios";
 
 // Mock dependencies
-jest.mock("../tokenManager");
-jest.mock("../tokenRefreshManager");
-jest.mock("../errorHandler");
-jest.mock("../authService", () => ({
+jest.mock("../../core/tokenManager");
+jest.mock("../../core/tokenRefreshManager");
+jest.mock("../../core/errorHandler");
+jest.mock("../../services/auth/authService", () => ({
   default: {
     handleAuthError: jest.fn(),
   },

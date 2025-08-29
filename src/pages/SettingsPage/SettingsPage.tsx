@@ -21,7 +21,7 @@ import {
 } from "src/store/settingsSlice";
 import { FIGURES_SETS } from "src/data/figures-sets";
 import { languageConfig } from "src/data/languageConfig";
-import { ChessSet, Language } from "src/services/types";
+import { ChessSet, Language } from "src/api";
 import { useLoading, LOADING_KEYS } from "src/hooks/useLoading";
 
 function SettingsPage() {

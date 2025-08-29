@@ -24,7 +24,7 @@ import {
   updateAvatarAndGenderAsync,
   updateUserProfileAsync,
 } from "src/store/settingsSlice";
-import { Gender, Avatar } from "src/services/types";
+import { Gender, Avatar } from "src/api";
 import { getDefaultAvatarSelection } from "src/utils/avatarUtils";
 
 function Account() {

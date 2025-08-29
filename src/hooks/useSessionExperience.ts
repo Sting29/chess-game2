@@ -1,8 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import sessionExperienceManager, {
+import {
+  sessionExperienceManager,
   SessionExpirationNotification,
   SessionState,
-} from "../services/sessionExperienceManager";
+} from "../api";
 
 // Hook for managing session experience in React components
 export const useSessionExperience = () => {

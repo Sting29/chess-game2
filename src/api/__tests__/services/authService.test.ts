@@ -1,14 +1,14 @@
-import authService from "../authService";
-import tokenManager from "../tokenManager";
-import tokenRefreshManager from "../tokenRefreshManager";
-import httpClient from "../httpClient";
-import { LoginRequest, AuthResponse } from "../types";
+import authService from "../../services/auth/authService";
+import tokenManager from "../../core/tokenManager";
+import tokenRefreshManager from "../../core/tokenRefreshManager";
+import httpClient from "../../core/httpClient";
+import { LoginRequest, AuthResponse } from "../../services/auth/types";
 
 // Mock dependencies
-jest.mock("../tokenManager");
-jest.mock("../tokenRefreshManager");
-jest.mock("../httpClient");
-jest.mock("../errorHandler", () => ({
+jest.mock("../../core/tokenManager");
+jest.mock("../../core/tokenRefreshManager");
+jest.mock("../../core/httpClient");
+jest.mock("../../core/errorHandler", () => ({
   processError: jest.fn((error) => error),
   logError: jest.fn(),
 }));

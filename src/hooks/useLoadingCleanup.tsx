@@ -61,16 +61,18 @@ export function useLoadingCleanup(options: UseLoadingCleanupOptions = {}) {
   useEffect(() => {
     mountedRef.current = true;
 
+    // Сохраняем ссылку на timeoutRefs внутри эффекта
+    const timeoutsRef = timeoutRefs.current;
+
     return () => {
       mountedRef.current = false;
       cleanupAllKeys();
 
       // Очищаем все таймауты
-      const currentTimeouts = timeoutRefs.current;
-      currentTimeouts.forEach((timeoutId) => {
+      timeoutsRef.forEach((timeoutId) => {
         clearTimeout(timeoutId);
       });
-      currentTimeouts.clear();
+      timeoutsRef.clear();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -79,13 +81,15 @@ export function useLoadingCleanup(options: UseLoadingCleanupOptions = {}) {
   useEffect(() => {
     keys.forEach(setCleanupTimeout);
 
+    // Сохраняем ссылку на timeoutRefs внутри эффекта
+    const timeoutsRef = timeoutRefs.current;
+
     return () => {
-      const currentTimeouts = timeoutRefs.current;
       keys.forEach((key) => {
-        const timeoutId = currentTimeouts.get(key);
+        const timeoutId = timeoutsRef.get(key);
         if (timeoutId) {
           clearTimeout(timeoutId);
-          currentTimeouts.delete(key);
+          timeoutsRef.delete(key);
         }
       });
     };

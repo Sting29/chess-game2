@@ -1,16 +1,16 @@
-import httpClient from "./httpClient";
-import errorHandler from "./errorHandler";
+import httpClient from "../../core/httpClient";
+import errorHandler from "../../core/errorHandler";
+import { User, UpdateProfileRequest } from "./types";
+import { UserSession } from "../session/types";
 import {
-  User,
-  UpdateProfileRequest,
-  UserSession,
   ChessSet,
   Language,
   AvatarWear,
   AvatarHat,
-} from "./types";
+  Gender,
+  Avatar,
+} from "../../types/common";
 import { AxiosError } from "axios";
-import { Gender, Avatar } from "./types";
 
 class UserService {
   // Get current user profile

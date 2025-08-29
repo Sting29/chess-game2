@@ -1,7 +1,7 @@
 import { AxiosRequestConfig } from "axios";
 import tokenManager from "./tokenManager";
 import authLogger from "./authLogger";
-import { AuthResponse } from "./types";
+import { AuthResponse } from "../services/auth/types";
 
 // Interfaces for TokenRefreshManager
 export interface PendingRequest {

@@ -1,8 +1,9 @@
-import httpClient from "./httpClient";
-import tokenManager from "./tokenManager";
-import errorHandler from "./errorHandler";
-import tokenRefreshManager from "./tokenRefreshManager";
-import { LoginRequest, AuthResponse, User } from "./types";
+import httpClient from "../../core/httpClient";
+import tokenManager from "../../core/tokenManager";
+import errorHandler from "../../core/errorHandler";
+import tokenRefreshManager from "../../core/tokenRefreshManager";
+import { LoginRequest, AuthResponse } from "./types";
+import { User } from "../user/types";
 import { AxiosError } from "axios";
 
 class AuthService {
