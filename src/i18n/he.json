@@ -292,6 +292,16 @@
   "time_limit": "מגבלת זמן",
   "no_limits": "ללא מגבלות",
   "progress": "התקדמות",
+  "loading_progress": "טוען התקדמות...",
+  "no_progress_found": "לא נמצאה התקדמות עדיין",
+  "error_loading_progress": "שגיאה בטעינת התקדמות",
+  "completed": "הושלם",
+  "tutorial": "הדרכה",
+  "game": "משחק",
+  "mate_in_one": "מט בצעד אחד",
+  "mate_in_two": "מט בשני צעדים",
+  "basic_tactics": "טקטיקה בסיסית",
+  "labyrinth": "מבוך",
   "max_moves_allowed": "מהלכים מקסימליים מותרים: {{count}}",
   "time_limit_minutes": "מגבלת זמן: {{time}} דקות"
 }

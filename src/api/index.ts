@@ -11,6 +11,7 @@ export { default as authLogger } from "./core/authLogger";
 export { authService } from "./services/auth";
 export { userService } from "./services/user";
 export { sessionExperienceManager } from "./services/session";
+export { progressService } from "./services/progress";
 
 // Types - central export
 export * from "./types";

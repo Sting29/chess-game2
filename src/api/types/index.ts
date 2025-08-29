@@ -1,6 +1,7 @@
 // Central exports for all API types
 export * from "./common";
 export * from "./responses";
+export * from "./progress";
 
 // Re-export service-specific types
 export * from "../services/auth/types";

@@ -8,11 +8,13 @@ import mazeProgressReducer, {
   loadMazeProgressFromStorage,
   loadProgress,
 } from "./mazeProgressSlice";
+import progressReducer from "./progressSlice";
 
 export const store = configureStore({
   reducer: {
     settings: settingsReducer,
     mazeProgress: mazeProgressReducer,
+    progress: progressReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

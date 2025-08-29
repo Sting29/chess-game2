@@ -290,6 +290,16 @@
   "time_limit": "حد الوقت",
   "no_limits": "بلا حدود",
   "progress": "التقدم",
+  "loading_progress": "جاري تحميل التقدم...",
+  "no_progress_found": "لم يتم العثور على تقدم بعد",
+  "error_loading_progress": "خطأ في تحميل التقدم",
+  "completed": "مكتمل",
+  "tutorial": "تعليمي",
+  "game": "لعبة",
+  "mate_in_one": "كش مات في حركة واحدة",
+  "mate_in_two": "كش مات في حركتين",
+  "basic_tactics": "التكتيكات الأساسية",
+  "labyrinth": "متاهة",
   "max_moves_allowed": "الحد الأقصى للحركات المسموحة: {{count}}",
   "time_limit_minutes": "حد الوقت: {{time}} دقائق"
 }
