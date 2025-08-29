@@ -15,6 +15,9 @@ export const ChessBattle = lazy(
 
 // Головоломки
 export const PuzzleList = lazy(() => import("src/pages/PuzzleList/PuzzleList"));
+export const PuzzleCategory = lazy(
+  () => import("src/pages/PuzzleCategory/PuzzleCategory")
+);
 export const PuzzleSolver = lazy(() =>
   import("src/pages/PuzzleSolver/PuzzleSolver").then((module) => ({
     default: module.PuzzleSolver,
@@ -65,6 +68,7 @@ export const LazyComponents = {
 
   // Головоломки
   PuzzleList,
+  PuzzleCategory,
   PuzzleSolver,
   MazePuzzleList,
   MazePuzzleSolver,

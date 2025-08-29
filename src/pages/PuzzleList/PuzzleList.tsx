@@ -1,13 +1,7 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMemo, useCallback } from "react";
 import { CHESS_PUZZLES } from "../../data/puzzles";
-import {
-  TutorialPage,
-  PuzzleCategories,
-  // PuzzleListWrap,
-  PuzzleItem,
-  PuzzleCategoryTitle,
-} from "./styles";
+import { TutorialPage, PuzzleCategories } from "./styles";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
@@ -27,7 +21,6 @@ const visibleCountMap = {
 function PuzzleList() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { categoryId } = useParams();
   const location = useLocation();
   const { breakpoint } = useBreakpoint();
 
@@ -45,15 +38,8 @@ function PuzzleList() {
     if (location.pathname === "/puzzles") {
       return "/";
     }
-    return categoryId
-      ? location.pathname.split("/").slice(0, -1).join("/")
-      : "-1";
-  }, [categoryId, location.pathname]);
-
-  const category = useMemo(
-    () => CHESS_PUZZLES.find((c) => c.id === categoryId),
-    [categoryId]
-  );
+    return "-1";
+  }, [location.pathname]);
 
   const handleCategoryClick = useCallback(
     (id: string) => {
@@ -68,49 +54,22 @@ function PuzzleList() {
     []
   );
 
-  // Если categoryId не указан, показываем список категорий
-
   return (
     <TutorialPage>
-      <PageTitle
-        title={
-          !categoryId
-            ? t("chess_puzzles")
-            : category
-            ? t(category.titleKey)
-            : ""
-        }
-      />
+      <PageTitle title={t("chess_puzzles")} />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
       <PuzzleCategories>
-        {!categoryId ? (
-          <TutorialSlider visibleCount={visibleCount} direction="vertical">
-            {CHESS_PUZZLES.map((category) => (
-              <PuzzleCategoryCard
-                key={category.id}
-                category={category}
-                onClick={handleCategoryClick}
-              />
-            ))}
-          </TutorialSlider>
-        ) : !category ? (
-          <PuzzleCategoryTitle>{t("category_not_found")}</PuzzleCategoryTitle>
-        ) : (
-          category.puzzles.map((puzzle) => (
-            <PuzzleItem
-              key={puzzle.id}
-              to={`/puzzles/${category.id}/${puzzle.id}`}
-            >
-              <h3>
-                {t(puzzle.titleKey)}
-                {puzzle.id}
-              </h3>
-              <p>{t(puzzle.descriptionKey)}</p>
-            </PuzzleItem>
-          ))
-        )}
+        <TutorialSlider visibleCount={visibleCount} direction="vertical">
+          {CHESS_PUZZLES.map((category) => (
+            <PuzzleCategoryCard
+              key={category.id}
+              category={category}
+              onClick={handleCategoryClick}
+            />
+          ))}
+        </TutorialSlider>
       </PuzzleCategories>
     </TutorialPage>
   );

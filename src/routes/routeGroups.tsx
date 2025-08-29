@@ -72,7 +72,7 @@ export const puzzleRoutes = [
     path: ROUTES.PUZZLES_CATEGORY,
     element: (
       <ProtectedRoute>
-        <LazyComponents.PuzzleList />
+        <LazyComponents.PuzzleCategory />
       </ProtectedRoute>
     ),
   },
