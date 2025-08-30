@@ -12,7 +12,7 @@ This feature updates the UI for the PuzzleCategory page (`/puzzles/${category.id
 
 #### Acceptance Criteria
 
-1. WHEN the puzzle category page loads THEN the system SHALL display the background image from `src/assets/background/puzzles/puzzle_5/background_puzzles.png`
+1. WHEN the puzzle category page loads THEN the system SHALL display the clean background image from `src/assets/background/puzzles/puzzle_5/background_puzzles_clear.png` with a separate track overlay from `src/assets/background/puzzles/puzzle_5/track.png`
 2. WHEN displaying puzzles THEN the system SHALL show 10 puzzles per page with pagination
 3. WHEN rendering puzzle stones THEN the system SHALL use stone images from `src/assets/background/puzzles/common/` (stone_1.png, stone_2.png, stone_3.png)
 4. WHEN positioning stones THEN the system SHALL place them along the path as shown in the design reference `src/assets/background/puzzles/puzzle_5/Снимок экрана 2025-08-08 в 17.18.30 1.png`
@@ -70,9 +70,9 @@ This feature updates the UI for the PuzzleCategory page (`/puzzles/${category.id
 
 #### Acceptance Criteria
 
-1. WHEN the page loads THEN the system SHALL display decorative elements including anchor and compass
-2. WHEN displaying decorative elements THEN the system SHALL use anchor from `src/assets/background/puzzles/puzzle_5/anchor.png` and compass from `src/assets/background/puzzles/common/compass.png`
-3. WHEN positioning decorative elements THEN the system SHALL place them to complement the stone path layout
+1. WHEN the page loads THEN the system SHALL display decorative elements including anchor, compass, bone, coins, map, and side stones
+2. WHEN displaying decorative elements THEN the system SHALL use images from `src/assets/background/puzzles/puzzle_5/` (anchor.png, bone.png, coins.png, map.png, stone_left.png, stone_right.png) and compass from `src/assets/background/puzzles/common/compass.png`
+3. WHEN positioning decorative elements THEN the system SHALL use a layered approach: background -> decorative elements -> track -> stones, with the track rotated 90 degrees on mobile/tablet portrait orientation
 4. WHEN the screen resizes THEN the system SHALL maintain appropriate positioning of decorative elements
 
 ### Requirement 7
