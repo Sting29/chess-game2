@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { getDecorativeImage } from "../../imageImports";
 import anchor from "src/assets/background/puzzles/puzzle_5/anchor.png";
 import compass from "src/assets/background/puzzles/common/compass.png";
 import stoneLeft from "src/assets/background/puzzles/puzzle_5/stone_left.png";
@@ -20,18 +21,22 @@ interface DecorativeElementProps {
   position: { x: number; y: number };
   size?: { width: number; height: number };
   customImage?: string; // For category images
+  puzzleId?: string; // For dynamic image loading
+  imageName?: string; // Actual image filename
+  zIndex?: number; // For layering control
 }
 
 const ElementWrapper = styled.div<{
   $position: { x: number; y: number };
   $size?: { width: number; height: number };
+  $zIndex?: number;
 }>`
   position: absolute;
   left: ${(props) => props.$position.x}%;
   top: ${(props) => props.$position.y}%;
   transform: translate(-50%, -50%);
   pointer-events: none;
-  z-index: 1;
+  z-index: ${(props) => props.$zIndex || 1};
   ${(props) =>
     props.$size &&
     `
@@ -157,6 +162,9 @@ const DecorativeElement: React.FC<DecorativeElementProps> = ({
   position,
   size,
   customImage,
+  puzzleId,
+  imageName,
+  zIndex,
 }) => {
   const getImageSource = () => {
     // Use custom image if provided
@@ -164,6 +172,15 @@ const DecorativeElement: React.FC<DecorativeElementProps> = ({
       return customImage;
     }
 
+    // Try to get image from dynamic imports first
+    if (puzzleId && imageName) {
+      const dynamicImage = getDecorativeImage(puzzleId, imageName);
+      if (dynamicImage) {
+        return dynamicImage;
+      }
+    }
+
+    // Fallback to hardcoded images
     switch (type) {
       case "anchor":
         return anchor;
@@ -206,7 +223,7 @@ const DecorativeElement: React.FC<DecorativeElementProps> = ({
   };
 
   return (
-    <ElementWrapper $position={position} $size={size}>
+    <ElementWrapper $position={position} $size={size} $zIndex={zIndex}>
       <ElementImage
         src={getImageSource()}
         alt={getAltText()}

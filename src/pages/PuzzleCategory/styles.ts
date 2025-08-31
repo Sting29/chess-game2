@@ -1,14 +1,11 @@
 import styled from "styled-components";
-import backgroundPuzzlesClear from "src/assets/background/puzzles/puzzle_5/background_puzzles_clear.png";
-import track from "src/assets/background/puzzles/puzzle_5/track.png";
 
 // Main container for the puzzle map
 export const PuzzleMapContainer = styled.div<{ $backgroundImage?: string }>`
   position: relative;
   width: 100%;
   height: calc(100vh - 96px);
-  background-image: url(${(props) =>
-    props.$backgroundImage || backgroundPuzzlesClear});
+  background-image: url(${(props) => props.$backgroundImage});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -34,40 +31,43 @@ export const PuzzleMapContainer = styled.div<{ $backgroundImage?: string }>`
   }
 `;
 
-// Track container with fixed positioning and rotation for mobile
-export const TrackContainer = styled.div<{ $trackImage?: string }>`
+// Track container with configurable size and positioning
+export const TrackContainer = styled.div<{
+  $trackImage?: string;
+  $trackSize?: { width: number; height: number };
+}>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 1200px;
-  height: 800px;
-  background-image: url(${(props) => props.$trackImage || track});
+  width: ${(props) => props.$trackSize?.width || 1200}px;
+  height: ${(props) => props.$trackSize?.height || 800}px;
+  background-image: url(${(props) => props.$trackImage});
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
   z-index: 2;
 
   @media (max-width: 1024px) {
-    width: 600px;
-    height: 400px;
+    width: ${(props) => (props.$trackSize?.width || 1200) * 0.5}px;
+    height: ${(props) => (props.$trackSize?.height || 800) * 0.5}px;
   }
 
   @media (max-width: 768px) and (orientation: portrait) {
     transform: translate(-50%, -50%) rotate(90deg);
-    width: 400px;
-    height: 267px;
+    width: ${(props) => (props.$trackSize?.width || 1200) * 0.33}px;
+    height: ${(props) => (props.$trackSize?.height || 800) * 0.33}px;
   }
 
   @media (max-width: 480px) and (orientation: portrait) {
     transform: translate(-50%, -50%) rotate(90deg);
-    width: 350px;
-    height: 233px;
+    width: ${(props) => (props.$trackSize?.width || 1200) * 0.29}px;
+    height: ${(props) => (props.$trackSize?.height || 800) * 0.29}px;
   }
 
   @media (orientation: landscape) and (max-height: 600px) {
-    width: 450px;
-    height: 300px;
+    width: ${(props) => (props.$trackSize?.width || 1200) * 0.375}px;
+    height: ${(props) => (props.$trackSize?.height || 800) * 0.375}px;
   }
 `;
 
@@ -130,7 +130,7 @@ export const DecorativeContainer = styled.div`
   width: 100%;
   height: 100%;
   pointer-events: none;
-  z-index: 1;
+  /* No fixed z-index - let individual elements control their own layering */
 `;
 
 // Individual decorative element wrapper

@@ -66,9 +66,11 @@ function PuzzleCategory() {
     currentPage,
   } = usePagination(category, currentPageFromUrl, handlePageChange);
 
-  // Get configuration based on current page
+  // Get configuration based on current page (following spec: Math.floor(currentPuzzleIndex / 10))
   const backgroundConfig = useMemo(() => {
-    return getBackgroundConfig(currentPage - 1); // Convert from 1-based to 0-based
+    const firstPuzzleIndex = (currentPage - 1) * 10; // First puzzle index on current page (0-based)
+    const backgroundIndex = Math.floor(firstPuzzleIndex / 10);
+    return getBackgroundConfig(backgroundIndex);
   }, [currentPage]);
 
   // Get category image based on categoryId
@@ -116,6 +118,9 @@ function PuzzleCategory() {
                 type={element.name.replace(".png", "") as any}
                 position={{ x: element.x, y: element.y }}
                 size={{ width: element.width, height: element.height }}
+                puzzleId={backgroundConfig.id}
+                imageName={element.name}
+                zIndex={element.zIndex}
               />
             )
         )}
@@ -133,12 +138,16 @@ function PuzzleCategory() {
               height: backgroundConfig.categoryImagePosition.height,
             }}
             customImage={categoryImage}
+            zIndex={backgroundConfig.categoryImagePosition.zIndex}
           />
         )}
       </DecorativeContainer>
 
       {/* Track Container with Puzzle Stones */}
-      <TrackContainer $trackImage={backgroundConfig.track}>
+      <TrackContainer
+        $trackImage={backgroundConfig.track}
+        $trackSize={backgroundConfig.trackSize}
+      >
         {currentPagePuzzles.map((puzzle, index) => {
           const position = getStonePosition(index, backgroundConfig);
           const state = getPuzzleState(index);
