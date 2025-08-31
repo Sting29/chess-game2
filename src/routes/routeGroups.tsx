@@ -58,6 +58,7 @@ export const learningRoutes = [
 
 /**
  * Группа маршрутов для головоломок
+ * ВАЖНО: Порядок имеет значение! Более специфичные роуты должны быть выше
  */
 export const puzzleRoutes = [
   {
@@ -68,35 +69,21 @@ export const puzzleRoutes = [
       </ProtectedRoute>
     ),
   },
-  {
-    path: ROUTES.PUZZLES_CATEGORY,
-    element: (
-      <ProtectedRoute>
-        <LazyComponents.PuzzleCategory />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: ROUTES.PUZZLES_MAZE,
-    element: (
-      <ProtectedRoute>
-        <LazyComponents.MazePuzzleList />
-      </ProtectedRoute>
-    ),
-  },
-  {
-    path: ROUTES.PUZZLES_MAZE_SOLVER,
-    element: (
-      <ProtectedRoute>
-        <LazyComponents.MazePuzzleSolver />
-      </ProtectedRoute>
-    ),
-  },
+  // Более специфичный роут для решения задач (должен быть выше PUZZLES_CATEGORY)
   {
     path: ROUTES.PUZZLES_SOLVER,
     element: (
       <ProtectedRoute>
         <LazyComponents.PuzzleSolver />
+      </ProtectedRoute>
+    ),
+  },
+  // Роут для категории (теперь с query параметром ?page=N)
+  {
+    path: ROUTES.PUZZLES_CATEGORY,
+    element: (
+      <ProtectedRoute>
+        <LazyComponents.PuzzleCategory />
       </ProtectedRoute>
     ),
   },

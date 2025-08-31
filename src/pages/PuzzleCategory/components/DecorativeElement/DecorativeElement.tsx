@@ -18,15 +18,26 @@ interface DecorativeElementProps {
     | "coins"
     | "map";
   position: { x: number; y: number };
+  size?: { width: number; height: number };
+  customImage?: string; // For category images
 }
 
-const ElementWrapper = styled.div<{ position: { x: number; y: number } }>`
+const ElementWrapper = styled.div<{
+  $position: { x: number; y: number };
+  $size?: { width: number; height: number };
+}>`
   position: absolute;
-  left: ${(props) => props.position.x}%;
-  top: ${(props) => props.position.y}%;
+  left: ${(props) => props.$position.x}%;
+  top: ${(props) => props.$position.y}%;
   transform: translate(-50%, -50%);
   pointer-events: none;
   z-index: 1;
+  ${(props) =>
+    props.$size &&
+    `
+    width: ${props.$size.width}px;
+    height: ${props.$size.height}px;
+  `}
 
   @media (max-width: 768px) {
     transform: translate(-50%, -50%) scale(0.8);
@@ -37,13 +48,26 @@ const ElementWrapper = styled.div<{ position: { x: number; y: number } }>`
   }
 `;
 
-const ElementImage = styled.img<{ elementType: string }>`
-  max-width: 100%;
-  height: auto;
+const ElementImage = styled.img<{
+  $elementType: string;
+  $hasCustomSize?: boolean;
+}>`
+  ${(props) =>
+    props.$hasCustomSize
+      ? `
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  `
+      : `
+    max-width: 100%;
+    height: auto;
+  `}
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 
   ${(props) => {
-    switch (props.elementType) {
+    if (props.$hasCustomSize) return "";
+    switch (props.$elementType) {
       case "anchor":
         return `
           width: 80px;
@@ -85,7 +109,7 @@ const ElementImage = styled.img<{ elementType: string }>`
 
   @media (max-width: 768px) {
     ${(props) => {
-      switch (props.elementType) {
+      switch (props.$elementType) {
         case "anchor":
           return `width: 60px;`;
         case "compass":
@@ -107,7 +131,7 @@ const ElementImage = styled.img<{ elementType: string }>`
 
   @media (max-width: 480px) {
     ${(props) => {
-      switch (props.elementType) {
+      switch (props.$elementType) {
         case "anchor":
           return `width: 40px;`;
         case "compass":
@@ -131,8 +155,15 @@ const ElementImage = styled.img<{ elementType: string }>`
 const DecorativeElement: React.FC<DecorativeElementProps> = ({
   type,
   position,
+  size,
+  customImage,
 }) => {
   const getImageSource = () => {
+    // Use custom image if provided
+    if (customImage) {
+      return customImage;
+    }
+
     switch (type) {
       case "anchor":
         return anchor;
@@ -175,11 +206,12 @@ const DecorativeElement: React.FC<DecorativeElementProps> = ({
   };
 
   return (
-    <ElementWrapper position={position}>
+    <ElementWrapper $position={position} $size={size}>
       <ElementImage
         src={getImageSource()}
         alt={getAltText()}
-        elementType={type}
+        $elementType={type}
+        $hasCustomSize={!!size}
       />
     </ElementWrapper>
   );

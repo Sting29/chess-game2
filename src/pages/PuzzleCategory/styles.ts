@@ -3,11 +3,12 @@ import backgroundPuzzlesClear from "src/assets/background/puzzles/puzzle_5/backg
 import track from "src/assets/background/puzzles/puzzle_5/track.png";
 
 // Main container for the puzzle map
-export const PuzzleMapContainer = styled.div`
+export const PuzzleMapContainer = styled.div<{ $backgroundImage?: string }>`
   position: relative;
   width: 100%;
   height: calc(100vh - 96px);
-  background-image: url(${backgroundPuzzlesClear});
+  background-image: url(${(props) =>
+    props.$backgroundImage || backgroundPuzzlesClear});
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -34,14 +35,14 @@ export const PuzzleMapContainer = styled.div`
 `;
 
 // Track container with fixed positioning and rotation for mobile
-export const TrackContainer = styled.div`
+export const TrackContainer = styled.div<{ $trackImage?: string }>`
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   width: 1200px;
   height: 800px;
-  background-image: url(${track});
+  background-image: url(${(props) => props.$trackImage || track});
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
@@ -77,10 +78,10 @@ export interface StonePosition {
 }
 
 // Wrapper for individual stones with positioning relative to track
-export const StoneWrapper = styled.div<{ position: StonePosition }>`
+export const StoneWrapper = styled.div<{ $position: StonePosition }>`
   position: absolute;
-  left: ${(props) => props.position.x}%;
-  top: ${(props) => props.position.y}%;
+  left: ${(props) => props.$position.x}%;
+  top: ${(props) => props.$position.y}%;
   transform: translate(-50%, -50%);
   transition: transform 0.2s ease;
   z-index: 3;

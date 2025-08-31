@@ -17,8 +17,6 @@ export const navigationUtils = {
       generatePath.puzzlesCategory(categoryId),
     puzzlesSolver: (categoryId: string, puzzleId: string) =>
       generatePath.puzzlesSolver(categoryId, puzzleId),
-    puzzlesMazeSolver: (puzzleId: string) =>
-      generatePath.puzzlesMazeSolver(puzzleId),
     playComputerLevel: (level: string) => generatePath.playComputerLevel(level),
   },
 

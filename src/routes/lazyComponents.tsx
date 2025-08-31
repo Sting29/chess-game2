@@ -23,9 +23,7 @@ export const PuzzleSolver = lazy(() =>
     default: module.PuzzleSolver,
   }))
 );
-export const MazePuzzleList = lazy(
-  () => import("src/pages/MazePuzzleList/MazePuzzleList")
-);
+
 export const MazePuzzleSolver = lazy(() =>
   import("src/pages/MazePuzzleSolver/MazePuzzleSolver").then((module) => ({
     default: module.MazePuzzleSolver,
@@ -70,7 +68,6 @@ export const LazyComponents = {
   PuzzleList,
   PuzzleCategory,
   PuzzleSolver,
-  MazePuzzleList,
   MazePuzzleSolver,
 
   // Игра

@@ -56,11 +56,7 @@ export class TypedNavigator {
   }
 
   goToPuzzlesMaze(options?: NavigateOptions) {
-    this.navigate(ROUTES.PUZZLES_MAZE, options);
-  }
-
-  goToPuzzlesMazeSolver(puzzleId: string, options?: NavigateOptions) {
-    this.navigate(generatePath.puzzlesMazeSolver(puzzleId), options);
+    this.navigate(generatePath.puzzlesCategory("maze"), options);
   }
 
   // Игра

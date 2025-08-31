@@ -1,10 +1,11 @@
-import { useLocation, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import { useMemo, useEffect } from "react";
 import { CHESS_PUZZLES } from "../../data/puzzles";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { useTranslation } from "react-i18next";
+import { getBackgroundConfig, getCategoryImage } from "./config";
 import {
   PuzzleMapContainer,
   TrackContainer,
@@ -21,19 +22,40 @@ import DecorativeElement from "./components/DecorativeElement/DecorativeElement"
 function PuzzleCategory() {
   const { t } = useTranslation();
   const { categoryId } = useParams();
-  const location = useLocation();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Получаем номер страницы из query параметра или устанавливаем по умолчанию
+  const currentPageFromUrl = useMemo(() => {
+    const pageParam = searchParams.get("page");
+    if (pageParam) {
+      const page = parseInt(pageParam, 10);
+      return isNaN(page) || page < 1 ? 1 : page;
+    }
+    return 1;
+  }, [searchParams]);
+
+  // Если нет page в query параметрах, устанавливаем page=1
+  useEffect(() => {
+    if (categoryId && !searchParams.get("page")) {
+      setSearchParams({ page: "1" }, { replace: true });
+      return;
+    }
+  }, [categoryId, searchParams, setSearchParams]);
 
   const previousPage = useMemo(() => {
-    return categoryId
-      ? location.pathname.split("/").slice(0, -1).join("/")
-      : "/puzzles";
-  }, [categoryId, location.pathname]);
+    return "/puzzles";
+  }, []);
 
   const category = useMemo(
     () => CHESS_PUZZLES.find((c) => c.id === categoryId),
     [categoryId]
   );
+
+  // Функция для изменения страницы через query параметр
+  const handlePageChange = (pageNumber: number) => {
+    setSearchParams({ page: pageNumber.toString() });
+  };
 
   const {
     currentPagePuzzles,
@@ -41,13 +63,18 @@ function PuzzleCategory() {
     canGoBackward,
     goToNextPage,
     goToPreviousPage,
-    resetPagination,
-  } = usePagination(category);
+    currentPage,
+  } = usePagination(category, currentPageFromUrl, handlePageChange);
 
-  // Reset pagination when category changes
-  useEffect(() => {
-    resetPagination();
-  }, [categoryId, resetPagination]);
+  // Get configuration based on current page
+  const backgroundConfig = useMemo(() => {
+    return getBackgroundConfig(currentPage - 1); // Convert from 1-based to 0-based
+  }, [currentPage]);
+
+  // Get category image based on categoryId
+  const categoryImage = useMemo(() => {
+    return categoryId ? getCategoryImage(categoryId) : "";
+  }, [categoryId]);
 
   const handleStoneClick = (
     puzzleId: string,
@@ -55,7 +82,9 @@ function PuzzleCategory() {
   ) => {
     // Only allow navigation for completed and available stones
     if (category && state !== "locked") {
-      navigate(`/puzzles/${category.id}/${puzzleId}`);
+      navigate(
+        `/puzzles/${category.id}/${puzzleId}?page=${currentPageFromUrl}`
+      );
     }
   };
 
@@ -71,7 +100,7 @@ function PuzzleCategory() {
   }
 
   return (
-    <PuzzleMapContainer>
+    <PuzzleMapContainer $backgroundImage={backgroundConfig.background}>
       <PageTitle title={t(category.titleKey)} />
       <BackButtonWrap>
         <BackButtonImage linkToPage={previousPage} />
@@ -79,23 +108,43 @@ function PuzzleCategory() {
 
       {/* Decorative Elements */}
       <DecorativeContainer>
-        <DecorativeElement type="anchor" position={{ x: 85, y: 15 }} />
-        <DecorativeElement type="compass" position={{ x: 85, y: 85 }} />
-        <DecorativeElement type="stone_left" position={{ x: 5, y: 50 }} />
-        <DecorativeElement type="stone_right" position={{ x: 95, y: 50 }} />
-        <DecorativeElement type="bone" position={{ x: 20, y: 20 }} />
-        <DecorativeElement type="coins" position={{ x: 75, y: 25 }} />
-        <DecorativeElement type="map" position={{ x: 15, y: 75 }} />
+        {backgroundConfig.decorativeElements.map(
+          (element, index) =>
+            element.show && (
+              <DecorativeElement
+                key={`${element.name}-${index}`}
+                type={element.name.replace(".png", "") as any}
+                position={{ x: element.x, y: element.y }}
+                size={{ width: element.width, height: element.height }}
+              />
+            )
+        )}
+
+        {/* Category Image (compass, etc.) */}
+        {backgroundConfig.categoryImagePosition.show && categoryImage && (
+          <DecorativeElement
+            type={"compass" as any}
+            position={{
+              x: backgroundConfig.categoryImagePosition.x,
+              y: backgroundConfig.categoryImagePosition.y,
+            }}
+            size={{
+              width: backgroundConfig.categoryImagePosition.width,
+              height: backgroundConfig.categoryImagePosition.height,
+            }}
+            customImage={categoryImage}
+          />
+        )}
       </DecorativeContainer>
 
       {/* Track Container with Puzzle Stones */}
-      <TrackContainer>
+      <TrackContainer $trackImage={backgroundConfig.track}>
         {currentPagePuzzles.map((puzzle, index) => {
-          const position = getStonePosition(index);
+          const position = getStonePosition(index, backgroundConfig);
           const state = getPuzzleState(index);
 
           return (
-            <StoneWrapper key={puzzle.id} position={position}>
+            <StoneWrapper key={puzzle.id} $position={position}>
               <PuzzleStone
                 puzzleNumber={puzzle.puzzleNumber}
                 state={state}

@@ -11,19 +11,19 @@ interface PuzzleStoneProps {
   onClick: () => void;
 }
 
-const StoneContainer = styled.button<{ clickable: boolean }>`
+const StoneContainer = styled.button<{ $clickable: boolean }>`
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: ${(props) => (props.clickable ? "pointer" : "default")};
+  cursor: ${(props) => (props.$clickable ? "pointer" : "default")};
   user-select: none;
   transition: transform 0.2s ease;
   background: transparent;
   border: none;
 
   ${(props) =>
-    props.clickable &&
+    props.$clickable &&
     `
     &:hover {
       transform: scale(1.1);
@@ -165,7 +165,7 @@ const PuzzleStone: React.FC<PuzzleStoneProps> = ({
   const isClickable = state !== "locked";
 
   return (
-    <StoneContainer clickable={isClickable} onClick={handleClick}>
+    <StoneContainer $clickable={isClickable} onClick={handleClick}>
       <StoneImage src={getStoneImage()} alt={`Puzzle ${puzzleNumber}`} />
 
       {/* Show number for available and completed stones */}

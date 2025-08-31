@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useMemo } from "react";
 import { PuzzleCategory } from "../../types/types";
 import {
   getVisiblePuzzles,
@@ -7,8 +7,13 @@ import {
   PUZZLES_PER_PAGE,
 } from "./utils";
 
-export const usePagination = (category: PuzzleCategory | undefined) => {
-  const [currentPage, setCurrentPage] = useState(0);
+export const usePagination = (
+  category: PuzzleCategory | undefined,
+  currentPageFromUrl: number,
+  onPageChange: (pageNumber: number) => void
+) => {
+  // Конвертируем из 1-based (URL) в 0-based (внутренняя логика)
+  const currentPage = currentPageFromUrl - 1;
 
   // Calculate pagination data
   const paginationData = useMemo(() => {
@@ -45,36 +50,30 @@ export const usePagination = (category: PuzzleCategory | undefined) => {
     };
   }, [category, currentPage]);
 
-  // Navigation functions
+  // Navigation functions - теперь обновляют URL
   const goToNextPage = () => {
     if (paginationData.canGoForward) {
-      setCurrentPage((prev) => prev + 1);
+      onPageChange(currentPageFromUrl + 1);
     }
   };
 
   const goToPreviousPage = () => {
     if (paginationData.canGoBackward) {
-      setCurrentPage((prev) => prev - 1);
+      onPageChange(currentPageFromUrl - 1);
     }
   };
 
-  const goToPage = (pageIndex: number) => {
-    if (pageIndex >= 0 && pageIndex < paginationData.totalPages) {
-      setCurrentPage(pageIndex);
+  const goToPage = (pageNumber: number) => {
+    if (pageNumber >= 1 && pageNumber <= paginationData.totalPages) {
+      onPageChange(pageNumber);
     }
-  };
-
-  // Reset to first page when category changes
-  const resetPagination = () => {
-    setCurrentPage(0);
   };
 
   return {
-    currentPage,
+    currentPage: currentPageFromUrl,
     ...paginationData,
     goToNextPage,
     goToPreviousPage,
     goToPage,
-    resetPagination,
   };
 };

@@ -46,7 +46,7 @@ function PuzzleList() {
       if (id === "maze") {
         navigate("/puzzles/maze");
       } else {
-        navigate(`/puzzles/${id}`);
+        navigate(`/puzzles/${id}?page=1`);
       }
     },
     // navigate is stable from useNavigate()

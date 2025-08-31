@@ -17,8 +17,6 @@ export const ROUTES = {
   PUZZLES: "/puzzles",
   PUZZLES_CATEGORY: "/puzzles/:categoryId",
   PUZZLES_SOLVER: "/puzzles/:categoryId/:puzzleId",
-  PUZZLES_MAZE: "/puzzles/maze",
-  PUZZLES_MAZE_SOLVER: "/puzzles/maze/:puzzleId",
 
   // Игра
   PLAY: "/play",

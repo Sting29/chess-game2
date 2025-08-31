@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect, useMemo } from "react";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { ChessPuzzleBoard } from "src/components/ChessPuzzleBoard/ChessPuzzleBoard";
 import { CHESS_PUZZLES } from "src/data/puzzles";
 import { ChessPuzzle } from "src/types/types";
@@ -24,9 +24,23 @@ export function PuzzleSolver() {
   const { t } = useTranslation();
   const { categoryId, puzzleId } = useParams();
   const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams] = useSearchParams();
 
-  const previousPage = location.pathname.split("/").slice(0, -1).join("/");
+  // Получаем номер страницы из query параметра
+  const currentPageNumber = useMemo(() => {
+    const pageParam = searchParams.get("page");
+    if (pageParam) {
+      const page = parseInt(pageParam, 10);
+      return isNaN(page) || page < 1 ? 1 : page;
+    }
+    return 1;
+  }, [searchParams]);
+
+  const previousPage = useMemo(() => {
+    return categoryId
+      ? `/puzzles/${categoryId}?page=${currentPageNumber}`
+      : "/puzzles";
+  }, [categoryId, currentPageNumber]);
 
   const [showHint, setShowHint] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
@@ -84,9 +98,11 @@ export function PuzzleSolver() {
 
   const handleNextPuzzle = () => {
     if (nextPuzzle) {
-      navigate(`/puzzles/${categoryId}/${nextPuzzle.id}`);
+      navigate(
+        `/puzzles/${categoryId}/${nextPuzzle.id}?page=${currentPageNumber}`
+      );
     } else {
-      navigate(`/puzzles/${categoryId}`);
+      navigate(`/puzzles/${categoryId}?page=${currentPageNumber}`);
     }
   };
 
@@ -127,7 +143,9 @@ export function PuzzleSolver() {
               </NextPuzzleButton>
             ) : (
               <NextPuzzleButton
-                onClick={() => navigate(`/puzzles/${categoryId}`)}
+                onClick={() =>
+                  navigate(`/puzzles/${categoryId}?page=${currentPageNumber}`)
+                }
               >
                 {t("back_to_task_list")}
               </NextPuzzleButton>

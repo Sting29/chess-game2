@@ -25,9 +25,6 @@ export const generatePath = {
       puzzleId
     ),
 
-  puzzlesMazeSolver: (puzzleId: string): string =>
-    ROUTES.PUZZLES_MAZE_SOLVER.replace(":puzzleId", puzzleId),
-
   // Игра
   playComputerLevel: (level: string): string =>
     ROUTES.PLAY_COMPUTER_LEVEL.replace(":level", level),

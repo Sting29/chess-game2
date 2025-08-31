@@ -1,18 +1,5 @@
 import { StonePosition } from "./styles";
-
-// Stone positions following the S-curve path from the design
-export const STONE_POSITIONS: StonePosition[] = [
-  { x: 33, y: 32 }, // Stone 1 - Start of path, left side
-  { x: 21, y: 42 }, // Stone 2 - Moving down left
-  { x: 22, y: 60 }, // Stone 3 - Bottom left curve
-  { x: 34, y: 67 }, // Stone 4 - Starting to curve right
-  { x: 46, y: 58 }, // Stone 5 - Bottom center
-  { x: 50, y: 40 }, // Stone 6 - Moving up right
-  { x: 60, y: 32 }, // Stone 7 - Right side curve
-  { x: 73, y: 38 }, // Stone 8 - Moving up right
-  { x: 76, y: 52 }, // Stone 9 - Top right curve
-  { x: 65, y: 63 }, // Stone 10 - End of path, top center
-];
+import type { BackgroundConfig } from "./config";
 
 // Determine puzzle state based on index (0-based)
 export const getPuzzleState = (
@@ -24,10 +11,16 @@ export const getPuzzleState = (
 };
 
 // Get stone position for a given puzzle index on current page
-export const getStonePosition = (puzzleIndexOnPage: number): StonePosition => {
+export const getStonePosition = (
+  puzzleIndexOnPage: number,
+  backgroundConfig: BackgroundConfig
+): StonePosition => {
+  // Use positions from configuration
+  const positions = backgroundConfig.stonePositions;
+
   // Ensure we don't exceed available positions
-  const positionIndex = Math.min(puzzleIndexOnPage, STONE_POSITIONS.length - 1);
-  return STONE_POSITIONS[positionIndex];
+  const positionIndex = Math.min(puzzleIndexOnPage, positions.length - 1);
+  return positions[positionIndex];
 };
 
 // Calculate visible puzzles for current page
