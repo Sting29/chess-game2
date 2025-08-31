@@ -59,6 +59,10 @@ export class TypedNavigator {
     this.navigate(generatePath.puzzlesCategory("maze"), options);
   }
 
+  goToPuzzlesMazeSolver(puzzleId: string, options?: NavigateOptions) {
+    this.navigate(generatePath.puzzlesMazeSolver(puzzleId), options);
+  }
+
   // Игра
   goToPlay(options?: NavigateOptions) {
     this.navigate(ROUTES.PLAY, options);

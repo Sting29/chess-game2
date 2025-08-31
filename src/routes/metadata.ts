@@ -49,6 +49,12 @@ export const ROUTE_METADATA: Record<string, RouteMetadata> = {
     requiresAuth: true,
   },
 
+  [ROUTES.PUZZLES_MAZE_SOLVER]: {
+    title: "Chess Maze Puzzle - {puzzleId}",
+    description: "Solve chess maze puzzle challenges",
+    requiresAuth: true,
+  },
+
   [ROUTES.PLAY]: {
     title: "Play Chess",
     description: "Choose your chess game mode",

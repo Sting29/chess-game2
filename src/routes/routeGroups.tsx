@@ -87,6 +87,15 @@ export const puzzleRoutes = [
       </ProtectedRoute>
     ),
   },
+  // Специальный роут для решения maze-пазлов (должен быть выше общего PUZZLES_SOLVER)
+  {
+    path: ROUTES.PUZZLES_MAZE_SOLVER,
+    element: (
+      <ProtectedRoute>
+        <LazyComponents.MazePuzzleSolver />
+      </ProtectedRoute>
+    ),
+  },
 ];
 
 /**

@@ -1,16 +1,17 @@
 import styled from "styled-components";
+import backgroundPuzzles from "../../assets/background/background_puzzles.png";
 
 export const SolverPage = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
-  padding: 2rem;
-  gap: 1rem;
-
-  @media (max-width: 768px) {
-    padding: 1rem;
-  }
+  height: calc(100vh - 96px);
+  padding: 0 40px;
+  background-image: url(${backgroundPuzzles});
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
 `;
 
 export const PuzzleDescription = styled.div`
