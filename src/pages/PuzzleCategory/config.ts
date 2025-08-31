@@ -128,6 +128,89 @@ export const backgroundConfigs: Record<number, BackgroundConfig> = {
       animationType: "none",
     },
   },
+  1: {
+    id: "puzzle_2",
+    address: `${ADDRESS_PUZZLES}/puzzle_2`,
+    background: backgroundPuzzlesClear,
+    track: track,
+    trackPosition: { x: 50, y: 50 },
+    stonePositions: [
+      { x: 32, y: 32 }, // Stone 1 - Start of path, left side
+      { x: 21, y: 42 }, // Stone 2 - Moving down left
+      { x: 22, y: 60 }, // Stone 3 - Bottom left curve
+      { x: 34, y: 67 }, // Stone 4 - Starting to curve right
+      { x: 46, y: 58 }, // Stone 5 - Bottom center
+      { x: 50, y: 40 }, // Stone 6 - Moving up right
+      { x: 60, y: 32 }, // Stone 7 - Right side curve
+      { x: 73, y: 38 }, // Stone 8 - Moving up right
+      { x: 76, y: 52 }, // Stone 9 - Top right curve
+      { x: 65, y: 63 }, // Stone 10 - End of path, top center
+    ],
+    decorativeElements: [
+      {
+        name: "fish.png",
+        x: 85,
+        y: 20,
+        width: 150,
+        height: 200,
+        show: true,
+        animationType: "none",
+      },
+      {
+        name: "shell.png",
+        x: 85,
+        y: 20,
+        width: 150,
+        height: 200,
+        show: true,
+        animationType: "none",
+      },
+      {
+        name: "stone_1.png",
+        x: 85,
+        y: 20,
+        width: 150,
+        height: 200,
+        show: true,
+        animationType: "none",
+      },
+      {
+        name: "stone_2.png",
+        x: 85,
+        y: 20,
+        width: 150,
+        height: 200,
+        show: true,
+        animationType: "none",
+      },
+      {
+        name: "stump_left.png",
+        x: 85,
+        y: 20,
+        width: 150,
+        height: 200,
+        show: true,
+        animationType: "none",
+      },
+      {
+        name: "stump_right.png",
+        x: 85,
+        y: 20,
+        width: 150,
+        height: 200,
+        show: true,
+        animationType: "none",
+      },
+    ],
+    categoryImagePosition: {
+      x: 80,
+      y: 80,
+      width: 120,
+      height: 120,
+      show: true,
+      animationType: "none",
+    },
+  },
 };
 
 // Category configurations
