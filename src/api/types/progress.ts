@@ -18,7 +18,8 @@ export type ProgressCategory =
   | "mate-in-one"
   | "mate-in-two"
   | "basic-tactics"
-  | "labyrinth";
+  | "labyrinth"
+  | "maze";
 
 export interface Progress {
   id: string;
@@ -45,3 +46,20 @@ export interface UpdateProgressRequest {
 // Response types
 export type ProgressListResponse = Progress[];
 export type ProgressResponse = Progress;
+
+// New types for user progress endpoint
+export interface UserProgressUpdateRequest {
+  type: ActivityType;
+  category: ProgressCategory;
+  completed: string[];
+}
+
+export interface UserProgressResponse {
+  id: string;
+  user: ProgressUser;
+  type: ActivityType;
+  category: ProgressCategory;
+  completed: string[];
+  createdAt: string;
+  updatedAt: string;
+}

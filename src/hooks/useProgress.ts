@@ -9,6 +9,7 @@ import {
   deleteProgressById,
   addCompletedItem,
   removeCompletedItem,
+  updateUserProgress,
   clearError,
   clearCurrentProgress,
   setCurrentProgress,
@@ -21,6 +22,7 @@ import {
 import {
   CreateProgressRequest,
   UpdateProgressRequest,
+  UserProgressUpdateRequest,
   Progress,
 } from "../api/types/progress";
 
@@ -77,6 +79,13 @@ export const useProgress = () => {
   const removeCompleted = useCallback(
     (id: string, item: string) => {
       return dispatch(removeCompletedItem({ id, item }));
+    },
+    [dispatch]
+  );
+
+  const updateUserProgressData = useCallback(
+    (userId: string, data: UserProgressUpdateRequest) => {
+      return dispatch(updateUserProgress({ userId, data }));
     },
     [dispatch]
   );
@@ -151,6 +160,7 @@ export const useProgress = () => {
     deleteById,
     addCompleted,
     removeCompleted,
+    updateUserProgress: updateUserProgressData,
     clearError: clearErr,
     clearCurrentProgress: clearCurrent,
     setCurrentProgress: setCurrent,

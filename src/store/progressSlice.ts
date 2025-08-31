@@ -4,6 +4,7 @@ import {
   Progress,
   CreateProgressRequest,
   UpdateProgressRequest,
+  UserProgressUpdateRequest,
 } from "../api/types/progress";
 
 // Async thunks for API calls
@@ -82,6 +83,20 @@ export const removeCompletedItem = createAsyncThunk(
   async ({ id, item }: { id: string; item: string }, { rejectWithValue }) => {
     try {
       return await progressService.removeCompletedItem(id, item);
+    } catch (error: any) {
+      return rejectWithValue(error.response?.data || error.message);
+    }
+  }
+);
+
+export const updateUserProgress = createAsyncThunk(
+  "progress/updateUserProgress",
+  async (
+    { userId, data }: { userId: string; data: UserProgressUpdateRequest },
+    { rejectWithValue }
+  ) => {
+    try {
+      return await progressService.updateUserProgress(userId, data);
     } catch (error: any) {
       return rejectWithValue(error.response?.data || error.message);
     }
@@ -259,6 +274,44 @@ const progressSlice = createSlice({
         state.currentProgress = action.payload;
       }
     });
+
+    // Update user progress
+    builder
+      .addCase(updateUserProgress.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(updateUserProgress.fulfilled, (state, action) => {
+        state.loading = false;
+
+        // Convert UserProgressResponse to Progress format for consistency
+        const progressItem: Progress = {
+          id: action.payload.id,
+          user: action.payload.user,
+          type: action.payload.type,
+          category: action.payload.category,
+          completed: action.payload.completed,
+        };
+
+        // Update in items array if exists, otherwise add new item
+        const index = state.items.findIndex(
+          (item) => item.id === progressItem.id
+        );
+        if (index !== -1) {
+          state.items[index] = progressItem;
+        } else {
+          state.items.push(progressItem);
+        }
+
+        // Update current progress if it's the same item
+        if (state.currentProgress?.id === progressItem.id) {
+          state.currentProgress = progressItem;
+        }
+      })
+      .addCase(updateUserProgress.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload as string;
+      });
   },
 });
 
