@@ -14,6 +14,8 @@ import { authService } from "src/api";
 import { LoadingProvider } from "src/contexts/LoadingProvider";
 import FullScreenLoader from "src/components/FullScreenLoader/FullScreenLoader";
 import { useLoading } from "src/hooks/useLoading";
+// import ReduxDebugButton from "src/components/ReduxDebugButton";
+import "src/utils/reduxDebug"; // Импортируем для добавления функций в window
 // Removed Loader import as per loader refactoring requirements
 
 function LanguageSync() {
@@ -49,7 +51,7 @@ function AuthRestore() {
       // Check if user has valid tokens
       if (authService.isAuthenticated()) {
         try {
-          // Try to load user profile to restore session
+          // Try to load user profile to restore session (this will also load progress data)
           await dispatch(loadUserProfile()).unwrap();
         } catch (error) {
           // If profile loading fails, clear auth state and mark check complete
@@ -77,6 +79,26 @@ function AppContent() {
       <GlobalStyles />
       <LanguageSync />
       <AuthRestore />
+
+      {/* Redux Debug Button - positioned in top right corner */}
+      {/* <div
+        style={{
+          position: "fixed",
+          top: "20px",
+          right: "20px",
+          zIndex: 9,
+        }}
+      >
+        <ReduxDebugButton
+          buttonText="Redux"
+          style={{
+            padding: "8px 16px",
+            fontSize: "12px",
+            backgroundColor: "#28a745",
+            borderRadius: "20px",
+          }}
+        />
+      </div> */}
 
       <AppRouter />
 

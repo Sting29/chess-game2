@@ -50,7 +50,7 @@ This specification describes the integration of a progress API system for tracki
 3. WHEN saving progress for /puzzles/mate-in-one section THEN the system SHALL use category "mate-in-one"
 4. WHEN saving progress for /puzzles/mate-in-two section THEN the system SHALL use category "mate-in-two"
 5. WHEN saving progress for /puzzles/basic-tactics section THEN the system SHALL use category "basic-tactics"
-6. WHEN saving progress for /puzzles/labyrinth section THEN the system SHALL use category "labyrinth"
+6. WHEN saving progress for /puzzles/maze section THEN the system SHALL use category "maze"
 
 ### Requirement 5
 

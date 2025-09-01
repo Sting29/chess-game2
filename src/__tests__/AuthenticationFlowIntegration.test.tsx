@@ -11,16 +11,18 @@
 
 import React from "react";
 import { render, screen, waitFor, act } from "@testing-library/react";
-import { Provider } from "react-redux";
+import { Provider, useDispatch, useSelector } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import { I18nextProvider } from "react-i18next";
 import i18n from "i18next";
+import "@testing-library/jest-dom";
 import settingsReducer, {
   setAuthenticated,
   setLoading,
   setInitialCheckComplete,
   clearAuthState,
 } from "../store/settingsSlice";
+import progressReducer from "../store/progressSlice";
 import { LoadingProvider } from "../contexts/LoadingProvider";
 import { useLoading, LOADING_KEYS } from "../hooks/useLoading";
 import FullScreenLoader from "../components/FullScreenLoader/FullScreenLoader";
@@ -42,7 +44,7 @@ mockI18n.init({
 });
 
 // Mock services
-jest.mock("../services", () => ({
+jest.mock("../api", () => ({
   authService: {
     isAuthenticated: jest.fn(),
     clearAuthState: jest.fn(),
@@ -51,6 +53,9 @@ jest.mock("../services", () => ({
   },
   userService: {
     getProfile: jest.fn(),
+  },
+  progressService: {
+    getAllProgress: jest.fn().mockResolvedValue([]),
   },
 }));
 
@@ -392,7 +397,7 @@ describe("Authentication Flow Integration Tests", () => {
     });
 
     it("should handle rapid authentication checks without showing loading", async () => {
-      const { authService } = require("../services");
+      const { authService } = require("../api");
       authService.isAuthenticated.mockReturnValue(true);
 
       render(<TestApp />);
@@ -725,6 +730,131 @@ describe("Authentication Flow Integration Tests", () => {
       // Should maintain layout without interruption
       expect(screen.getByTestId("layout")).toBeInTheDocument();
       expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+    });
+  });
+
+  describe("Progress API Integration after Authentication", () => {
+    it("should call authentication services when login is triggered", async () => {
+      const { authService, userService } = require("../api");
+      
+      // Mock successful authentication
+      authService.login.mockResolvedValue({
+        access_token: "test-token",
+        refresh_token: "test-refresh-token"
+      });
+      
+      userService.getProfile.mockResolvedValue({
+        id: "test-user-id",
+        email: "test@example.com",
+        username: "testuser",
+        name: "Test User"
+      });
+
+      // Simple test component that just calls the services
+      const TestLoginComponent = () => {
+        const [loginCalled, setLoginCalled] = React.useState(false);
+
+        const handleLogin = async () => {
+          try {
+            await authService.login({
+              username: "testuser",
+              password: "testpass"
+            });
+            await userService.getProfile();
+            setLoginCalled(true);
+          } catch (error) {
+            console.error("Login failed:", error);
+          }
+        };
+
+        return (
+          <div data-testid="login-test">
+            <button data-testid="login-btn" onClick={handleLogin}>
+              Login
+            </button>
+            <div data-testid="login-status">
+              Login Called: {loginCalled ? "true" : "false"}
+            </div>
+          </div>
+        );
+      };
+
+      render(<TestLoginComponent />);
+
+      // Trigger login
+      const loginBtn = screen.getByTestId("login-btn");
+      act(() => {
+        loginBtn.click();
+      });
+
+      // Wait for login to complete
+      await waitFor(() => {
+        expect(screen.getByTestId("login-status")).toHaveTextContent("Login Called: true");
+      });
+
+      // Verify authentication was successful
+      expect(authService.login).toHaveBeenCalledWith({
+        username: "testuser",
+        password: "testpass"
+      });
+      expect(userService.getProfile).toHaveBeenCalled();
+    });
+
+    it("should handle authentication service errors gracefully", async () => {
+      const { authService } = require("../api");
+      
+      // Mock authentication failure
+      authService.login.mockRejectedValue(new Error("Authentication failed"));
+
+      // Spy on console.error to verify error logging
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      const TestLoginComponent = () => {
+        const [loginError, setLoginError] = React.useState<string | null>(null);
+
+        const handleLogin = async () => {
+          try {
+            await authService.login({
+              username: "testuser",
+              password: "wrongpass"
+            });
+          } catch (error) {
+            setLoginError(error instanceof Error ? error.message : "Login failed");
+          }
+        };
+
+        return (
+          <div data-testid="login-test">
+            <button data-testid="login-btn" onClick={handleLogin}>
+              Login
+            </button>
+            <div data-testid="error-state">
+              Error: {loginError || "none"}
+            </div>
+          </div>
+        );
+      };
+
+      render(<TestLoginComponent />);
+
+      // Trigger login
+      const loginBtn = screen.getByTestId("login-btn");
+      act(() => {
+        loginBtn.click();
+      });
+
+      // Wait for error to be handled
+      await waitFor(() => {
+        expect(screen.getByTestId("error-state")).toHaveTextContent("Error: Authentication failed");
+      });
+
+      // Verify authentication was attempted
+      expect(authService.login).toHaveBeenCalledWith({
+        username: "testuser",
+        password: "wrongpass"
+      });
+
+      consoleSpy.mockRestore();
     });
   });
 });

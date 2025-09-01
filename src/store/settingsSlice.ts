@@ -14,6 +14,7 @@ import {
   Avatar,
 } from "../api";
 import { authService, userService } from "../api";
+import { fetchAllProgress } from "./progressSlice";
 
 export type SettingsState = {
   language: string;
@@ -74,13 +75,24 @@ const convertApiChessSetToLocal = (apiChessSet: ChessSet): string => {
 // Async thunks for API operations
 export const loginUser = createAsyncThunk(
   "settings/loginUser",
-  async (credentials: LoginRequest, { rejectWithValue }) => {
+  async (credentials: LoginRequest, { rejectWithValue, dispatch }) => {
     try {
       // Step 1: Authenticate user and get tokens
       const authResponse = await authService.login(credentials);
 
       // Step 2: Load full user profile after successful authentication
       const userProfile = await userService.getProfile();
+
+      // Step 3: Load progress data after successful authentication
+      try {
+        await dispatch(fetchAllProgress()).unwrap();
+      } catch (progressError) {
+        // Log progress loading error but don't break login flow
+        console.error(
+          "Failed to load progress data after login:",
+          progressError
+        );
+      }
 
       // Return both auth response and full profile
       return {
@@ -106,9 +118,21 @@ export const logoutUser = createAsyncThunk(
 
 export const loadUserProfile = createAsyncThunk(
   "settings/loadUserProfile",
-  async (_, { rejectWithValue }) => {
+  async (_, { rejectWithValue, dispatch }) => {
     try {
       const user = await userService.getProfile();
+
+      // Load progress data after successful profile loading
+      try {
+        await dispatch(fetchAllProgress()).unwrap();
+      } catch (progressError) {
+        // Log progress loading error but don't break profile loading
+        console.error(
+          "Failed to load progress data during session restore:",
+          progressError
+        );
+      }
+
       return user;
     } catch (error: any) {
       return rejectWithValue(error.message || "Failed to load profile");
