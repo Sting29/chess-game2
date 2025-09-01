@@ -1,5 +1,6 @@
 import { useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect, useMemo } from "react";
 import { MAZE_PUZZLES } from "../../data/mazePuzzles";
 import { selectMazeProgress } from "../../store/mazeProgressSlice";
 import {
@@ -11,6 +12,8 @@ import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { useTranslation } from "react-i18next";
+import { useProgress } from "src/hooks/useProgress";
+import { RootState } from "src/store";
 
 function MazePuzzleList() {
   const { t } = useTranslation();
@@ -18,6 +21,30 @@ function MazePuzzleList() {
 
   const mazeProgress = useSelector(selectMazeProgress);
   const previousPage = location.pathname.split("/").slice(0, -1).join("/");
+
+  // Load progress data from the new progress system
+  const { getProgressByCategory, ensureFreshData } = useProgress();
+
+  // Get completed puzzles from the new progress system
+  const completedPuzzles = useMemo(() => {
+    const categoryProgress = getProgressByCategory("maze");
+    return categoryProgress.length > 0 ? categoryProgress[0].completed : [];
+  }, [getProgressByCategory]);
+
+  // Load progress data when component mounts
+  useEffect(() => {
+    ensureFreshData();
+  }, [ensureFreshData]);
+
+  // Function to determine if a puzzle is available (unlocked)
+  const isPuzzleAvailable = (puzzleIndex: number): boolean => {
+    // First puzzle is always available
+    if (puzzleIndex === 0) return true;
+
+    // Other puzzles are available only if previous puzzle is completed
+    const previousPuzzleId = puzzleIndex.toString(); // Previous puzzle ID
+    return completedPuzzles.includes(previousPuzzleId);
+  };
 
   return (
     <TutorialPage>
@@ -27,16 +54,29 @@ function MazePuzzleList() {
       </BackButtonWrap>
 
       <PuzzleCategories>
-        {MAZE_PUZZLES.map((puzzle) => {
-          const isCompleted = mazeProgress.completedPuzzles.includes(puzzle.id);
+        {MAZE_PUZZLES.map((puzzle, index) => {
+          const isCompleted = completedPuzzles.includes(puzzle.id);
+          const isAvailable = isPuzzleAvailable(index);
+          const isLocked = !isAvailable;
 
           return (
             <PuzzleItem
               key={puzzle.id}
-              to={`/puzzles/maze/${puzzle.id}`}
+              to={isLocked ? "#" : `/puzzles/maze/${puzzle.id}`}
               style={{
-                backgroundColor: isCompleted ? "#e8f5e8" : "#f7f7f7",
+                backgroundColor: isCompleted
+                  ? "#e8f5e8"
+                  : isLocked
+                  ? "#f0f0f0"
+                  : "#f7f7f7",
                 border: isCompleted ? "2px solid #4caf50" : "none",
+                opacity: isLocked ? 0.6 : 1,
+                cursor: isLocked ? "not-allowed" : "pointer",
+              }}
+              onClick={(e) => {
+                if (isLocked) {
+                  e.preventDefault();
+                }
               }}
             >
               <h3>
@@ -44,8 +84,22 @@ function MazePuzzleList() {
                 {isCompleted && (
                   <span style={{ color: "#4caf50", marginLeft: "8px" }}>✓</span>
                 )}
+                {isLocked && (
+                  <span style={{ color: "#999", marginLeft: "8px" }}>🔒</span>
+                )}
               </h3>
               <p>{t(puzzle.descriptionKey)}</p>
+              {isLocked && (
+                <p
+                  style={{
+                    color: "#999",
+                    fontSize: "0.85rem",
+                    fontStyle: "italic",
+                  }}
+                >
+                  {t("complete_previous_puzzle_to_unlock")}
+                </p>
+              )}
               {(puzzle.maxMoves || puzzle.timeLimit) && (
                 <div
                   style={{

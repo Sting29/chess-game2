@@ -20,6 +20,7 @@ import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { useTranslation } from "react-i18next";
+import { useProgressTracking } from "src/hooks/useProgressTracking";
 
 export function MazePuzzleSolver() {
   const { t } = useTranslation();
@@ -37,6 +38,19 @@ export function MazePuzzleSolver() {
   const isPuzzleCompleted = useSelector((state: RootState) =>
     selectIsPuzzleCompleted(puzzleId || "")(state)
   );
+
+  // Get current user from Redux store
+  const currentUser = useSelector((state: RootState) => state.settings.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.settings.isAuthenticated
+  );
+
+  // Initialize progress tracking for maze category
+  const { trackPuzzleCompletion } = useProgressTracking({
+    categoryId: "maze",
+    userId: currentUser?.id || "anonymous-user",
+    type: "tutorial",
+  });
 
   // Reset state when puzzleId changes
   useEffect(() => {
@@ -89,11 +103,33 @@ export function MazePuzzleSolver() {
     );
   }
 
-  const handleComplete = (result: "success" | "failure") => {
+  const handleComplete = async (result: "success" | "failure") => {
     if (result === "success") {
       setGameComplete(true);
-      if (puzzleId && !isPuzzleCompleted) {
-        dispatch(completePuzzle(puzzleId));
+
+      if (puzzleId) {
+        console.log("Maze puzzle completed:", puzzleId);
+        console.log("Is authenticated:", isAuthenticated);
+        console.log("Current user ID:", currentUser?.id);
+        console.log("Is puzzle already completed:", isPuzzleCompleted);
+
+        // Always update local maze progress
+        if (!isPuzzleCompleted) {
+          dispatch(completePuzzle(puzzleId));
+        }
+
+        // Always track puzzle completion in progress system if user is authenticated
+        if (isAuthenticated && currentUser?.id) {
+          console.log(
+            "Calling trackPuzzleCompletion for maze puzzle:",
+            puzzleId
+          );
+          await trackPuzzleCompletion(puzzleId);
+        } else {
+          console.log(
+            "Skipping progress tracking - user not authenticated or no user ID"
+          );
+        }
       }
     }
   };

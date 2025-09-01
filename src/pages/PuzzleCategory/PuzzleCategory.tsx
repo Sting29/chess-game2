@@ -18,12 +18,28 @@ import { usePagination } from "./hooks";
 import PuzzleStone from "./components/PuzzleStone/PuzzleStone";
 import NavigationButton from "./components/NavigationButton";
 import DecorativeElement from "./components/DecorativeElement/DecorativeElement";
+import { useProgress } from "src/hooks/useProgress";
 
 function PuzzleCategory() {
   const { t } = useTranslation();
   const { categoryId } = useParams();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
+
+  // Load progress data
+  const { getProgressByCategory, ensureFreshData } = useProgress();
+
+  // Get completed puzzles for this category
+  const completedPuzzles = useMemo(() => {
+    if (!categoryId) return [];
+    const categoryProgress = getProgressByCategory(categoryId);
+    return categoryProgress.length > 0 ? categoryProgress[0].completed : [];
+  }, [categoryId, getProgressByCategory]);
+
+  // Load progress data when component mounts
+  useEffect(() => {
+    ensureFreshData();
+  }, [ensureFreshData]);
 
   // Получаем номер страницы из query параметра или устанавливаем по умолчанию
   const currentPageFromUrl = useMemo(() => {
@@ -150,7 +166,8 @@ function PuzzleCategory() {
       >
         {currentPagePuzzles.map((puzzle, index) => {
           const position = getStonePosition(index, backgroundConfig);
-          const state = getPuzzleState(index);
+          const globalPuzzleIndex = (currentPage - 1) * 10 + index; // Calculate global puzzle index
+          const state = getPuzzleState(globalPuzzleIndex, completedPuzzles);
 
           return (
             <StoneWrapper key={puzzle.id} $position={position}>

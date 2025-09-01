@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo } from "react";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ChessPuzzleBoard } from "src/components/ChessPuzzleBoard/ChessPuzzleBoard";
 import { CHESS_PUZZLES } from "src/data/puzzles";
 import { ChessPuzzle } from "src/types/types";
@@ -19,6 +20,9 @@ import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { useTranslation } from "react-i18next";
+import { useProgressTracking } from "src/hooks/useProgressTracking";
+import { ProgressCategory } from "src/api/types/progress";
+import { RootState } from "src/store";
 
 export function PuzzleSolver() {
   const { t } = useTranslation();
@@ -45,6 +49,19 @@ export function PuzzleSolver() {
   const [showHint, setShowHint] = useState(false);
   const [gameComplete, setGameComplete] = useState(false);
   const [key, setKey] = useState(0); // Ключ для форсированного перерендера доски
+
+  // Get current user from Redux store
+  const currentUser = useSelector((state: RootState) => state.settings.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.settings.isAuthenticated
+  );
+
+  // Initialize progress tracking
+  const { trackPuzzleCompletion } = useProgressTracking({
+    categoryId: categoryId as ProgressCategory,
+    userId: currentUser?.id || "anonymous-user", // Use actual user ID or fallback
+    type: "tutorial",
+  });
 
   // Сброс состояния при изменении puzzleId
   useEffect(() => {
@@ -84,9 +101,14 @@ export function PuzzleSolver() {
     );
   }
 
-  const handleComplete = (result: "success" | "failure") => {
+  const handleComplete = async (result: "success" | "failure") => {
     if (result === "success") {
       setGameComplete(true);
+
+      // Track puzzle completion only if user is authenticated
+      if (puzzleId && isAuthenticated && currentUser?.id) {
+        await trackPuzzleCompletion(puzzleId);
+      }
     }
   };
 

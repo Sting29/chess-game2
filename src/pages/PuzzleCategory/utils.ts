@@ -1,13 +1,30 @@
 import { StonePosition } from "./styles";
 import type { BackgroundConfig } from "./config";
 
-// Determine puzzle state based on index (0-based)
+// Determine puzzle state based on progress data
 export const getPuzzleState = (
-  puzzleIndex: number
+  puzzleIndex: number,
+  completedPuzzles: string[] = []
 ): "completed" | "available" | "locked" => {
-  if (puzzleIndex < 2) return "completed"; // Puzzles 1-2 (indices 0-1)
-  if (puzzleIndex < 4) return "available"; // Puzzles 3-4 (indices 2-3)
-  return "locked"; // Puzzles 5+ (indices 4+)
+  const puzzleId = (puzzleIndex + 1).toString(); // Convert 0-based index to 1-based puzzle ID
+
+  // Check if this puzzle is completed
+  if (completedPuzzles.includes(puzzleId)) {
+    return "completed";
+  }
+
+  // First puzzle is always available
+  if (puzzleIndex === 0) {
+    return "available";
+  }
+
+  // Other puzzles are available only if previous puzzle is completed
+  const previousPuzzleId = puzzleIndex.toString(); // Previous puzzle ID (1-based becomes 0-based + 1)
+  if (completedPuzzles.includes(previousPuzzleId)) {
+    return "available";
+  }
+
+  return "locked";
 };
 
 // Get stone position for a given puzzle index on current page
