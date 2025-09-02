@@ -1,4 +1,5 @@
 import { ChessTutorialButtonWrap, LinkHeader } from "./styles";
+import CompletionIndicator from "../CompletionIndicator";
 
 export type WidgetSize = "small" | "large";
 
@@ -8,6 +9,7 @@ interface ChessTutorialButtonProps {
   onClick?: () => void;
   widgetSize?: WidgetSize;
   to?: string;
+  isCompleted?: boolean;
 }
 
 function ChessTutorialButton({
@@ -16,6 +18,7 @@ function ChessTutorialButton({
   onClick,
   widgetSize,
   to,
+  isCompleted = false,
 }: ChessTutorialButtonProps) {
   return (
     <ChessTutorialButtonWrap
@@ -25,6 +28,7 @@ function ChessTutorialButton({
       to={to || "#"}
     >
       <LinkHeader $widgetSize={widgetSize || "small"}>{title}</LinkHeader>
+      <CompletionIndicator isCompleted={isCompleted} />
     </ChessTutorialButtonWrap>
   );
 }

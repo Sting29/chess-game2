@@ -303,5 +303,13 @@
   "basic_tactics": "טקטיקה בסיסית",
   "labyrinth": "מבוך",
   "max_moves_allowed": "מהלכים מקסימליים מותרים: {{count}}",
-  "time_limit_minutes": "מגבלת זמן: {{time}} דקות"
+  "time_limit_minutes": "מגבלת זמן: {{time}} דקות",
+
+  "tutorial_white_move": "מהלך לבן",
+  "tutorial_black_move": "מהלך שחור",
+  "tutorial_white_wins_all_captured": "לבן ניצח! כל הכלים השחורים נלקחו",
+  "tutorial_white_wins_pawn_promoted": "לבן ניצח! הרגלי הפך למלכה",
+  "tutorial_white_wins": "לבן ניצח!",
+  "tutorial_draw_no_moves": "תיקו! אין עוד מהלכים אפשריים",
+  "tutorial_invalid_move": "מהלך לא תקין"
 }

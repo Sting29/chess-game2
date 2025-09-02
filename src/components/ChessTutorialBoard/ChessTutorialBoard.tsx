@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Chessboard } from "react-chessboard";
+import { useTranslation } from "react-i18next";
 import { PromotionPiece, Piece } from "../../types/types";
 import { Square } from "../../types/playTypes";
 import { SimplifiedChessEngine } from "../../utils/SimplifiedChessEngine";
@@ -19,6 +20,7 @@ export function ChessTutorialBoard({
   onCapture,
   onComplete,
 }: ChessTutorialBoardProps) {
+  const { t } = useTranslation();
   const [game, setGame] = useState<SimplifiedChessEngine>(
     new SimplifiedChessEngine(initialPosition)
   );
@@ -34,7 +36,8 @@ export function ChessTutorialBoard({
   } | null>(null);
 
   const currentTurn = game.fen().split(" ")[1];
-  let turnMessage = currentTurn === "w" ? "White's move" : "Black's move";
+  let turnMessage =
+    currentTurn === "w" ? t("tutorial_white_move") : t("tutorial_black_move");
 
   // Change message based on game status
   if (gameStatus === "white_wins") {
@@ -43,14 +46,14 @@ export function ChessTutorialBoard({
     const hasWhitePawnOnEighthRank = game.hasWhitePawnOnEighthRank();
 
     if (!hasBlackPieces) {
-      turnMessage = "White wins! All black pieces captured";
+      turnMessage = t("tutorial_white_wins_all_captured");
     } else if (hasWhitePawnOnEighthRank) {
-      turnMessage = "White wins! Pawn promoted to Queen";
+      turnMessage = t("tutorial_white_wins_pawn_promoted");
     } else {
-      turnMessage = "White wins!";
+      turnMessage = t("tutorial_white_wins");
     }
   } else if (gameStatus === "draw") {
-    turnMessage = "Draw! No more possible moves";
+    turnMessage = t("tutorial_draw_no_moves");
   }
 
   function isPromotionMove(
@@ -136,7 +139,7 @@ export function ChessTutorialBoard({
       return true;
     }
 
-    setErrorMessage("Invalid move");
+    setErrorMessage(t("tutorial_invalid_move"));
     setTimeout(() => setErrorMessage(null), 2000);
     return false;
   }

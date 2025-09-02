@@ -301,5 +301,13 @@
   "basic_tactics": "التكتيكات الأساسية",
   "labyrinth": "متاهة",
   "max_moves_allowed": "الحد الأقصى للحركات المسموحة: {{count}}",
-  "time_limit_minutes": "حد الوقت: {{time}} دقائق"
+  "time_limit_minutes": "حد الوقت: {{time}} دقائق",
+
+  "tutorial_white_move": "حركة الأبيض",
+  "tutorial_black_move": "حركة الأسود",
+  "tutorial_white_wins_all_captured": "الأبيض يفوز! تم أسر جميع القطع السوداء",
+  "tutorial_white_wins_pawn_promoted": "الأبيض يفوز! تم ترقية الجندي إلى ملكة",
+  "tutorial_white_wins": "الأبيض يفوز!",
+  "tutorial_draw_no_moves": "تعادل! لا توجد حركات ممكنة أخرى",
+  "tutorial_invalid_move": "حركة غير صالحة"
 }

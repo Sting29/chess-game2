@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { ChessTutorialBoard } from "../../components/ChessTutorialBoard/ChessTutorialBoard";
 import { useState, useCallback } from "react";
-import { Square } from "../../types/types";
 // import GameComplete from "src/components/GameComplete/GameComplete";
 import { Description } from "../../components/Description/Description";
 import { HOW_TO_MOVE } from "../../data/how-to-move";
@@ -19,19 +19,34 @@ import QuestionButton from "src/components/QuestionButton/QuestionButton";
 import { PageTitle } from "src/components/PageTitle/PageTitle";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useTranslation } from "react-i18next";
+import { useProgressTracking } from "src/hooks/useProgressTracking";
+import { RootState } from "src/store";
 
 function ChessMoves() {
   const { t } = useTranslation();
   const { pieceId } = useParams<{ pieceId: string }>();
   const [showBoom, setShowBoom] = useState(false);
   const [resetKey, setResetKey] = useState(0);
-  // const [gameComplete, setGameComplete] = useState(false);
-  // const [currentGameStatus, setCurrentGameStatus] = useState<
-  //   "playing" | "white_wins" | "draw"
-  // >("playing");
   const [showSideContent, setShowSideContent] = useState(true);
+  const [, setGameComplete] = useState(false);
+  const [, setCurrentGameStatus] = useState<"playing" | "white_wins" | "draw">(
+    "playing"
+  );
 
-  const handleCapture = (square: Square) => {
+  // Get current user from Redux store
+  const currentUser = useSelector((state: RootState) => state.settings.user);
+  const isAuthenticated = useSelector(
+    (state: RootState) => state.settings.isAuthenticated
+  );
+
+  // Initialize progress tracking for how-to-move category
+  const { trackPuzzleCompletion } = useProgressTracking({
+    categoryId: "how_to_move",
+    userId: currentUser?.id || "anonymous-user",
+    type: "tutorial",
+  });
+
+  const handleCapture = () => {
     setShowBoom(true);
     setTimeout(() => setShowBoom(false), 500);
   };
@@ -39,8 +54,8 @@ function ChessMoves() {
   const handleReset = useCallback(() => {
     setResetKey((prev) => prev + 1);
     setShowBoom(false);
-    // setGameComplete(false);
-    // setCurrentGameStatus("playing");
+    setGameComplete(false);
+    setCurrentGameStatus("playing");
   }, []);
 
   const gameData = HOW_TO_MOVE.find((piece) => piece.link === pieceId);
@@ -51,12 +66,17 @@ function ChessMoves() {
 
   const previousPage = "/how-to-move";
 
-  // const handleComplete = (gameStatus: "playing" | "white_wins" | "draw") => {
-  //   if (gameStatus === "white_wins" || gameStatus === "draw") {
-  //     setGameComplete(true);
-  //   }
-  //   setCurrentGameStatus(gameStatus);
-  // };
+  const handleComplete = async (gameStatus: "white_wins" | "draw") => {
+    console.log(`ChessMoves lesson completed with status: ${gameStatus}`);
+    setCurrentGameStatus(gameStatus);
+    setGameComplete(true);
+
+    // Track completion of the lesson
+    if (gameData && isAuthenticated && currentUser?.id) {
+      console.log(`Tracking completion of how-to-move lesson: ${gameData.id}`);
+      await trackPuzzleCompletion(gameData.id.toString());
+    }
+  };
 
   return (
     <PageContainer>
@@ -87,7 +107,7 @@ function ChessMoves() {
             key={resetKey}
             initialPosition={gameData.initialPosition}
             onCapture={handleCapture}
-            // onComplete={handleComplete}
+            onComplete={handleComplete}
           />
           {showBoom && <BoomAnimation>{t("boom")}</BoomAnimation>}
           {/* {gameComplete && <GameComplete gameStatus={currentGameStatus} />} */}

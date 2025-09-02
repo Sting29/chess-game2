@@ -26,7 +26,7 @@ import {
 } from "src/store/settingsSlice";
 import { Gender, Avatar } from "src/api";
 import { getDefaultAvatarSelection } from "src/utils/avatarUtils";
-import ShowProgressButton from "src/components/ShowProgressButton/ShowProgressButton";
+// import ShowProgressButton from "src/components/ShowProgressButton/ShowProgressButton";
 
 function Account() {
   const { t } = useTranslation();
@@ -180,7 +180,7 @@ function Account() {
               {t("level")} {level}
             </LevelSelector>
           </InputField>
-          <ShowProgressButton />
+          {/* <ShowProgressButton /> */}
         </SettingsForm>
       </AccountSettingsContainer>
     </PageContainer>

@@ -309,5 +309,13 @@
   "invalid_move": "Invalid move",
   "maze_error": "Maze error occurred",
   "error_loading_maze": "Error loading maze",
-  "maze_config_problem": "There was a problem with this maze configuration"
+  "maze_config_problem": "There was a problem with this maze configuration",
+
+  "tutorial_white_move": "White's move",
+  "tutorial_black_move": "Black's move",
+  "tutorial_white_wins_all_captured": "White wins! All black pieces captured",
+  "tutorial_white_wins_pawn_promoted": "White wins! Pawn promoted to Queen",
+  "tutorial_white_wins": "White wins!",
+  "tutorial_draw_no_moves": "Draw! No more possible moves",
+  "tutorial_invalid_move": "Invalid move"
 }

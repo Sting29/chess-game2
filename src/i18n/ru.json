@@ -310,5 +310,13 @@
   "invalid_move": "Недопустимый ход",
   "maze_error": "Произошла ошибка лабиринта",
   "error_loading_maze": "Ошибка загрузки лабиринта",
-  "maze_config_problem": "Проблема с конфигурацией этого лабиринта"
+  "maze_config_problem": "Проблема с конфигурацией этого лабиринта",
+
+  "tutorial_white_move": "Ход белых",
+  "tutorial_black_move": "Ход черных",
+  "tutorial_white_wins_all_captured": "Белые выиграли! Все черные фигуры захвачены",
+  "tutorial_white_wins_pawn_promoted": "Белые выиграли! Пешка превратилась в ферзя",
+  "tutorial_white_wins": "Белые выиграли!",
+  "tutorial_draw_no_moves": "Ничья! Больше нет возможных ходов",
+  "tutorial_invalid_move": "Недопустимый ход"
 }

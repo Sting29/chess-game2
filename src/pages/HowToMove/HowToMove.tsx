@@ -10,8 +10,12 @@ import BackButtonImage from "src/components/BackButtonImage/BackButtonImage";
 import { HOW_TO_MOVE } from "src/data/how-to-move";
 import { BackButtonWrap } from "src/components/BackButtonImage/styles";
 import { useBreakpoint } from "src/hooks/useBreakpoint";
-import { useMemo } from "react";
+import { useHowToMoveProgress } from "src/hooks/useHowToMoveProgress";
+import { useMemo, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch } from "react-redux";
+import { fetchAllProgress } from "src/store/progressSlice";
+import { AppDispatch } from "src/store";
 
 const visibleCountMap = {
   mobile: 1,
@@ -23,10 +27,19 @@ const visibleCountMap = {
 
 function HowToMove() {
   const { t } = useTranslation();
+  const dispatch = useDispatch<AppDispatch>();
   const previousPage = "/";
   const { breakpoint } = useBreakpoint();
 
+  // Get progress data
+  const { isLessonCompleted } = useHowToMoveProgress();
+
   const visibleCount = visibleCountMap[breakpoint] ?? 4;
+
+  // Load progress data on component mount
+  useEffect(() => {
+    dispatch(fetchAllProgress());
+  }, [dispatch]);
 
   const buttons = useMemo(
     () =>
@@ -36,9 +49,10 @@ function HowToMove() {
           title={t(link.pageTitleKey)}
           image={link.image}
           to={`/how-to-move/${link.link}`}
+          isCompleted={isLessonCompleted(link.id)}
         />
       )),
-    [t]
+    [t, isLessonCompleted]
   );
 
   return (
