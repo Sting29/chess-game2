@@ -116,12 +116,16 @@ export class PuzzleChessEngine {
     const piece = this.position.get(square);
     if (!piece) return [];
 
-    const expectedMove = this.correctMoves[this.currentMoveIndex];
-    if (expectedMove.from === square) {
-      return [expectedMove.to];
+    // Check if it's the correct player's turn
+    const isWhitePiece = piece === piece.toUpperCase();
+    if (
+      (this.turn === "w" && !isWhitePiece) ||
+      (this.turn === "b" && isWhitePiece)
+    ) {
+      return [];
     }
 
-    return [];
+    return this.getPieceMoves(square);
   }
 
   isPuzzleComplete(): boolean {
@@ -167,6 +171,259 @@ export class PuzzleChessEngine {
     }
 
     return `${fen} ${this.turn} - - 0 1`;
+  }
+
+  private getPieceMoves(from: Square): Square[] {
+    const piece = this.position.get(from);
+    if (!piece) return [];
+
+    const [fromFile, fromRank] = this.parseSquare(from);
+    const moves: Square[] = [];
+    const isWhite = piece === piece.toUpperCase();
+
+    switch (piece.toLowerCase()) {
+      case "p": // Pawn
+        const direction = isWhite ? 1 : -1;
+        const startRank = isWhite ? 1 : 6;
+
+        // Move forward
+        const oneStep = this.algebraic(fromFile, fromRank + direction);
+        if (oneStep && !this.position.has(oneStep)) {
+          moves.push(oneStep);
+
+          // Two squares from starting position
+          if (fromRank === startRank) {
+            const twoStep = this.algebraic(fromFile, fromRank + 2 * direction);
+            if (twoStep && !this.position.has(twoStep)) {
+              moves.push(twoStep);
+            }
+          }
+        }
+
+        // Diagonal captures
+        [-1, 1].forEach((offset) => {
+          const captureSquare = this.algebraic(
+            fromFile + offset,
+            fromRank + direction
+          );
+          if (captureSquare && this.position.has(captureSquare)) {
+            const targetPiece = this.position.get(captureSquare);
+            if (
+              targetPiece &&
+              (isWhite
+                ? targetPiece === targetPiece.toLowerCase()
+                : targetPiece === targetPiece.toUpperCase())
+            ) {
+              moves.push(captureSquare);
+            }
+          }
+        });
+        break;
+
+      case "r": // Rook
+        for (const [fileOffset, rankOffset] of [
+          [0, 1],
+          [0, -1],
+          [1, 0],
+          [-1, 0],
+        ]) {
+          let currentFile = fromFile + fileOffset;
+          let currentRank = fromRank + rankOffset;
+
+          while (true) {
+            const square = this.algebraic(currentFile, currentRank);
+            if (!square) break;
+
+            const targetPiece = this.position.get(square);
+            if (!targetPiece) {
+              moves.push(square);
+            } else {
+              if (
+                isWhite
+                  ? targetPiece === targetPiece.toLowerCase()
+                  : targetPiece === targetPiece.toUpperCase()
+              ) {
+                moves.push(square);
+              }
+              break;
+            }
+
+            currentFile += fileOffset;
+            currentRank += rankOffset;
+          }
+        }
+        break;
+
+      case "n": // Knight
+        const knightMoves = [
+          [-2, -1],
+          [-2, 1],
+          [-1, -2],
+          [-1, 2],
+          [1, -2],
+          [1, 2],
+          [2, -1],
+          [2, 1],
+        ];
+
+        for (const [fileOffset, rankOffset] of knightMoves) {
+          const square = this.algebraic(
+            fromFile + fileOffset,
+            fromRank + rankOffset
+          );
+          if (square) {
+            const targetPiece = this.position.get(square);
+            if (
+              !targetPiece ||
+              (isWhite
+                ? targetPiece === targetPiece.toLowerCase()
+                : targetPiece === targetPiece.toUpperCase())
+            ) {
+              moves.push(square);
+            }
+          }
+        }
+        break;
+
+      case "b": // Bishop
+        for (const [fileOffset, rankOffset] of [
+          [1, 1],
+          [1, -1],
+          [-1, 1],
+          [-1, -1],
+        ]) {
+          let currentFile = fromFile + fileOffset;
+          let currentRank = fromRank + rankOffset;
+
+          while (true) {
+            const square = this.algebraic(currentFile, currentRank);
+            if (!square) break;
+
+            const targetPiece = this.position.get(square);
+            if (!targetPiece) {
+              moves.push(square);
+            } else {
+              if (
+                isWhite
+                  ? targetPiece === targetPiece.toLowerCase()
+                  : targetPiece === targetPiece.toUpperCase()
+              ) {
+                moves.push(square);
+              }
+              break;
+            }
+
+            currentFile += fileOffset;
+            currentRank += rankOffset;
+          }
+        }
+        break;
+
+      case "q": // Queen (combination of rook and bishop)
+        // Straight moves (like rook)
+        for (const [fileOffset, rankOffset] of [
+          [0, 1],
+          [0, -1],
+          [1, 0],
+          [-1, 0],
+        ]) {
+          let currentFile = fromFile + fileOffset;
+          let currentRank = fromRank + rankOffset;
+
+          while (true) {
+            const square = this.algebraic(currentFile, currentRank);
+            if (!square) break;
+
+            const targetPiece = this.position.get(square);
+            if (!targetPiece) {
+              moves.push(square);
+            } else {
+              if (
+                isWhite
+                  ? targetPiece === targetPiece.toLowerCase()
+                  : targetPiece === targetPiece.toUpperCase()
+              ) {
+                moves.push(square);
+              }
+              break;
+            }
+
+            currentFile += fileOffset;
+            currentRank += rankOffset;
+          }
+        }
+
+        // Diagonal moves (like bishop)
+        for (const [fileOffset, rankOffset] of [
+          [1, 1],
+          [1, -1],
+          [-1, 1],
+          [-1, -1],
+        ]) {
+          let currentFile = fromFile + fileOffset;
+          let currentRank = fromRank + rankOffset;
+
+          while (true) {
+            const square = this.algebraic(currentFile, currentRank);
+            if (!square) break;
+
+            const targetPiece = this.position.get(square);
+            if (!targetPiece) {
+              moves.push(square);
+            } else {
+              if (
+                isWhite
+                  ? targetPiece === targetPiece.toLowerCase()
+                  : targetPiece === targetPiece.toUpperCase()
+              ) {
+                moves.push(square);
+              }
+              break;
+            }
+
+            currentFile += fileOffset;
+            currentRank += rankOffset;
+          }
+        }
+        break;
+
+      case "k": // King
+        for (const [fileOffset, rankOffset] of [
+          [0, 1],
+          [0, -1],
+          [1, 0],
+          [-1, 0],
+          [1, 1],
+          [1, -1],
+          [-1, 1],
+          [-1, -1],
+        ]) {
+          const square = this.algebraic(
+            fromFile + fileOffset,
+            fromRank + rankOffset
+          );
+          if (square) {
+            const targetPiece = this.position.get(square);
+            if (
+              !targetPiece ||
+              (isWhite
+                ? targetPiece === targetPiece.toLowerCase()
+                : targetPiece === targetPiece.toUpperCase())
+            ) {
+              moves.push(square);
+            }
+          }
+        }
+        break;
+    }
+
+    return moves.filter((move) => move !== "");
+  }
+
+  private parseSquare(square: Square): [number, number] {
+    const file = square.charCodeAt(0) - "a".charCodeAt(0);
+    const rank = parseInt(square[1]) - 1;
+    return [file, rank];
   }
 
   private isPromotionMove(from: Square, to: Square, piece: string): boolean {
