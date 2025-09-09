@@ -32,7 +32,7 @@ export const HOW_TO_MOVE = [
     pageTitleKey: "how_to_move_knight",
     descriptionTitleKey: "how_to_move_knight_title",
     descriptionKey: "how_to_move_knight_desc",
-    initialPosition: "8/8/1p6/3p4/8/5p2/8/3K4 w - - 0 1",
+    initialPosition: "8/8/1p6/3p4/8/5p2/8/3N4 w - - 0 1",
     image: ChessKnight,
     isCompleted: false,
   },

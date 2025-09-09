@@ -135,7 +135,7 @@ export function PuzzleSolver() {
         <BackButtonImage linkToPage={previousPage} />
       </BackButtonWrap>
       <PuzzleDescription>
-        <p>{t(puzzle.descriptionKey)}</p>
+        <p>{t(puzzle.hintKey)}</p>
       </PuzzleDescription>
       <ChessPuzzleBoard
         key={key}
